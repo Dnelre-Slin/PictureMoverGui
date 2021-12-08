@@ -64,6 +64,11 @@ namespace PictureMoverGui
             }
         }
 
+        public int GetNrOfErrors()
+        {
+            return this.nrOfErrors;
+        }
+
         private string GetNewFilename(FileInfo file, DirectoryInfo destinationDir)
         {
             //string[] filename_extension_split = file.Name.Split(".");
