@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:PictureMoverGui"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         mc:Ignorable="d"
-        DataContext="{Binding RelativeSource={RelativeSource self}}"
         Title="MainWindow" Height="450" Width="800">
     <Grid Margin="0 20" ShowGridLines="True">
         <Grid.ColumnDefinitions>
@@ -39,7 +38,7 @@
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SortedLabelContent}"/>
                 <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
-                <Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{Binding AllowSwapOperation}" IsEnabled="{Binding AllowSwapOperation}" />
+                <Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />
             </WrapPanel>
             <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>

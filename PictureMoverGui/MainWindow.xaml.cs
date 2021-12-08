@@ -26,10 +26,11 @@ namespace PictureMoverGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool AllowSwapOperation
-        {
-            get { return this.sourceDirSat && this.destinationDirSat; }
-        }
+        //public bool AllowSwapOperation
+        //{
+        //    get { return this.sourceDirSat && this.destinationDirSat; }
+        //}
+        PictureMoverModel moverModel;
 
         DispatcherTimer statusMessageTimer = new DispatcherTimer();
         int nrOfErrors = 0;
@@ -39,8 +40,8 @@ namespace PictureMoverGui
         bool pictureMoverRunning = false;
         bool gatherDirInfoRunning = false;
 
-        bool sourceDirSat = false;
-        bool destinationDirSat = false;
+        //bool sourceDirSat = false;
+        //bool destinationDirSat = false;
 
         //public bool sourceDirSat
         //{
@@ -59,6 +60,8 @@ namespace PictureMoverGui
             Trace.AutoFlush = true;
 
             InitializeComponent();
+            this.moverModel = new PictureMoverModel();
+            this.DataContext = this.moverModel;
             //UnsortedDirLabel.Content = Properties.Settings.Default.UnsortedDir;
             //SortedDirLabel.Content = Properties.Settings.Default.SortedDir;
             string start_source_dir = Properties.Settings.Default.UnsortedDir;
@@ -72,7 +75,7 @@ namespace PictureMoverGui
             {
                 SetToDir(start_destination_dir);
             }
-            if (!sourceDirSat || !destinationDirSat)
+            if (!this.moverModel.sourceDirSat || !this.moverModel.destinationDirSat)
             {
                 btnStart.IsEnabled = false;
             }
@@ -103,7 +106,7 @@ namespace PictureMoverGui
             UnsortedDirLabel.Content = path_to_dir;
             Properties.Settings.Default.UnsortedDir = path_to_dir;
             Properties.Settings.Default.Save();
-            sourceDirSat = true;
+            this.moverModel.sourceDirSat = true;
             this.StartDirGathering();
         }
 
@@ -148,7 +151,7 @@ namespace PictureMoverGui
                 //Trace.TraceInformation($"{item.Key}: {item.Value}");
             }
 
-            if (sourceDirSat && destinationDirSat)
+            if (this.moverModel.sourceDirSat && this.moverModel.destinationDirSat)
             {
                 btnStart.IsEnabled = true;
             }
@@ -183,13 +186,13 @@ namespace PictureMoverGui
             SortedDirLabel.Content = path_to_dir;
             Properties.Settings.Default.SortedDir = path_to_dir;
             Properties.Settings.Default.Save();
-            destinationDirSat = true;
+            this.moverModel.destinationDirSat = true;
         }
 
         private void btnSwapToFrom_Click(object sender, RoutedEventArgs e)
         {
             //if (this.sourceDirSat && this.destinationDirSat)
-            if (this.AllowSwapOperation)
+            if (this.moverModel.AllowSwapOperation)
             {
                 string new_from_dir = SortedDirLabel.Content.ToString();
                 string new_to_dir = UnsortedDirLabel.Content.ToString();
@@ -200,7 +203,7 @@ namespace PictureMoverGui
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if (!this.sourceDirSat || !this.destinationDirSat)
+            if (!this.moverModel.sourceDirSat || !this.moverModel.destinationDirSat)
             {
                 btnStart.IsEnabled = false;
                 return;
