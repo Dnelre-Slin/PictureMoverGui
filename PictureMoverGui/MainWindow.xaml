@@ -1,0 +1,68 @@
+﻿<Window x:Class="PictureMoverGui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:PictureMoverGui.Properties"
+        xmlns:local="clr-namespace:PictureMoverGui"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource self}}"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0 20" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
+                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource UnsortedLabelContent}"/>
+                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}"/>
+                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom1" Content="Til ⇆ Fra" />-->
+            </WrapPanel>
+            <Label x:Name="UnsortedDirLabel" FontSize="20" Background="GhostWhite" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
+                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SortedLabelContent}"/>
+                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}"/>
+                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
+                <Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{Binding AllowSwapOperation}" IsEnabled="{Binding AllowSwapOperation}" />
+            </WrapPanel>
+            <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Viewbox Height="80" Grid.Column="0">
+                <WrapPanel Orientation="Vertical">
+                    <!--<Button x:Name="BtnSwapToFrom" Content="To ⇆ From" />-->
+                    <CheckBox x:Name="MakeCopyCheckbox" Content="{DynamicResource CopyCheckboxDescription}"/>
+                    <CheckBox x:Name="ReverseCheckbox" IsChecked="True"  Content="{DynamicResource ReverseCheckboxDescription}"/>
+                    <CheckBox x:Name="RenameCheckbox" IsChecked="True" Content="{DynamicResource RenameCheckboxDescription}"/>
+                </WrapPanel>
+            </Viewbox>
+            <Button Grid.Column="1" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" />
+            <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{DynamicResource ReadyStatusMessage}"/>
+                <!--<Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="75%"/>-->
+                <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="0" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
