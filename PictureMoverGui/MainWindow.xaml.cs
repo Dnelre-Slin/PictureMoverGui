@@ -65,10 +65,10 @@ namespace PictureMoverGui
             this.moverModel = new PictureMoverModel();
             this.DataContext = this.moverModel;
 
-            this.directorySelector = new DirectorySelector(this.moverModel, UnsortedDirLabel, SortedDirLabel);
-            this.directorySelector.StartUp();
+            this.directorySelector = new DirectorySelector(this.moverModel);
+            //this.directorySelector.StartUp();
 
-            this.moverUiHandler = new PictureMoverUiHandler(this.moverModel, MakeCopyCheckbox, ReverseCheckbox, RenameCheckbox, UnsortedDirLabel, SortedDirLabel, statusMessage, ProgressBarArc);
+            this.moverUiHandler = new PictureMoverUiHandler(this.moverModel);
             //UnsortedDirLabel.Content = Properties.Settings.Default.UnsortedDir;
             //SortedDirLabel.Content = Properties.Settings.Default.SortedDir;
             //string start_source_dir = Properties.Settings.Default.UnsortedDir;
@@ -111,6 +111,12 @@ namespace PictureMoverGui
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             this.moverUiHandler.StartSorterButtonClick();
+        }
+
+        private void btnStartCancel_Click(object sender, RoutedEventArgs e)
+        {
+            //Console.WriteLine(this.moverModel.chkboxDoCopyChecked);
+            Trace.TraceInformation(this.moverModel.chkboxDoCopyChecked.ToString());
         }
 
         //private void btnOpenFile_Click(object sender, RoutedEventArgs e)

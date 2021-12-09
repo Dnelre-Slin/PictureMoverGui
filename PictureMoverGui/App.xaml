@@ -28,6 +28,7 @@
         <System:String x:Key="RenameCheckboxDescription">Start navn med dato</System:String>
         <System:String x:Key="StartButtonContent">Start</System:String>
         <System:String x:Key="ReadyStatusMessage">Klar</System:String>
+        <System:String x:Key="NotReadyStatusMessage">Ikke klar</System:String>
         <System:String x:Key="DoneStatusMessage">Ferdig</System:String>
         <System:String x:Key="ErrorStatusMessage">Antall feil:</System:String>
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Windows;
 
@@ -31,8 +32,13 @@ namespace PictureMoverGui
             _chkboxDoRenameChecked = true;
             _labelSourceDirContent = "";
             _labelDestinationDirContent = "";
-            _labelStatusMessageContent = "";
-            _arcProgressBarAngle = 0;
+            _showDoneStatusMessage = false;
+
+            //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
+            string start_source_dir = Properties.Settings.Default.UnsortedDir;
+            labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
+            //Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
+            labelDestinationDirContent = Properties.Settings.Default.SortedDir;
         }
 
 
@@ -40,12 +46,13 @@ namespace PictureMoverGui
         public bool sourceDirSat
         {
             get { return _sourceDirSat; }
-            set
+            private set
             {
                 _sourceDirSat = value;
                 OnPropertyChanged("sourceDirSat");
                 OnPropertyChanged("AllowSwapOperation");
                 OnPropertyChanged("AllowStartingMover");
+                OnPropertyChanged("StatusMessageContent");
             }
         }
 
@@ -53,12 +60,13 @@ namespace PictureMoverGui
         public bool destinationDirSat
         {
             get { return _destinationDirSat; }
-            set
+            private set
             {
                 _destinationDirSat = value;
                 OnPropertyChanged("destinationDirSat");
                 OnPropertyChanged("AllowSwapOperation");
                 OnPropertyChanged("AllowStartingMover");
+                OnPropertyChanged("StatusMessageContent");
             }
         }
 
@@ -73,6 +81,7 @@ namespace PictureMoverGui
                 OnPropertyChanged("GatherInfoDirNotRunning");
                 OnPropertyChanged("AllowSwapOperation");
                 OnPropertyChanged("AllowStartingMover");
+                OnPropertyChanged("StatusMessageContent");
                 OnPropertyChanged("GatherDirInfoCancelButtonVisibility");
             }
         }
@@ -86,6 +95,7 @@ namespace PictureMoverGui
                 _pictureMoverRunning = value;
                 OnPropertyChanged("pictureMoverRunning");
                 OnPropertyChanged("AllowStartingMover");
+                OnPropertyChanged("StatusMessageContent");
             }
         }
 
@@ -150,7 +160,21 @@ namespace PictureMoverGui
             get { return _labelSourceDirContent; }
             set
             {
-                _labelSourceDirContent = value;
+                if (value != Properties.Settings.Default.UnsortedDir)
+                {
+                    Properties.Settings.Default.UnsortedDir = value;
+                    Properties.Settings.Default.Save();
+                }
+                if (string.IsNullOrEmpty(value))
+                {
+                    sourceDirSat = false;
+                    _labelSourceDirContent = App.Current.FindResource("DefaultEmptyPath").ToString();
+                }
+                else
+                {
+                    sourceDirSat = true;
+                    _labelSourceDirContent = value;
+                }
                 OnPropertyChanged("labelSourceDirContent");
             }
         }
@@ -161,32 +185,71 @@ namespace PictureMoverGui
             get { return _labelDestinationDirContent; }
             set
             {
-                _labelDestinationDirContent = value;
+                if (value != Properties.Settings.Default.SortedDir)
+                {
+                    Properties.Settings.Default.SortedDir = value;
+                    Properties.Settings.Default.Save();
+                }
+                if (string.IsNullOrEmpty(value))
+                {
+                    destinationDirSat = false;
+                    _labelDestinationDirContent = App.Current.FindResource("DefaultEmptyPath").ToString();
+                }
+                else
+                {
+                    destinationDirSat = true;
+                    _labelDestinationDirContent = value;
+                }
                 OnPropertyChanged("labelDestinationDirContent");
             }
         }
 
-        private string _labelStatusMessageContent;
-        public string labelStatusMessageContent
+        private bool _showDoneStatusMessage;
+        public bool showDoneStatusMessage
         {
-            get { return _labelStatusMessageContent; }
+            get { return _showDoneStatusMessage; }
             set
             {
-                _labelStatusMessageContent = value;
-                OnPropertyChanged("labelStatusMessageContent");
+                _showDoneStatusMessage = value;
+                OnPropertyChanged("showDoneStatusMessage");
+                OnPropertyChanged("StatusMessageContent");
             }
         }
 
-        private double _arcProgressBarAngle;
-        public double arcProgressBarAngle
+        private int _statusPercentage;
+        public int statusPercentage
         {
-            get { return _arcProgressBarAngle; }
+            get { return _statusPercentage; }
             set
             {
-                _arcProgressBarAngle = value;
-                OnPropertyChanged("arcProgressBarAngle");
+                _statusPercentage = value;
+                OnPropertyChanged("statusPercentage");
+                OnPropertyChanged("StatusMessageContent");
+                OnPropertyChanged("ArcEndAngle");
             }
         }
+
+        //private string _labelStatusMessageContent;
+        //public string labelStatusMessageContent
+        //{
+        //    get { return _labelStatusMessageContent; }
+        //    set
+        //    {
+        //        _labelStatusMessageContent = value;
+        //        OnPropertyChanged("labelStatusMessageContent");
+        //    }
+        //}
+
+        //private double _arcProgressBarAngle;
+        //public double arcProgressBarAngle
+        //{
+        //    get { return _arcProgressBarAngle; }
+        //    set
+        //    {
+        //        _arcProgressBarAngle = value;
+        //        OnPropertyChanged("arcProgressBarAngle");
+        //    }
+        //}
 
         public bool AllowSwapOperation
         {
@@ -206,6 +269,34 @@ namespace PictureMoverGui
         public Visibility GatherDirInfoCancelButtonVisibility
         {
             get { return gatherDirInfoRunning ? Visibility.Visible : Visibility.Hidden; }
+        }
+
+        public string StatusMessageContent
+        {
+            get
+            {
+                if (showDoneStatusMessage)
+                {
+                    return App.Current.FindResource("DoneStatusMessage").ToString();
+                }
+                else if (pictureMoverRunning)
+                {
+                    return $"{statusPercentage}%";
+                }
+                else if (AllowStartingMover)
+                {
+                    return App.Current.FindResource("ReadyStatusMessage").ToString();
+                }
+                else
+                {
+                    return App.Current.FindResource("NotReadyStatusMessage").ToString();
+                }
+            }
+        }
+
+        public double ArcEndAngle
+        {
+            get { return statusPercentage * 3.6; }
         }
     }
 }

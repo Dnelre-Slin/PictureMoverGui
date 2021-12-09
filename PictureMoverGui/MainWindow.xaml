@@ -29,7 +29,7 @@
                 <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnOpenFileCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom1" Content="Til ⇆ Fra" />-->
             </WrapPanel>
-            <Label x:Name="UnsortedDirLabel" FontSize="20" Background="GhostWhite" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="UnsortedDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1">
             <Button FontSize="40" Padding="-40" Width="40" Height="40" x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />
@@ -45,7 +45,7 @@
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
             </WrapPanel>
-            <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="4" Margin="20,20,20,20">
             <Grid.ColumnDefinitions>
@@ -56,19 +56,19 @@
             <Viewbox Height="80" Grid.Column="0">
                 <WrapPanel Orientation="Vertical">
                     <!--<Button x:Name="BtnSwapToFrom" Content="To ⇆ From" />-->
-                    <CheckBox x:Name="MakeCopyCheckbox" Content="{DynamicResource CopyCheckboxDescription}"/>
-                    <CheckBox x:Name="ReverseCheckbox" IsChecked="True"  Content="{DynamicResource ReverseCheckboxDescription}"/>
-                    <CheckBox x:Name="RenameCheckbox" IsChecked="True" Content="{DynamicResource RenameCheckboxDescription}"/>
+                    <CheckBox x:Name="MakeCopyCheckbox" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource CopyCheckboxDescription}"/>
+                    <CheckBox x:Name="ReverseCheckbox" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource ReverseCheckboxDescription}"/>
+                    <CheckBox x:Name="RenameCheckbox" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource RenameCheckboxDescription}"/>
                 </WrapPanel>
             </Viewbox>
             <DockPanel Width="250" Grid.Column="1">
                 <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
-                <Button Visibility="Visible" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Content="{DynamicResource CancelContent}" IsEnabled="{Binding AllowStartingMover}" />
+                <Button Visibility="Visible" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" IsEnabled="{Binding AllowStartingMover}" />
             </DockPanel>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{DynamicResource ReadyStatusMessage}"/>
+                <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>
                 <!--<Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="75%"/>-->
-                <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="0" />
+                <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
             </Grid>
         </Grid>
     </Grid>

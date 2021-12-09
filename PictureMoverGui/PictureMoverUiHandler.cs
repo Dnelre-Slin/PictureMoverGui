@@ -11,27 +11,26 @@ namespace PictureMoverGui
     class PictureMoverUiHandler
     {
         private PictureMoverModel moverModel;
-        private CheckBox chkboxMakeCopies;
-        private CheckBox chkboxFolderStructure;
-        private CheckBox chkboxRename;
-        private Label labelSourceDir;
-        private Label labelDestinationDir;
-        private Label labelStatusMessage;
-        private Microsoft.Expression.Shapes.Arc arcProgressBar;
+        //private CheckBox chkboxMakeCopies;
+        //private CheckBox chkboxFolderStructure;
+        //private CheckBox chkboxRename;
+        //private Label labelSourceDir;
+        //private Label labelDestinationDir;
+        //private Label labelStatusMessage;
+        //private Microsoft.Expression.Shapes.Arc arcProgressBar;
 
         private DispatcherTimer statusMessageTimer = new DispatcherTimer();
 
-        public PictureMoverUiHandler(PictureMoverModel moverModel, CheckBox chkboxMakeCopies, CheckBox chkboxFolderStructure, CheckBox chkboxRename, Label labelSourceDir,
-                                     Label labelDestinationDir, Label labelStatusMessage, Microsoft.Expression.Shapes.Arc arcProgressBar)
+        public PictureMoverUiHandler(PictureMoverModel moverModel)
         {
             this.moverModel = moverModel;
-            this.chkboxMakeCopies = chkboxMakeCopies;
-            this.chkboxFolderStructure = chkboxFolderStructure;
-            this.chkboxRename = chkboxRename;
-            this.labelSourceDir = labelSourceDir;
-            this.labelDestinationDir = labelDestinationDir;
-            this.labelStatusMessage = labelStatusMessage;
-            this.arcProgressBar = arcProgressBar;
+            //this.chkboxMakeCopies = chkboxMakeCopies;
+            //this.chkboxFolderStructure = chkboxFolderStructure;
+            //this.chkboxRename = chkboxRename;
+            //this.labelSourceDir = labelSourceDir;
+            //this.labelDestinationDir = labelDestinationDir;
+            //this.labelStatusMessage = labelStatusMessage;
+            //this.arcProgressBar = arcProgressBar;
 
             statusMessageTimer.Tick += UpdateStatusMessage;
         }
@@ -42,15 +41,21 @@ namespace PictureMoverGui
             //{
             //    return;
             //}
-            if (!this.moverModel.AllowStartingMover)
+            if (this.moverModel.AllowStartingMover)
             {
                 this.moverModel.pictureMoverRunning = true;
 
-                bool doCopy = this.chkboxMakeCopies.IsChecked.HasValue && chkboxMakeCopies.IsChecked.Value;
-                bool doMakeStructures = this.chkboxFolderStructure.IsChecked.HasValue && chkboxFolderStructure.IsChecked.Value;
-                bool doRename = this.chkboxRename.IsChecked.HasValue && chkboxRename.IsChecked.Value;
-                string path_to_source= this.labelSourceDir.Content.ToString();
-                string path_to_destination = this.labelDestinationDir.Content.ToString();
+                //bool doCopy = this.chkboxMakeCopies.IsChecked.HasValue && chkboxMakeCopies.IsChecked.Value;
+                //bool doMakeStructures = this.chkboxFolderStructure.IsChecked.HasValue && chkboxFolderStructure.IsChecked.Value;
+                //bool doRename = this.chkboxRename.IsChecked.HasValue && chkboxRename.IsChecked.Value;
+                //string path_to_source= this.labelSourceDir.Content.ToString();
+                //string path_to_destination = this.labelDestinationDir.Content.ToString();
+
+                bool doCopy = false;
+                bool doMakeStructures = false;
+                bool doRename = false;
+                string path_to_source = "";
+                string path_to_destination = "";
 
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
@@ -60,13 +65,15 @@ namespace PictureMoverGui
 
                 worker.RunWorkerAsync();
 
-                labelStatusMessage.Content = "0%";
+                this.moverModel.statusPercentage = 0;
+                //labelStatusMessage.Content = "0%";
             }
         }
 
         private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination)
         {
-            PictureMover pictureMover = new PictureMover(path_to_source, path_to_destination, doCopy, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, doMakeStructures, doRename);
+            //PictureMover pictureMover = new PictureMover(path_to_source, path_to_destination, doCopy, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, doMakeStructures, doRename);
+            PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked);
             pictureMover.Mover();
             int nrOfErrors = pictureMover.GetNrOfErrors();
             e.Result = nrOfErrors;
@@ -74,26 +81,29 @@ namespace PictureMoverGui
 
         private void worker_PictureMoverProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            int progress = e.ProgressPercentage;
-            labelStatusMessage.Content = $"{progress}%";
-            arcProgressBar.EndAngle = progress * 3.6;
+            this.moverModel.statusPercentage = e.ProgressPercentage;
+            //int progress = e.ProgressPercentage;
+            //labelStatusMessage.Content = $"{progress}%";
+            //arcProgressBar.EndAngle = progress * 3.6;
         }
 
         private void worker_PictureMoverWorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
             int nrOfErrors = (int)e.Result;
-            if (nrOfErrors > 0)
-            {
-                labelStatusMessage.Content = App.Current.FindResource("ErrorStatusMessage").ToString() + " " + nrOfErrors;
-                labelStatusMessage.Foreground = Brushes.Red;
-            }
-            else
-            {
-                labelStatusMessage.Content = App.Current.FindResource("DoneStatusMessage");
-                labelStatusMessage.Foreground = Brushes.Green;
-            }
+            //if (nrOfErrors > 0)
+            //{
+            //    labelStatusMessage.Content = App.Current.FindResource("ErrorStatusMessage").ToString() + " " + nrOfErrors;
+            //    labelStatusMessage.Foreground = Brushes.Red;
+            //}
+            //else
+            //{
+            //    labelStatusMessage.Content = App.Current.FindResource("DoneStatusMessage");
+            //    labelStatusMessage.Foreground = Brushes.Green;
+            //}
+            this.moverModel.showDoneStatusMessage = true;
 
-            arcProgressBar.EndAngle = 0;
+            this.moverModel.statusPercentage = 0;
+            //arcProgressBar.EndAngle = 0;
 
             statusMessageTimer.Interval = TimeSpan.FromSeconds((double)App.Current.FindResource("DoneStatusMessageTime"));
             statusMessageTimer.Start();
@@ -103,8 +113,9 @@ namespace PictureMoverGui
 
         private void UpdateStatusMessage(object sender, EventArgs e)
         {
-            labelStatusMessage.Content = App.Current.FindResource("ReadyStatusMessage");
-            labelStatusMessage.Foreground = Brushes.Black;
+            this.moverModel.showDoneStatusMessage = false;
+            //labelStatusMessage.Content = App.Current.FindResource("ReadyStatusMessage");
+            //labelStatusMessage.Foreground = Brushes.Black;
 
             statusMessageTimer.Stop();
         }
