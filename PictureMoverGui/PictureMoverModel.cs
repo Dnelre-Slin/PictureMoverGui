@@ -33,6 +33,7 @@ namespace PictureMoverGui
             _labelSourceDirContent = "";
             _labelDestinationDirContent = "";
             _showDoneStatusMessage = false;
+            _lastSourceInfoGatherTime = DateTime.Now;
 
             //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
             string start_source_dir = Properties.Settings.Default.UnsortedDir;
@@ -226,6 +227,17 @@ namespace PictureMoverGui
                 OnPropertyChanged("statusPercentage");
                 OnPropertyChanged("StatusMessageContent");
                 OnPropertyChanged("ArcEndAngle");
+            }
+        }
+
+        private DateTime _lastSourceInfoGatherTime;
+        public DateTime lastSourceInfoGatherTime
+        {
+            get { return _lastSourceInfoGatherTime; }
+            set
+            {
+                _lastSourceInfoGatherTime = value;
+                OnPropertyChanged("lastSourceInfoGatherTime");
             }
         }
 

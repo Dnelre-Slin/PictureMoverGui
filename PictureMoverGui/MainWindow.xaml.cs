@@ -110,7 +110,11 @@ namespace PictureMoverGui
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            this.moverUiHandler.StartSorterButtonClick();
+            bool sourceChanged = this.directorySelector.RefreshSourceDir();
+            if (!sourceChanged)
+            {
+                this.moverUiHandler.StartSorterButtonClick();
+            }
         }
 
         private void btnStartCancel_Click(object sender, RoutedEventArgs e)

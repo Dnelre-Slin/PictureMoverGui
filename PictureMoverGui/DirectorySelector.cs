@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Text;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 
 namespace PictureMoverGui
 {
@@ -96,6 +97,25 @@ namespace PictureMoverGui
             }
         }
 
+        public bool RefreshSourceDir()
+        {
+            DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
+            if (!d.Exists)
+            {
+                System.Diagnostics.Trace.TraceWarning("Source dir no longer existed");
+                this.moverModel.labelSourceDirContent = "";
+                return true;
+            }
+            bool sourceDirChanged = DirSearcher.DirLastWriteCompare(d, this.moverModel.lastSourceInfoGatherTime);
+            if (sourceDirChanged)
+            {
+                this.StartDirGathering();
+                MessageBox.Show("The source dir has been changed. Please start again, so that the latest changes will be included", "Source dir change");
+                return true;
+            }
+            return false;
+        }
+
         //private void SetSourceDir(string path_to_dir)
         //{
         //    this.labelSourceDir.Content = path_to_dir;
@@ -135,6 +155,8 @@ namespace PictureMoverGui
             {
                 this.moverModel.gatherDirInfoRunning = true;
 
+                this.moverModel.lastSourceInfoGatherTime = DateTime.Now;
+
                 string search_dir = Properties.Settings.Default.UnsortedDir;
 
                 worker = new BackgroundWorker();
@@ -158,13 +180,13 @@ namespace PictureMoverGui
         {
             Dictionary<string, int> extensionInfo = e.Result as Dictionary<string, int>;
 
-            int nrOfFileInCurrentDir = 0;
+            int nrOfFilesInCurrentDir = 0;
             foreach (var item in extensionInfo)
             {
-                nrOfFileInCurrentDir += item.Value;
+                nrOfFilesInCurrentDir += item.Value;
             }
             this.moverModel.extensionMapInCurrentDir = extensionInfo;
-            this.moverModel.nrOfFilesInCurrentDir = nrOfFileInCurrentDir;
+            this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
 
             worker = null;
             this.moverModel.gatherDirInfoRunning = false;
