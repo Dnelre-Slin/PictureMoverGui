@@ -33,8 +33,6 @@ namespace PictureMoverGui
 
             _sourceDirSat = false;
             _destinationDirSat = false;
-            //_gatherDirInfoRunning = false;
-            //_pictureMoverRunning = false;
             _runningState = RunStates.Idle;
             _nrOfFilesInCurrentDir = 0;
             _extensionMapInCurrentDir = new Dictionary<string, int>();
@@ -43,7 +41,6 @@ namespace PictureMoverGui
             _chkboxDoRenameChecked = true;
             _labelSourceDirContent = "";
             _labelDestinationDirContent = "";
-            //_showDoneStatusMessage = false;
             _lastSourceInfoGatherTime = DateTime.Now;
 
             //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
@@ -102,7 +99,6 @@ namespace PictureMoverGui
             {
                 _runningState = value;
                 OnPropertyChanged("runningState");
-                //OnPropertyChanged("GatherInfoDirNotRunning");
                 OnPropertyChanged("AllowGatherInfoDir");
                 OnPropertyChanged("AllowSwapOperation");
                 OnPropertyChanged("AllowStartingMover");
@@ -112,35 +108,6 @@ namespace PictureMoverGui
                 OnPropertyChanged("AllowConfigationButtons");
             }
         }
-
-        //private bool _gatherDirInfoRunning;
-        //public bool gatherDirInfoRunning
-        //{
-        //    get { return _gatherDirInfoRunning; }
-        //    set
-        //    {
-        //        _gatherDirInfoRunning = value;
-        //        OnPropertyChanged("gatherDirInfoRunning");
-        //        OnPropertyChanged("GatherInfoDirNotRunning");
-        //        OnPropertyChanged("AllowSwapOperation");
-        //        OnPropertyChanged("AllowStartingMover");
-        //        OnPropertyChanged("StatusMessageContent");
-        //        OnPropertyChanged("GatherDirInfoCancelButtonVisibility");
-        //    }
-        //}
-
-        //private bool _pictureMoverRunning;
-        //public bool pictureMoverRunning
-        //{
-        //    get { return _pictureMoverRunning; }
-        //    set
-        //    {
-        //        _pictureMoverRunning = value;
-        //        OnPropertyChanged("pictureMoverRunning");
-        //        OnPropertyChanged("AllowStartingMover");
-        //        OnPropertyChanged("StatusMessageContent");
-        //    }
-        //}
 
         private int _nrOfFilesInCurrentDir;
         public int nrOfFilesInCurrentDir
@@ -247,18 +214,6 @@ namespace PictureMoverGui
             }
         }
 
-        //private bool _showDoneStatusMessage;
-        //public bool showDoneStatusMessage
-        //{
-        //    get { return _showDoneStatusMessage; }
-        //    set
-        //    {
-        //        _showDoneStatusMessage = value;
-        //        OnPropertyChanged("showDoneStatusMessage");
-        //        OnPropertyChanged("StatusMessageContent");
-        //    }
-        //}
-
         private int _statusPercentage;
         public int statusPercentage
         {
@@ -283,41 +238,10 @@ namespace PictureMoverGui
             }
         }
 
-        //private string _labelStatusMessageContent;
-        //public string labelStatusMessageContent
-        //{
-        //    get { return _labelStatusMessageContent; }
-        //    set
-        //    {
-        //        _labelStatusMessageContent = value;
-        //        OnPropertyChanged("labelStatusMessageContent");
-        //    }
-        //}
-
-        //private double _arcProgressBarAngle;
-        //public double arcProgressBarAngle
-        //{
-        //    get { return _arcProgressBarAngle; }
-        //    set
-        //    {
-        //        _arcProgressBarAngle = value;
-        //        OnPropertyChanged("arcProgressBarAngle");
-        //    }
-        //}
-
         public bool AllowSwapOperation
         {
             get { return sourceDirSat && destinationDirSat && runningState == RunStates.Idle; }
         }
-        //public bool AllowSwapOperation
-        //{
-        //    get { return sourceDirSat && destinationDirSat && GatherInfoDirNotRunning; }
-        //}
-
-        //public bool GatherInfoDirNotRunning
-        //{
-        //    get { return !gatherDirInfoRunning; }
-        //}
 
         public bool AllowGatherInfoDir
         {
@@ -328,10 +252,6 @@ namespace PictureMoverGui
         {
             get { return AllowSwapOperation; }
         }
-        //public bool AllowStartingMover
-        //{
-        //    get { return AllowSwapOperation && !pictureMoverRunning; }
-        //}
 
         public Visibility GatherDirInfoCancelButtonVisibility
         {
@@ -342,10 +262,6 @@ namespace PictureMoverGui
         {
             get { return runningState == RunStates.RunningSorter ? Visibility.Visible : Visibility.Hidden; }
         }
-        //public Visibility GatherDirInfoCancelButtonVisibility
-        //{
-        //    get { return gatherDirInfoRunning ? Visibility.Visible : Visibility.Hidden; }
-        //}
 
         public string StatusMessageContent
         {
@@ -373,29 +289,6 @@ namespace PictureMoverGui
                 }
             }
         }
-        //public string StatusMessageContent
-        //{
-        //    get
-        //    {
-        //        if (showDoneStatusMessage)
-        //        {
-        //            return App.Current.FindResource("DoneStatusMessage").ToString();
-        //        }
-        //        else if (pictureMoverRunning)
-        //        {
-        //            return $"{statusPercentage}%";
-        //        }
-        //        else if (AllowStartingMover)
-        //        {
-        //            return App.Current.FindResource("ReadyStatusMessage").ToString();
-        //        }
-        //        else
-        //        {
-        //            return App.Current.FindResource("NotReadyStatusMessage").ToString();
-        //        }
-        //    }
-        //}
-
         public double ArcEndAngle
         {
             get { return statusPercentage * 3.6; }

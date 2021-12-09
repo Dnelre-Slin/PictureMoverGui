@@ -64,7 +64,6 @@ namespace PictureMoverGui
         // Check if there are any directories in d, with a newer 'LastWriteTime' than dt.
         static public bool DirLastWriteCompare(DirectoryInfo d, DateTime dt, int max_depth = 10, int current_depth = 0)
         {
-            //Console.WriteLine($"Write time: {d.LastWriteTime}");
             if (d.LastWriteTime > dt)
             {
                 return true;

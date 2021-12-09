@@ -56,8 +56,6 @@ namespace PictureMoverGui
                 if (!d.Exists)
                 {
                     e.Result = WorkResult.DirectoryNonExistent;
-                    //System.Diagnostics.Trace.TraceWarning("Source dir no longer existed");
-                    //this.moverModel.labelSourceDirContent = "";
                 }
                 else
                 {
@@ -65,8 +63,6 @@ namespace PictureMoverGui
                     if (sourceDirChanged)
                     {
                         e.Result = WorkResult.DirectoryChanged;
-                        //this.StartDirGathering();
-                        //MessageBox.Show("The source dir has been changed. Please start again, so that the latest changes will be included", "Source dir change");
                     }
                     else
                     {
@@ -99,8 +95,6 @@ namespace PictureMoverGui
                     this.pictureMoverUiHandler.StartSorterButtonClick();
                     break;
             }
-
-            //this.moverModel.gatherDirInfoRunning = false;
         }
 
         private void DirSelectorCallback()

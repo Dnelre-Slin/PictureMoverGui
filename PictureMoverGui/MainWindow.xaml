@@ -27,7 +27,6 @@
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource UnsortedLabelContent}"/>
                 <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
                 <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnOpenFileCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
-                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom1" Content="Til ⇆ Fra" />-->
             </WrapPanel>
             <Label x:Name="UnsortedDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
@@ -42,8 +41,6 @@
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SortedLabelContent}"/>
                 <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
-                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
             </WrapPanel>
             <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
@@ -55,7 +52,6 @@
             </Grid.ColumnDefinitions>
             <Viewbox Height="80" Grid.Column="0">
                 <WrapPanel Orientation="Vertical">
-                    <!--<Button x:Name="BtnSwapToFrom" Content="To ⇆ From" />-->
                     <CheckBox x:Name="MakeCopyCheckbox" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource CopyCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
                     <CheckBox x:Name="ReverseCheckbox" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource ReverseCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
                     <CheckBox x:Name="RenameCheckbox" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource RenameCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
@@ -67,7 +63,6 @@
             </DockPanel>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>
-                <!--<Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="75%"/>-->
                 <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
             </Grid>
         </Grid>
