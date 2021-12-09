@@ -93,6 +93,10 @@ namespace PictureMoverGui
         {
             this.directorySelector.ChooseSourceButtonClick();
         }
+        private void btnChooseSourceDirCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.directorySelector.ChooseSourceButtonCancelClick();
+        }
 
         private void btnOpenFile2_Click(object sender, RoutedEventArgs e)
         {

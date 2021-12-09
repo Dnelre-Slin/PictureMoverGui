@@ -54,13 +54,15 @@ namespace PictureMoverGui
 
             this.current_progress = 0;
 
+            DirSearcher dirSearcher = new DirSearcher();
+
             if (this.doStructured)
             {
-                DirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
+                dirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
             }
             else
             {
-                DirSearcher.DirSearch(d, DoNormalCopyMoveFile);
+                dirSearcher.DirSearch(d, DoNormalCopyMoveFile);
             }
         }
 

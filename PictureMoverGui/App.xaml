@@ -20,7 +20,8 @@
         <System:String x:Key="UnsortedLabelContent">Usortert mappe:</System:String>
         <System:String x:Key="SortedLabelContent">Sortert mappe:</System:String>
         <System:String x:Key="FolderButtonContent">Velg mappe</System:String>
-        <System:String x:Key="SwapToFromContent">Til ⇆ Fra</System:String>
+        <System:String x:Key="SwapToFromContent">🗘</System:String>
+        <System:String x:Key="CancelContent">🗙</System:String>
         <System:String x:Key="DefaultEmptyPath">&lt; Ikke satt &gt;</System:String>
         <System:String x:Key="CopyCheckboxDescription">Lag kopier</System:String>
         <System:String x:Key="ReverseCheckboxDescription">Lag mappestruktur</System:String>

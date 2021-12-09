@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 
@@ -9,17 +10,23 @@ namespace PictureMoverGui
     {
         private string search_dir;
         private Dictionary<string, int> extensionMap;
+        private BackgroundWorker sender_worker;
 
-        public DirectoryInfoGatherer(string search_dir)
+        private DirSearcher dirSearcher;
+
+        public DirectoryInfoGatherer(string search_dir, BackgroundWorker sender_worker)
         {
             this.search_dir = search_dir;
             this.extensionMap = new Dictionary<string, int>();
+            this.sender_worker = sender_worker;
         }
 
         public Dictionary<string, int> GatherInfo()
         {
+            this.dirSearcher = new DirSearcher();
+
             DirectoryInfo d = new DirectoryInfo(this.search_dir);
-            DirSearcher.DirSearch(d, GetExtension);
+            this.dirSearcher.DirSearch(d, GetExtension);
 
             return this.extensionMap;
         }
@@ -34,6 +41,10 @@ namespace PictureMoverGui
             else
             {
                 extensionMap[ext] = 1;
+            }
+            if (sender_worker.CancellationPending)
+            {
+                this.dirSearcher.cancel = true;
             }
         }
     }

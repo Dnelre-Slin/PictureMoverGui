@@ -13,11 +13,14 @@ namespace PictureMoverGui
         private Label labelSourceDir;
         private Label labelDestinationDir;
 
+        private BackgroundWorker worker;
+
         public DirectorySelector(PictureMoverModel moverModel, Label labelSourceDir, Label labelDestinationDir)
         {
             this.moverModel = moverModel;
             this.labelSourceDir = labelSourceDir;
             this.labelDestinationDir = labelDestinationDir;
+            this.worker = null;
         }
 
         public void StartUp()
@@ -41,6 +44,15 @@ namespace PictureMoverGui
             if (result.ToString() != string.Empty && openFileDlg.SelectedPath != string.Empty)
             {
                 this.SetSourceDir(openFileDlg.SelectedPath);
+            }
+        }
+
+        public void ChooseSourceButtonCancelClick()
+        {
+            if (this.worker != null)
+            {
+                this.worker.CancelAsync();
+                this.UnsetSourceDir();
             }
         }
 
@@ -74,12 +86,28 @@ namespace PictureMoverGui
             this.StartDirGathering();
         }
 
+        private void UnsetSourceDir()
+        {
+            this.labelSourceDir.Content = App.Current.FindResource("DefaultEmptyPath");
+            Properties.Settings.Default.UnsortedDir = "";
+            Properties.Settings.Default.Save();
+            this.moverModel.sourceDirSat = false;
+        }
+
         private void SetDestinationDir(string path_to_dir)
         {
             this.labelDestinationDir.Content = path_to_dir;
             Properties.Settings.Default.SortedDir = path_to_dir;
             Properties.Settings.Default.Save();
             this.moverModel.destinationDirSat = true;
+        }
+
+        private void UnsetDestinationDir()
+        {
+            this.labelDestinationDir.Content = App.Current.FindResource("DefaultEmptyPath");
+            Properties.Settings.Default.SortedDir = "";
+            Properties.Settings.Default.Save();
+            this.moverModel.destinationDirSat = false;
         }
 
         private void StartDirGathering()
@@ -90,7 +118,8 @@ namespace PictureMoverGui
 
                 string search_dir = Properties.Settings.Default.UnsortedDir;
 
-                BackgroundWorker worker = new BackgroundWorker();
+                worker = new BackgroundWorker();
+                worker.WorkerSupportsCancellation = true;
                 //worker.WorkerReportsProgress = true;
                 worker.DoWork += (obj, e) => worker_DirGathererDoWork(obj, e, search_dir);
                 //worker.ProgressChanged += worker_DirGathererProgressChanged;
@@ -101,7 +130,7 @@ namespace PictureMoverGui
 
         private void worker_DirGathererDoWork(object sender, DoWorkEventArgs e, string search_dir)
         {
-            DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir);
+            DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
             Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
             e.Result = extensionInfo;
         }
@@ -117,7 +146,8 @@ namespace PictureMoverGui
             }
             this.moverModel.extensionMapInCurrentDir = extensionInfo;
             this.moverModel.nrOfFilesInCurrentDir = nrOfFileInCurrentDir;
-            
+
+            worker = null;
             this.moverModel.gatherDirInfoRunning = false;
         }
     }

@@ -7,29 +7,34 @@
         xmlns:local="clr-namespace:PictureMoverGui"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="0 20" ShowGridLines="True">
+        Title="MainWindow" Height="500" Width="800" MinHeight="500" MinWidth="800">
+    <Grid Margin="0 20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="10">
+        <Grid Grid.Row="0" Margin="10,10,10,10">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource UnsortedLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding GatherInfoDirNotRunning}"/>
+                <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding GatherInfoDirNotRunning}"/>
+                <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnOpenFileCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom1" Content="Til ⇆ Fra" />-->
             </WrapPanel>
             <Label x:Name="UnsortedDirLabel" FontSize="20" Background="GhostWhite" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <Grid Grid.Row="1" Margin="10">
+        <Grid Grid.Row="1">
+            <Button FontSize="40" Padding="-40" Width="40" Height="40" x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />
+        </Grid>
+        <Grid Grid.Row="2" Margin="10,10,10,10">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -38,11 +43,11 @@
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SortedLabelContent}"/>
                 <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
-                <Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />
+                <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
             </WrapPanel>
             <Label x:Name="SortedDirLabel" Background="GhostWhite" FontSize="20" Content="{DynamicResource DefaultEmptyPath}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <Grid Grid.Row="2" Margin="20">
+        <Grid Grid.Row="4" Margin="20,20,20,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -56,7 +61,10 @@
                     <CheckBox x:Name="RenameCheckbox" IsChecked="True" Content="{DynamicResource RenameCheckboxDescription}"/>
                 </WrapPanel>
             </Viewbox>
-            <Button Grid.Column="1" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
+            <DockPanel Width="250" Grid.Column="1">
+                <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
+                <Button Visibility="Visible" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Content="{DynamicResource CancelContent}" IsEnabled="{Binding AllowStartingMover}" />
+            </DockPanel>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{DynamicResource ReadyStatusMessage}"/>
                 <!--<Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="75%"/>-->
