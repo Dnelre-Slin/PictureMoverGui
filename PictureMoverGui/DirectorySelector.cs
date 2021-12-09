@@ -66,7 +66,7 @@ namespace PictureMoverGui
             if (this.worker != null)
             {
                 this.worker.CancelAsync();
-                this.moverModel.labelSourceDirContent = "";
+                //this.moverModel.labelSourceDirContent = "";
                 //this.UnsetSourceDir();
             }
         }
@@ -97,23 +97,24 @@ namespace PictureMoverGui
             }
         }
 
-        public bool RefreshSourceDir()
+        public void RefreshSourceDir(Action callback = null)
         {
-            DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
-            if (!d.Exists)
-            {
-                System.Diagnostics.Trace.TraceWarning("Source dir no longer existed");
-                this.moverModel.labelSourceDirContent = "";
-                return true;
-            }
-            bool sourceDirChanged = DirSearcher.DirLastWriteCompare(d, this.moverModel.lastSourceInfoGatherTime);
-            if (sourceDirChanged)
-            {
-                this.StartDirGathering();
-                MessageBox.Show("The source dir has been changed. Please start again, so that the latest changes will be included", "Source dir change");
-                return true;
-            }
-            return false;
+            this.StartDirGathering(callback);
+            //DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
+            //if (!d.Exists)
+            //{
+            //    System.Diagnostics.Trace.TraceWarning("Source dir no longer existed");
+            //    this.moverModel.labelSourceDirContent = "";
+            //    return true;
+            //}
+            //bool sourceDirChanged = DirSearcher.DirLastWriteCompare(d, this.moverModel.lastSourceInfoGatherTime);
+            //if (sourceDirChanged)
+            //{
+            //    this.StartDirGathering();
+            //    MessageBox.Show("The source dir has been changed. Please start again, so that the latest changes will be included", "Source dir change");
+            //    return true;
+            //}
+            //return false;
         }
 
         //private void SetSourceDir(string path_to_dir)
@@ -149,11 +150,11 @@ namespace PictureMoverGui
         //    this.moverModel.destinationDirSat = false;
         //}
 
-        private void StartDirGathering()
+        private void StartDirGathering(Action callback = null)
         {
-            if (this.moverModel.sourceDirSat && this.moverModel.GatherInfoDirNotRunning)
+            if (this.moverModel.sourceDirSat && this.moverModel.runningState == PictureMoverModel.RunStates.Idle)
             {
-                this.moverModel.gatherDirInfoRunning = true;
+                this.moverModel.runningState = PictureMoverModel.RunStates.DirectoryGathering;
 
                 this.moverModel.lastSourceInfoGatherTime = DateTime.Now;
 
@@ -164,32 +165,59 @@ namespace PictureMoverGui
                 //worker.WorkerReportsProgress = true;
                 worker.DoWork += (obj, e) => worker_DirGathererDoWork(obj, e, search_dir);
                 //worker.ProgressChanged += worker_DirGathererProgressChanged;
-                worker.RunWorkerCompleted += worker_DirGathererWorkDone;
+                worker.RunWorkerCompleted += (obj, e) => worker_DirGathererWorkDone(obj, e, callback);
                 worker.RunWorkerAsync();
             }
         }
 
         private void worker_DirGathererDoWork(object sender, DoWorkEventArgs e, string search_dir)
         {
-            DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
-            Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
-            e.Result = extensionInfo;
+            //System.Threading.Thread.Sleep(4000);
+            //e.Result = new Dictionary<string, int>();
+
+            try
+            {
+                DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
+                Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
+                e.Result = extensionInfo;
+            }
+            catch (Exception err)
+            {
+                System.Diagnostics.Trace.TraceError($"DirectorySelector crashed unexpectedly. Message: {err.Message}");
+            }
         }
 
-        private void worker_DirGathererWorkDone(object sender, RunWorkerCompletedEventArgs e)
+        private void worker_DirGathererWorkDone(object sender, RunWorkerCompletedEventArgs e, Action callback)
         {
             Dictionary<string, int> extensionInfo = e.Result as Dictionary<string, int>;
 
-            int nrOfFilesInCurrentDir = 0;
-            foreach (var item in extensionInfo)
+            if (e.Cancelled || extensionInfo == null)
             {
-                nrOfFilesInCurrentDir += item.Value;
-            }
-            this.moverModel.extensionMapInCurrentDir = extensionInfo;
-            this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
+                this.moverModel.extensionMapInCurrentDir = new Dictionary<string, int>();
+                this.moverModel.nrOfFilesInCurrentDir = 0;
+                this.moverModel.labelSourceDirContent = "";
 
-            worker = null;
-            this.moverModel.gatherDirInfoRunning = false;
+                worker = null;
+                this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+            }
+            else
+            {
+                int nrOfFilesInCurrentDir = 0;
+                foreach (var item in extensionInfo)
+                {
+                    nrOfFilesInCurrentDir += item.Value;
+                }
+                this.moverModel.extensionMapInCurrentDir = extensionInfo;
+                this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
+
+                worker = null;
+                this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+
+                if (callback != null)
+                {
+                    callback();
+                }
+            }
         }
     }
 }

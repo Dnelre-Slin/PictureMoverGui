@@ -33,6 +33,7 @@ namespace PictureMoverGui
         PictureMoverModel moverModel;
         DirectorySelector directorySelector;
         PictureMoverUiHandler moverUiHandler;
+        DirectoryValidator directoryValidator;
 
         //DispatcherTimer statusMessageTimer = new DispatcherTimer();
         //int nrOfErrors = 0;
@@ -69,6 +70,8 @@ namespace PictureMoverGui
             //this.directorySelector.StartUp();
 
             this.moverUiHandler = new PictureMoverUiHandler(this.moverModel);
+
+            this.directoryValidator = new DirectoryValidator(this.moverModel, this.directorySelector, this.moverUiHandler);
             //UnsortedDirLabel.Content = Properties.Settings.Default.UnsortedDir;
             //SortedDirLabel.Content = Properties.Settings.Default.SortedDir;
             //string start_source_dir = Properties.Settings.Default.UnsortedDir;
@@ -91,36 +94,80 @@ namespace PictureMoverGui
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
-            this.directorySelector.ChooseSourceButtonClick();
+            try
+            {
+                this.directorySelector.ChooseSourceButtonClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
         private void btnChooseSourceDirCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.directorySelector.ChooseSourceButtonCancelClick();
+            try
+            {
+                this.directorySelector.ChooseSourceButtonCancelClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         private void btnOpenFile2_Click(object sender, RoutedEventArgs e)
         {
-            this.directorySelector.ChooseDestinationButtonClick();
+            try
+            {
+                this.directorySelector.ChooseDestinationButtonClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         private void btnSwapToFrom_Click(object sender, RoutedEventArgs e)
         {
-            this.directorySelector.SwapSourceDestinationButtonClick();
+            try
+            {
+                this.directorySelector.SwapSourceDestinationButtonClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            bool sourceChanged = this.directorySelector.RefreshSourceDir();
-            if (!sourceChanged)
+            try
             {
-                this.moverUiHandler.StartSorterButtonClick();
+                this.directoryValidator.Run();
             }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+            //this.moverUiHandler.StartSorterButtonClick();
+            //bool sourceChanged = this.directorySelector.RefreshSourceDir();
+            //if (!sourceChanged)
+            //{
+            //}
         }
 
         private void btnStartCancel_Click(object sender, RoutedEventArgs e)
         {
             //Console.WriteLine(this.moverModel.chkboxDoCopyChecked);
-            Trace.TraceInformation(this.moverModel.chkboxDoCopyChecked.ToString());
+            //Trace.TraceInformation(this.moverModel.chkboxDoCopyChecked.ToString());
+            try
+            {
+                this.moverUiHandler.StartSorterButtonCancelClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         //private void btnOpenFile_Click(object sender, RoutedEventArgs e)

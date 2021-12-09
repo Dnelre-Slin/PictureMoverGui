@@ -24,6 +24,8 @@ namespace PictureMoverGui
 
         Action<FileInfo, string, string> copyMoveAction;
 
+        DirSearcher dirSearcher;
+
         public PictureMover(string path_to_source, string path_to_destination, bool doCopy, BackgroundWorker worker_sender, int total_files, bool doStructured, bool doRename)
         {
             this.path_to_source = path_to_source;
@@ -36,6 +38,7 @@ namespace PictureMoverGui
             this.doStructured = doStructured;
             this.doRename = doRename;
             //this.errorLogMessage = "";
+            dirSearcher = null;
 
             if (doCopy)
             {
@@ -54,7 +57,7 @@ namespace PictureMoverGui
 
             this.current_progress = 0;
 
-            DirSearcher dirSearcher = new DirSearcher();
+            dirSearcher = new DirSearcher();
 
             if (this.doStructured)
             {
@@ -135,6 +138,12 @@ namespace PictureMoverGui
         {
             try
             {
+                if (worker_sender.CancellationPending)
+                {
+                    this.dirSearcher.cancel = true;
+                    return;
+                }
+
                 this.copyMoveAction(file, path_to_dir, new_filename);
 
                 this.current_progress++;

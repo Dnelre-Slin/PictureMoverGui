@@ -31,6 +31,8 @@
         <System:String x:Key="NotReadyStatusMessage">Ikke klar</System:String>
         <System:String x:Key="DoneStatusMessage">Ferdig</System:String>
         <System:String x:Key="ErrorStatusMessage">Antall feil:</System:String>
+        <System:String x:Key="DirValidateStatusMessage">Validerer...</System:String>
+        <System:String x:Key="DirGatherStatusMessage">Prosesserer...</System:String>
         
         <System:Double x:Key="DoneStatusMessageTime">3</System:Double>
     </Application.Resources>

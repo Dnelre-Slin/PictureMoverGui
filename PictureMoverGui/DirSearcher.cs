@@ -21,24 +21,31 @@ namespace PictureMoverGui
 
         public void DirSearch(DirectoryInfo d, Action<DirectoryInfo, FileInfo> callback)
         {
-            foreach (FileInfo file in d.GetFiles())
+            try
             {
-                if (this.cancel)
+                foreach (FileInfo file in d.GetFiles())
                 {
-                    break;
+                    if (this.cancel)
+                    {
+                        return;
+                    }
+                    //if (file.Extension != ".ini" && file.Extension != ".db")
+                    {
+                        callback(d, file); // Callback will return false, if the dirsearch should break.
+                    }
                 }
-                //if (file.Extension != ".ini" && file.Extension != ".db")
+                foreach (DirectoryInfo subD in d.GetDirectories())
                 {
-                    callback(d, file); // Callback will return false, if the dirsearch should break.
+                    if (this.cancel)
+                    {
+                        return;
+                    }
+                    DirSearch(subD, callback);
                 }
             }
-            foreach (DirectoryInfo subD in d.GetDirectories())
+            catch (UnauthorizedAccessException e)
             {
-                if (this.cancel)
-                {
-                    break;
-                }
-                DirSearch(subD, callback);
+                System.Diagnostics.Trace.TraceError(e.Message);
             }
         }
 

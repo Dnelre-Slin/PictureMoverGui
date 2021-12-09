@@ -9,6 +9,14 @@ namespace PictureMoverGui
 {
     class PictureMoverModel : INotifyPropertyChanged
     {
+        public enum RunStates
+        {
+            DirectoryValidation,
+            DirectoryGathering,
+            RunningSorter,
+            Idle
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)
         {
@@ -21,10 +29,13 @@ namespace PictureMoverGui
 
         public PictureMoverModel()
         {
+            _disableAllConfigDuringRun = true;
+
             _sourceDirSat = false;
             _destinationDirSat = false;
-            _gatherDirInfoRunning = false;
-            _pictureMoverRunning = false;
+            //_gatherDirInfoRunning = false;
+            //_pictureMoverRunning = false;
+            _runningState = RunStates.Idle;
             _nrOfFilesInCurrentDir = 0;
             _extensionMapInCurrentDir = new Dictionary<string, int>();
             _chkboxDoCopyChecked = false;
@@ -32,7 +43,7 @@ namespace PictureMoverGui
             _chkboxDoRenameChecked = true;
             _labelSourceDirContent = "";
             _labelDestinationDirContent = "";
-            _showDoneStatusMessage = false;
+            //_showDoneStatusMessage = false;
             _lastSourceInfoGatherTime = DateTime.Now;
 
             //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
@@ -42,6 +53,18 @@ namespace PictureMoverGui
             labelDestinationDirContent = Properties.Settings.Default.SortedDir;
         }
 
+
+        private bool _disableAllConfigDuringRun;
+        public bool disableAllConfigDuringRun
+        {
+            get { return _disableAllConfigDuringRun; }
+            private set
+            {
+                _disableAllConfigDuringRun = value;
+                OnPropertyChanged("disableAllConfigDuringRun");
+                OnPropertyChanged("AllowConfigationButtons");
+            }
+        }
 
         private bool _sourceDirSat;
         public bool sourceDirSat
@@ -71,34 +94,53 @@ namespace PictureMoverGui
             }
         }
 
-        private bool _gatherDirInfoRunning;
-        public bool gatherDirInfoRunning
+        private RunStates _runningState;
+        public RunStates runningState
         {
-            get { return _gatherDirInfoRunning; }
+            get { return _runningState; }
             set
             {
-                _gatherDirInfoRunning = value;
-                OnPropertyChanged("gatherDirInfoRunning");
-                OnPropertyChanged("GatherInfoDirNotRunning");
+                _runningState = value;
+                OnPropertyChanged("runningState");
+                //OnPropertyChanged("GatherInfoDirNotRunning");
+                OnPropertyChanged("AllowGatherInfoDir");
                 OnPropertyChanged("AllowSwapOperation");
                 OnPropertyChanged("AllowStartingMover");
                 OnPropertyChanged("StatusMessageContent");
                 OnPropertyChanged("GatherDirInfoCancelButtonVisibility");
+                OnPropertyChanged("StartSorterCancelButtonVisibility");
+                OnPropertyChanged("AllowConfigationButtons");
             }
         }
 
-        private bool _pictureMoverRunning;
-        public bool pictureMoverRunning
-        {
-            get { return _pictureMoverRunning; }
-            set
-            {
-                _pictureMoverRunning = value;
-                OnPropertyChanged("pictureMoverRunning");
-                OnPropertyChanged("AllowStartingMover");
-                OnPropertyChanged("StatusMessageContent");
-            }
-        }
+        //private bool _gatherDirInfoRunning;
+        //public bool gatherDirInfoRunning
+        //{
+        //    get { return _gatherDirInfoRunning; }
+        //    set
+        //    {
+        //        _gatherDirInfoRunning = value;
+        //        OnPropertyChanged("gatherDirInfoRunning");
+        //        OnPropertyChanged("GatherInfoDirNotRunning");
+        //        OnPropertyChanged("AllowSwapOperation");
+        //        OnPropertyChanged("AllowStartingMover");
+        //        OnPropertyChanged("StatusMessageContent");
+        //        OnPropertyChanged("GatherDirInfoCancelButtonVisibility");
+        //    }
+        //}
+
+        //private bool _pictureMoverRunning;
+        //public bool pictureMoverRunning
+        //{
+        //    get { return _pictureMoverRunning; }
+        //    set
+        //    {
+        //        _pictureMoverRunning = value;
+        //        OnPropertyChanged("pictureMoverRunning");
+        //        OnPropertyChanged("AllowStartingMover");
+        //        OnPropertyChanged("StatusMessageContent");
+        //    }
+        //}
 
         private int _nrOfFilesInCurrentDir;
         public int nrOfFilesInCurrentDir
@@ -205,17 +247,17 @@ namespace PictureMoverGui
             }
         }
 
-        private bool _showDoneStatusMessage;
-        public bool showDoneStatusMessage
-        {
-            get { return _showDoneStatusMessage; }
-            set
-            {
-                _showDoneStatusMessage = value;
-                OnPropertyChanged("showDoneStatusMessage");
-                OnPropertyChanged("StatusMessageContent");
-            }
-        }
+        //private bool _showDoneStatusMessage;
+        //public bool showDoneStatusMessage
+        //{
+        //    get { return _showDoneStatusMessage; }
+        //    set
+        //    {
+        //        _showDoneStatusMessage = value;
+        //        OnPropertyChanged("showDoneStatusMessage");
+        //        OnPropertyChanged("StatusMessageContent");
+        //    }
+        //}
 
         private int _statusPercentage;
         public int statusPercentage
@@ -265,50 +307,103 @@ namespace PictureMoverGui
 
         public bool AllowSwapOperation
         {
-            get { return sourceDirSat && destinationDirSat && GatherInfoDirNotRunning; }
+            get { return sourceDirSat && destinationDirSat && runningState == RunStates.Idle; }
         }
+        //public bool AllowSwapOperation
+        //{
+        //    get { return sourceDirSat && destinationDirSat && GatherInfoDirNotRunning; }
+        //}
 
-        public bool GatherInfoDirNotRunning
+        //public bool GatherInfoDirNotRunning
+        //{
+        //    get { return !gatherDirInfoRunning; }
+        //}
+
+        public bool AllowGatherInfoDir
         {
-            get { return !gatherDirInfoRunning; }
+            get { return runningState == RunStates.Idle; }
         }
 
         public bool AllowStartingMover
         {
-            get { return AllowSwapOperation && !pictureMoverRunning; }
+            get { return AllowSwapOperation; }
         }
+        //public bool AllowStartingMover
+        //{
+        //    get { return AllowSwapOperation && !pictureMoverRunning; }
+        //}
 
         public Visibility GatherDirInfoCancelButtonVisibility
         {
-            get { return gatherDirInfoRunning ? Visibility.Visible : Visibility.Hidden; }
+            get { return runningState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden; }
+        }        
+        
+        public Visibility StartSorterCancelButtonVisibility
+        {
+            get { return runningState == RunStates.RunningSorter ? Visibility.Visible : Visibility.Hidden; }
         }
+        //public Visibility GatherDirInfoCancelButtonVisibility
+        //{
+        //    get { return gatherDirInfoRunning ? Visibility.Visible : Visibility.Hidden; }
+        //}
 
         public string StatusMessageContent
         {
             get
             {
-                if (showDoneStatusMessage)
+                switch(runningState)
                 {
-                    return App.Current.FindResource("DoneStatusMessage").ToString();
-                }
-                else if (pictureMoverRunning)
-                {
-                    return $"{statusPercentage}%";
-                }
-                else if (AllowStartingMover)
-                {
-                    return App.Current.FindResource("ReadyStatusMessage").ToString();
-                }
-                else
-                {
-                    return App.Current.FindResource("NotReadyStatusMessage").ToString();
+                    case RunStates.DirectoryValidation:
+                        return App.Current.FindResource("DirValidateStatusMessage").ToString();
+                    case RunStates.DirectoryGathering:
+                        return App.Current.FindResource("DirGatherStatusMessage").ToString();
+                    case RunStates.RunningSorter:
+                        return $"{statusPercentage}%";
+                    case RunStates.Idle:
+                        if (AllowStartingMover)
+                        {
+                            return App.Current.FindResource("ReadyStatusMessage").ToString();
+                        }
+                        else
+                        {
+                            return App.Current.FindResource("NotReadyStatusMessage").ToString();
+                        }
+                    default:
+                        return "Error";
                 }
             }
         }
+        //public string StatusMessageContent
+        //{
+        //    get
+        //    {
+        //        if (showDoneStatusMessage)
+        //        {
+        //            return App.Current.FindResource("DoneStatusMessage").ToString();
+        //        }
+        //        else if (pictureMoverRunning)
+        //        {
+        //            return $"{statusPercentage}%";
+        //        }
+        //        else if (AllowStartingMover)
+        //        {
+        //            return App.Current.FindResource("ReadyStatusMessage").ToString();
+        //        }
+        //        else
+        //        {
+        //            return App.Current.FindResource("NotReadyStatusMessage").ToString();
+        //        }
+        //    }
+        //}
 
         public double ArcEndAngle
         {
             get { return statusPercentage * 3.6; }
+        }
+
+        public bool AllowConfigationButtons
+        {
+            get { return !disableAllConfigDuringRun || runningState != RunStates.RunningSorter; }
         }
     }
 }

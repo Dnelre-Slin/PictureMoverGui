@@ -25,7 +25,7 @@
             </Grid.RowDefinitions>
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource UnsortedLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding GatherInfoDirNotRunning}"/>
+                <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnOpenFile" Click="btnOpenFile_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
                 <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnOpenFileCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom1" Content="Til ⇆ Fra" />-->
             </WrapPanel>
@@ -41,7 +41,7 @@
             </Grid.RowDefinitions>
             <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
                 <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SortedLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}"/>
+                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnOpenFile2" Click="btnOpenFile2_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
                 <!--<Button Width="100" FontSize="20"  x:Name="BtnSwapToFrom2" Click="btnSwapToFrom_Click" Content="{DynamicResource SwapToFromContent}" IsEnabled="{Binding AllowSwapOperation}" />-->
             </WrapPanel>
@@ -56,14 +56,14 @@
             <Viewbox Height="80" Grid.Column="0">
                 <WrapPanel Orientation="Vertical">
                     <!--<Button x:Name="BtnSwapToFrom" Content="To ⇆ From" />-->
-                    <CheckBox x:Name="MakeCopyCheckbox" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource CopyCheckboxDescription}"/>
-                    <CheckBox x:Name="ReverseCheckbox" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource ReverseCheckboxDescription}"/>
-                    <CheckBox x:Name="RenameCheckbox" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource RenameCheckboxDescription}"/>
+                    <CheckBox x:Name="MakeCopyCheckbox" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource CopyCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                    <CheckBox x:Name="ReverseCheckbox" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource ReverseCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                    <CheckBox x:Name="RenameCheckbox" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource RenameCheckboxDescription}" IsEnabled="{Binding AllowConfigationButtons}"/>
                 </WrapPanel>
             </Viewbox>
             <DockPanel Width="250" Grid.Column="1">
                 <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
-                <Button Visibility="Visible" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" IsEnabled="{Binding AllowStartingMover}" />
+                <Button Visibility="{Binding StartSorterCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" />
             </DockPanel>
             <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>

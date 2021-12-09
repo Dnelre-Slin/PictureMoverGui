@@ -19,7 +19,9 @@ namespace PictureMoverGui
         //private Label labelStatusMessage;
         //private Microsoft.Expression.Shapes.Arc arcProgressBar;
 
-        private DispatcherTimer statusMessageTimer = new DispatcherTimer();
+        //private DispatcherTimer statusMessageTimer = new DispatcherTimer();
+
+        private BackgroundWorker worker;
 
         public PictureMoverUiHandler(PictureMoverModel moverModel)
         {
@@ -31,8 +33,9 @@ namespace PictureMoverGui
             //this.labelDestinationDir = labelDestinationDir;
             //this.labelStatusMessage = labelStatusMessage;
             //this.arcProgressBar = arcProgressBar;
+            this.worker = null;
 
-            statusMessageTimer.Tick += UpdateStatusMessage;
+            //statusMessageTimer.Tick += UpdateStatusMessage;
         }
 
         public void StartSorterButtonClick()
@@ -43,7 +46,7 @@ namespace PictureMoverGui
             //}
             if (this.moverModel.AllowStartingMover)
             {
-                this.moverModel.pictureMoverRunning = true;
+                this.moverModel.runningState = PictureMoverModel.RunStates.RunningSorter;
 
                 //bool doCopy = this.chkboxMakeCopies.IsChecked.HasValue && chkboxMakeCopies.IsChecked.Value;
                 //bool doMakeStructures = this.chkboxFolderStructure.IsChecked.HasValue && chkboxFolderStructure.IsChecked.Value;
@@ -57,8 +60,9 @@ namespace PictureMoverGui
                 string path_to_source = "";
                 string path_to_destination = "";
 
-                BackgroundWorker worker = new BackgroundWorker();
+                worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
+                worker.WorkerSupportsCancellation = true;
                 worker.DoWork += (obj, e) => worker_PictureMoverDoWork(obj, e, doCopy, doMakeStructures, doRename, path_to_source, path_to_destination);
                 worker.ProgressChanged += worker_PictureMoverProgressChanged;
                 worker.RunWorkerCompleted += worker_PictureMoverWorkDone;
@@ -70,13 +74,34 @@ namespace PictureMoverGui
             }
         }
 
+        public void StartSorterButtonCancelClick()
+        {
+            if (this.worker != null)
+            {
+                this.worker.CancelAsync();
+                //this.moverModel.labelSourceDirContent = "";
+                //this.UnsetSourceDir();
+            }
+        }
+
         private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination)
         {
+            //System.Threading.Thread.Sleep(4000);
+            //e.Result = 0;
+
             //PictureMover pictureMover = new PictureMover(path_to_source, path_to_destination, doCopy, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, doMakeStructures, doRename);
-            PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked);
-            pictureMover.Mover();
-            int nrOfErrors = pictureMover.GetNrOfErrors();
-            e.Result = nrOfErrors;
+
+            try
+            {
+                PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked);
+                pictureMover.Mover();
+                int nrOfErrors = pictureMover.GetNrOfErrors();
+                e.Result = nrOfErrors;
+            }
+            catch (Exception err)
+            {
+                System.Diagnostics.Trace.TraceError(err.Message);
+            }
         }
 
         private void worker_PictureMoverProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -100,24 +125,25 @@ namespace PictureMoverGui
             //    labelStatusMessage.Content = App.Current.FindResource("DoneStatusMessage");
             //    labelStatusMessage.Foreground = Brushes.Green;
             //}
-            this.moverModel.showDoneStatusMessage = true;
+            //this.moverModel.showDoneStatusMessage = true;
 
             this.moverModel.statusPercentage = 0;
             //arcProgressBar.EndAngle = 0;
 
-            statusMessageTimer.Interval = TimeSpan.FromSeconds((double)App.Current.FindResource("DoneStatusMessageTime"));
-            statusMessageTimer.Start();
+            //statusMessageTimer.Interval = TimeSpan.FromSeconds((double)App.Current.FindResource("DoneStatusMessageTime"));
+            //statusMessageTimer.Start();
 
-            this.moverModel.pictureMoverRunning = false;
+            worker = null;
+            this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
         }
 
-        private void UpdateStatusMessage(object sender, EventArgs e)
-        {
-            this.moverModel.showDoneStatusMessage = false;
-            //labelStatusMessage.Content = App.Current.FindResource("ReadyStatusMessage");
-            //labelStatusMessage.Foreground = Brushes.Black;
+        //private void UpdateStatusMessage(object sender, EventArgs e)
+        //{
+        //    this.moverModel.showDoneStatusMessage = false;
+        //    //labelStatusMessage.Content = App.Current.FindResource("ReadyStatusMessage");
+        //    //labelStatusMessage.Foreground = Brushes.Black;
 
-            statusMessageTimer.Stop();
-        }
+        //    statusMessageTimer.Stop();
+        //}
     }
 }

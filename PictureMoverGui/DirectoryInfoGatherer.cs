@@ -33,6 +33,12 @@ namespace PictureMoverGui
 
         private void GetExtension(DirectoryInfo d, FileInfo file)
         {
+            if (sender_worker.CancellationPending)
+            {
+                this.dirSearcher.cancel = true;
+                return;
+            }
+
             string ext = file.Extension.ToLower();
             if (extensionMap.ContainsKey(ext))
             {
@@ -41,10 +47,6 @@ namespace PictureMoverGui
             else
             {
                 extensionMap[ext] = 1;
-            }
-            if (sender_worker.CancellationPending)
-            {
-                this.dirSearcher.cancel = true;
             }
         }
     }
