@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace PictureMoverGui
 {
-    class PictureMoverModel : INotifyPropertyChanged
+    public class PictureMoverModel : INotifyPropertyChanged
     {
         public enum RunStates
         {
@@ -15,6 +15,19 @@ namespace PictureMoverGui
             DirectoryGathering,
             RunningSorter,
             Idle
+        }
+
+        public class ExtensionInfo
+        {
+            public ExtensionInfo(string Name, int Amount, bool Active)
+            {
+                this.Name = Name;
+                this.Amount = Amount;
+                this.Active = Active;
+            }
+            public string Name { get; set; }
+            public int Amount { get; set; }
+            public bool Active { get; set; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -35,7 +48,8 @@ namespace PictureMoverGui
             _destinationDirSat = false;
             _runningState = RunStates.Idle;
             _nrOfFilesInCurrentDir = 0;
-            _extensionMapInCurrentDir = new Dictionary<string, int>();
+            //_extensionMapInCurrentDir = new Dictionary<string, int>();
+            _extensionInfoList = new List<ExtensionInfo>();
             _chkboxDoCopyChecked = false;
             _chkboxDoStructuredChecked = true;
             _chkboxDoRenameChecked = true;
@@ -113,23 +127,59 @@ namespace PictureMoverGui
         public int nrOfFilesInCurrentDir
         {
             get { return _nrOfFilesInCurrentDir; }
-            set
+            private set
             {
                 _nrOfFilesInCurrentDir = value;
                 OnPropertyChanged("nrOfFilesInCurrentDir");
             }
         }
 
-        private Dictionary<string, int> _extensionMapInCurrentDir;
-        public Dictionary<string, int> extensionMapInCurrentDir
+        private List<string> _validExtensionsInCurrentDir;
+        public List<string> validExtensionsInCurrentDir
         {
-            get { return _extensionMapInCurrentDir; }
-            set
+            get { return _validExtensionsInCurrentDir; }
+            private set
             {
-                _extensionMapInCurrentDir = value;
-                OnPropertyChanged("extensionMapInCurrentDir");
+                _validExtensionsInCurrentDir = value;
+                OnPropertyChanged("validExtensionsInCurrentDir");
             }
         }
+
+        private List<ExtensionInfo> _extensionInfoList;
+        public List<ExtensionInfo> extensionInfoList
+        {
+            get { return _extensionInfoList; }
+            set
+            {
+                _extensionInfoList = value;
+                int nrOfFiles = 0;
+                List<string> validExtension = new List<string>();
+                foreach (ExtensionInfo info in _extensionInfoList)
+                {
+                    if (info.Active) // Count files that have extensions that are 'Active'
+                    {
+                        nrOfFiles += info.Amount;
+                        validExtension.Add(info.Name);
+                    }
+                }
+                nrOfFilesInCurrentDir = nrOfFiles;
+                validExtensionsInCurrentDir = validExtension;
+                OnPropertyChanged("extensionInfoList");
+                OnPropertyChanged("nrOfFilesInCurrentDir");
+                OnPropertyChanged("validExtensionsInCurrentDir");
+            }
+        }
+
+        //private Dictionary<string, int> _extensionMapInCurrentDir;
+        //public Dictionary<string, int> extensionMapInCurrentDir
+        //{
+        //    get { return _extensionMapInCurrentDir; }
+        //    set
+        //    {
+        //        _extensionMapInCurrentDir = value;
+        //        OnPropertyChanged("extensionMapInCurrentDir");
+        //    }
+        //}
 
         private bool _chkboxDoCopyChecked;
         public bool chkboxDoCopyChecked

@@ -1,0 +1,25 @@
+﻿<Window x:Class="PictureMoverGui.ExtensionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PictureMoverGui"
+        mc:Ignorable="d"
+        Closing="ExtensionWindow_Closing"
+        Title="ExtensionWindow" Height="450" Width="800">
+    <Grid>
+        <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView 
+                Name="ListCustomer"
+                ItemsSource="{Binding extensionInfoList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Viewbox Height="25">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding Active}"></CheckBox>
+                        </Viewbox>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</Window>

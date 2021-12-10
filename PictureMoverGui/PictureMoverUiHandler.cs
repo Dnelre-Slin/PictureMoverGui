@@ -55,7 +55,7 @@ namespace PictureMoverGui
 
             try
             {
-                PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked);
+                PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked, this.moverModel.validExtensionsInCurrentDir);
                 pictureMover.Mover();
                 int nrOfErrors = pictureMover.GetNrOfErrors();
                 e.Result = nrOfErrors;

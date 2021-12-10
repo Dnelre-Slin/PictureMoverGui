@@ -17,15 +17,15 @@
         <System:String x:Key="DoneStatusMessage">Done</System:String>-->
         <!--<System:String x:Key="ErrorStatusMessage">Done, with errors. Number of errors: </System:String>-->
 
-        <System:String x:Key="UnsortedLabelContent">Usortert mappe:</System:String>
-        <System:String x:Key="SortedLabelContent">Sortert mappe:</System:String>
+        <System:String x:Key="SourceLabelContent">Usortert mappe:</System:String>
+        <System:String x:Key="DestinationLabelContent">Sortert mappe:</System:String>
         <System:String x:Key="FolderButtonContent">Velg mappe</System:String>
-        <System:String x:Key="SwapToFromContent">🗘</System:String>
+        <System:String x:Key="SwapSourceDestinationContent">🗘</System:String>
         <System:String x:Key="CancelContent">🗙</System:String>
         <System:String x:Key="DefaultEmptyPath">&lt; Ikke satt &gt;</System:String>
-        <System:String x:Key="CopyCheckboxDescription">Lag kopier</System:String>
-        <System:String x:Key="ReverseCheckboxDescription">Lag mappestruktur</System:String>
-        <System:String x:Key="RenameCheckboxDescription">Start navn med dato</System:String>
+        <System:String x:Key="chkboxDoCopy">Lag kopier</System:String>
+        <System:String x:Key="chkboxDoStructured">Lag mappestruktur</System:String>
+        <System:String x:Key="chkboxDoRename">Start navn med dato</System:String>
         <System:String x:Key="StartButtonContent">Start</System:String>
         <System:String x:Key="ReadyStatusMessage">Klar</System:String>
         <System:String x:Key="NotReadyStatusMessage">Ikke klar</System:String>

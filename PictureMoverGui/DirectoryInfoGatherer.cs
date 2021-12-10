@@ -39,7 +39,8 @@ namespace PictureMoverGui
                 return;
             }
 
-            string ext = file.Extension.ToLower();
+            string ext = file.Extension.ToLower(); // To lower case. Example .JPEG -> .jpeg
+            ext = ext.Substring(1); // Remove leading '.'. Example: .jpeg -> jpeg
             if (extensionMap.ContainsKey(ext))
             {
                 extensionMap[ext] += 1;

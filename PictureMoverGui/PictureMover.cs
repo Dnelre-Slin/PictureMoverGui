@@ -17,6 +17,7 @@ namespace PictureMoverGui
         private int total_files;
         private bool doStructured;
         private bool doRename;
+        private List<string> validExtensions;
 
         const int max_rename_tries = 100;
 
@@ -24,7 +25,7 @@ namespace PictureMoverGui
 
         DirSearcher dirSearcher;
 
-        public PictureMover(string path_to_source, string path_to_destination, bool doCopy, BackgroundWorker worker_sender, int total_files, bool doStructured, bool doRename)
+        public PictureMover(string path_to_source, string path_to_destination, bool doCopy, BackgroundWorker worker_sender, int total_files, bool doStructured, bool doRename, List<string> validExtensions)
         {
             this.path_to_source = path_to_source;
             this.path_to_destination = path_to_destination;
@@ -34,6 +35,7 @@ namespace PictureMoverGui
             this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues
             this.doStructured = doStructured;
             this.doRename = doRename;
+            this.validExtensions = validExtensions;
             dirSearcher = null;
 
             if (doCopy)
@@ -53,7 +55,7 @@ namespace PictureMoverGui
 
             this.current_progress = 0;
 
-            dirSearcher = new DirSearcher();
+            dirSearcher = new DirSearcher(this.validExtensions);
 
             if (this.doStructured)
             {

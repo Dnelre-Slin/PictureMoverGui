@@ -115,8 +115,9 @@ namespace PictureMoverGui
 
             if (e.Cancelled || extensionInfo == null)
             {
-                this.moverModel.extensionMapInCurrentDir = new Dictionary<string, int>();
-                this.moverModel.nrOfFilesInCurrentDir = 0;
+                //this.moverModel.extensionMapInCurrentDir = new Dictionary<string, int>();
+                //this.moverModel.nrOfFilesInCurrentDir = 0;
+                this.moverModel.extensionInfoList = new List<PictureMoverModel.ExtensionInfo>();
                 this.moverModel.labelSourceDirContent = "";
 
                 worker = null;
@@ -124,13 +125,16 @@ namespace PictureMoverGui
             }
             else
             {
-                int nrOfFilesInCurrentDir = 0;
+                List<PictureMoverModel.ExtensionInfo> newExtensionInfoList = new List<PictureMoverModel.ExtensionInfo>();
+                //int nrOfFilesInCurrentDir = 0;
                 foreach (var item in extensionInfo)
                 {
-                    nrOfFilesInCurrentDir += item.Value;
+                    newExtensionInfoList.Add(new PictureMoverModel.ExtensionInfo(item.Key, item.Value, ExtensionLookup.imageAndVideoExtensions.Contains(item.Key)));
+                    //nrOfFilesInCurrentDir += item.Value;
                 }
-                this.moverModel.extensionMapInCurrentDir = extensionInfo;
-                this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
+                this.moverModel.extensionInfoList = newExtensionInfoList;
+                //this.moverModel.extensionMapInCurrentDir = extensionInfo;
+                //this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
 
                 worker = null;
                 this.moverModel.runningState = PictureMoverModel.RunStates.Idle;

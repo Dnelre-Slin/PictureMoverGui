@@ -46,7 +46,7 @@ namespace PictureMoverGui
 
         }
 
-        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        private void btnChooseSourceDir_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace PictureMoverGui
             }
         }
 
-        private void btnOpenFile2_Click(object sender, RoutedEventArgs e)
+        private void btnChooseDestinationDir_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace PictureMoverGui
             }
         }
 
-        private void btnSwapToFrom_Click(object sender, RoutedEventArgs e)
+        private void btnSwapSourceDestination_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -110,6 +110,19 @@ namespace PictureMoverGui
             try
             {
                 this.moverUiHandler.StartSorterButtonCancelClick();
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+        }
+
+        private void btnOpenExt_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ExtensionWindow extWindow = new ExtensionWindow(this.moverModel);
+                extWindow.Show();
             }
             catch (Exception err)
             {
