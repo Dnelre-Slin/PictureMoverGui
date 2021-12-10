@@ -130,5 +130,10 @@ namespace PictureMoverGui
             }
         }
 
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Trace.TraceInformation("TabControl changed");
+            this.moverModel.extensionInfoList = this.moverModel.extensionInfoList; // Trigger set property function
+        }
     }
 }

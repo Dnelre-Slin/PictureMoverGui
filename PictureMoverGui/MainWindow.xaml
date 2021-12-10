@@ -8,65 +8,87 @@
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="500" MinWidth="800">
-    <Grid Margin="0 20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="45"></RowDefinition>
-            <RowDefinition/>
-            <RowDefinition Height="2*"></RowDefinition>
-            <RowDefinition Height="45"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
-                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SourceLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnChooseSourceDir" Click="btnChooseSourceDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
-                <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnChooseSourceDirCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
-            </WrapPanel>
-            <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
-        <Grid Grid.Row="1">
-            <Button FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Click="btnSwapSourceDestination_Click" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwapOperation}" />
-        </Grid>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
-                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource DestinationLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnChooseDestinationDir" Click="btnChooseDestinationDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
-            </WrapPanel>
-            <Label x:Name="DestinationDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
-        <Grid Grid.Row="3" Margin="20,20,20,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Viewbox Height="80" Grid.Column="0">
-                <WrapPanel Orientation="Vertical">
-                    <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                    <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                    <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                </WrapPanel>
-            </Viewbox>
-            <DockPanel Width="250" Grid.Column="1">
-                <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
-                <Button Visibility="{Binding StartSorterCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" />
-            </DockPanel>
-            <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>
-                <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
+    <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabItem Header="{DynamicResource TabNormalView}">
+            <Grid Margin="0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="45"></RowDefinition>
+                    <RowDefinition/>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="45"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
+                        <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SourceLabelContent}"/>
+                        <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnChooseSourceDir" Click="btnChooseSourceDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
+                        <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnChooseSourceDirCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
+                    </WrapPanel>
+                    <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Button FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Click="btnSwapSourceDestination_Click" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwapOperation}" />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
+                        <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource DestinationLabelContent}"/>
+                        <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnChooseDestinationDir" Click="btnChooseDestinationDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                    </WrapPanel>
+                    <Label x:Name="DestinationDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="20,20,20,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Viewbox Height="80" Grid.Column="0">
+                        <WrapPanel Orientation="Vertical">
+                            <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                            <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                            <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                        </WrapPanel>
+                    </Viewbox>
+                    <DockPanel Width="250" Grid.Column="1">
+                        <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
+                        <Button Visibility="{Binding StartSorterCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" />
+                    </DockPanel>
+                    <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>
+                        <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
+                    </Grid>
+                </Grid>
+                <Button Grid.Row="4" Width="150" Height="40" FontSize="20" Content="Open Ext" x:Name="btnOpenExt" Click="btnOpenExt_Click"></Button>
+            </Grid>  
+        </TabItem>
+        <TabItem Header="{DynamicResource TabExtensionView}">
+            <Grid>
+                <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListView 
+                Name="ListCustomer"
+                ItemsSource="{Binding extensionInfoList}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Viewbox Height="25">
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding Active}"></CheckBox>
+                                </Viewbox>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Grid>
-        </Grid>
-        <Button Grid.Row="4" Width="150" Height="40" FontSize="20" Content="Open Ext" x:Name="btnOpenExt" Click="btnOpenExt_Click"></Button>
-    </Grid>
+        </TabItem>
+    </TabControl>
+
 </Window>

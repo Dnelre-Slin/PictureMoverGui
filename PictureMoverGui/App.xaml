@@ -33,6 +33,8 @@
         <System:String x:Key="ErrorStatusMessage">Antall feil:</System:String>
         <System:String x:Key="DirValidateStatusMessage">Validerer...</System:String>
         <System:String x:Key="DirGatherStatusMessage">Prosesserer...</System:String>
+        <System:String x:Key="TabNormalView">Sorterer</System:String>
+        <System:String x:Key="TabExtensionView">Filtyper</System:String>
         
         <System:Double x:Key="DoneStatusMessageTime">3</System:Double>
     </Application.Resources>
