@@ -6,8 +6,15 @@ namespace PictureMoverGui
 {
     public enum NameCollisionActionEnum
     {
-        DoNothing,
+        SkipFile,
         NrAppend,
-        HashCheck
+        CompareFiles
+    }
+
+    public enum CompareFilesActionEnum
+    {
+        NameAndDateOnly,
+        MD5,
+        SHA256
     }
 }

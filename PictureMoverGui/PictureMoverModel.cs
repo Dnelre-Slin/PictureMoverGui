@@ -46,7 +46,8 @@ namespace PictureMoverGui
 
             _sourceDirSat = false;
             _destinationDirSat = false;
-            _nameCollisionAction = NameCollisionActionEnum.HashCheck;
+            _nameCollisionAction = NameCollisionActionEnum.CompareFiles;
+            _compareFilesAction = CompareFilesActionEnum.MD5;
             _runningState = RunStates.Idle;
             _nrOfFilesInCurrentDir = 0;
             //_extensionMapInCurrentDir = new Dictionary<string, int>();
@@ -286,6 +287,17 @@ namespace PictureMoverGui
             {
                 _nameCollisionAction = value;
                 OnPropertyChanged("nameCollisionAction");
+            }
+        }
+
+        private CompareFilesActionEnum _compareFilesAction;
+        public CompareFilesActionEnum compareFilesAction
+        {
+            get { return _compareFilesAction; }
+            set
+            {
+                _compareFilesAction = value;
+                OnPropertyChanged("compareFilesAction");
             }
         }
 

@@ -126,6 +126,7 @@ namespace PictureMoverGui
         private void btnTestOutput_Click(object sender, RoutedEventArgs e)
         {
             Trace.WriteLine(this.moverModel.nameCollisionAction);
+            Trace.WriteLine(this.moverModel.compareFilesAction);
         }
     }
 }

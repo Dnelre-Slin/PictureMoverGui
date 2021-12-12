@@ -95,9 +95,16 @@
                 <WrapPanel>
                     <Viewbox Height="60" Margin="10">
                         <WrapPanel Orientation="Vertical">
-                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.DoNothing}}" Content="Do nothing"></RadioButton>
-                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
-                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.HashCheck}}" Content="Hash compare"></RadioButton>
+                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
+                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
+                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
+                        </WrapPanel>                        
+                    </Viewbox>
+                    <Viewbox Height="60">
+                        <WrapPanel Orientation="Vertical">
+                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
+                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.MD5}}" Content="Name, date and MD5"></RadioButton>
+                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.SHA256}}" Content="Name, date and SHA256"></RadioButton>
                         </WrapPanel>
                     </Viewbox>
                     <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
