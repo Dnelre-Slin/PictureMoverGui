@@ -9,15 +9,18 @@ namespace PictureMoverGui
 {
     class PictureMover
     {
-        private string path_to_source;
-        private string path_to_destination;
-        private int nrOfErrors;
+        //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
-        private int current_progress;
+
+        private string sourceDir;
+        private string destinationDir;
+        private List<string> validExtensions;
         private int total_files;
         private bool doStructured;
         private bool doRename;
-        private List<string> validExtensions;
+
+        private int nrOfErrors;
+        private int current_progress;
 
         const int max_rename_tries = 100;
 
@@ -25,20 +28,24 @@ namespace PictureMoverGui
 
         DirSearcher dirSearcher;
 
-        public PictureMover(string path_to_source, string path_to_destination, bool doCopy, BackgroundWorker worker_sender, int total_files, bool doStructured, bool doRename, List<string> validExtensions)
+        public PictureMover(PictureMoverModel moverModel, BackgroundWorker worker_sender)
         {
-            this.path_to_source = path_to_source;
-            this.path_to_destination = path_to_destination;
-            this.nrOfErrors = 0;
+            //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
+
+            this.sourceDir = moverModel.labelSourceDirContent;
+            this.destinationDir = moverModel.labelDestinationDirContent;
+            this.validExtensions = moverModel.validExtensionsInCurrentDir;
+            this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
+            this.doStructured = moverModel.chkboxDoStructuredChecked;
+            this.doRename = moverModel.chkboxDoRenameChecked;
+
+            this.nrOfErrors = 0;
             this.current_progress = 0;
-            this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues
-            this.doStructured = doStructured;
-            this.doRename = doRename;
-            this.validExtensions = validExtensions;
+
             dirSearcher = null;
 
-            if (doCopy)
+            if (moverModel.chkboxDoCopyChecked)
             {
                 this.copyMoveAction = this.DoCopyFile;
             }
@@ -50,8 +57,8 @@ namespace PictureMoverGui
 
         public void Mover()
         {
-            Directory.CreateDirectory(path_to_destination);
-            DirectoryInfo d = new DirectoryInfo(path_to_source);
+            Directory.CreateDirectory(this.destinationDir);
+            DirectoryInfo d = new DirectoryInfo(this.sourceDir);
 
             this.current_progress = 0;
 
@@ -109,7 +116,7 @@ namespace PictureMoverGui
 
             string monthName = char.ToUpper(dt.ToString("MMMM")[0]) + dt.ToString("MMMM").Substring(1);
             string monthNameAndDate = $"{dt.ToString("MM")} {monthName}";
-            string thisDirectory = $"{path_to_destination}\\{dt.Year}\\{monthNameAndDate}";
+            string thisDirectory = $"{this.destinationDir}\\{dt.Year}\\{monthNameAndDate}";
 
             DirectoryInfo destinationDir = Directory.CreateDirectory(thisDirectory);
 
@@ -119,9 +126,9 @@ namespace PictureMoverGui
 
         private void DoNormalCopyMoveFile(DirectoryInfo d, FileInfo file)
         {
-            DirectoryInfo destinationDir = new DirectoryInfo(path_to_destination);
+            DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
             string new_filename = this.GetNewFilename(file, destinationDir);
-            this.DoCopyMoveFile(file, path_to_destination, new_filename);
+            this.DoCopyMoveFile(file, this.destinationDir, new_filename);
         }
 
         private void DoCopyMoveFile(FileInfo file, string path_to_dir, string new_filename)
