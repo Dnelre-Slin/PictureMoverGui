@@ -38,6 +38,10 @@ namespace PictureMoverGui
                 this.dirSearcher.cancel = true;
                 return;
             }
+            if (string.IsNullOrEmpty(file.Extension))
+            {
+                return; // Do not add extension, if file has no extension.
+            }
 
             string ext = file.Extension.ToLower(); // To lower case. Example .JPEG -> .jpeg
             ext = ext.Substring(1); // Remove leading '.'. Example: .jpeg -> jpeg

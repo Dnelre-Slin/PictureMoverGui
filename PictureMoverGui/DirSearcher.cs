@@ -54,6 +54,10 @@ namespace PictureMoverGui
 
         private bool IsValidFileExtension(string extension)
         {
+            if (string.IsNullOrEmpty(extension))
+            {
+                return false; // Not a valid extension, if it has no extension.
+            }
             string ext = extension.ToLower(); // To lower case. Example .JPEG -> .jpeg
             ext = ext.Substring(1);           // Remove leading '.'. Example: .jpeg -> jpeg
             if (validExtensions == null)
