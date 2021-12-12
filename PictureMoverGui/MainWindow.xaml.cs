@@ -117,19 +117,6 @@ namespace PictureMoverGui
             }
         }
 
-        private void btnOpenExt_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ExtensionWindow extWindow = new ExtensionWindow(this.moverModel);
-                extWindow.Show();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
-
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //Trace.TraceInformation("TabControl changed");
