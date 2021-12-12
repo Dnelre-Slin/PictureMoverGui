@@ -19,7 +19,6 @@
                     <RowDefinition Height="45"></RowDefinition>
                     <RowDefinition/>
                     <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="45"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
@@ -69,7 +68,6 @@
                         <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
                     </Grid>
                 </Grid>
-                <Button Grid.Row="4" Width="150" Height="40" FontSize="20" Content="Open Ext" x:Name="btnOpenExt" Click="btnOpenExt_Click"></Button>
             </Grid>  
         </TabItem>
         <TabItem Header="{DynamicResource TabExtensionView}">
