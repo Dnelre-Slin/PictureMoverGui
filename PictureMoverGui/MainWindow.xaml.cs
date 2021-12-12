@@ -122,5 +122,10 @@ namespace PictureMoverGui
             //Trace.TraceInformation("TabControl changed");
             this.moverModel.extensionInfoList = this.moverModel.extensionInfoList; // Trigger set property function
         }
+
+        private void btnTestOutput_Click(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine(this.moverModel.nameCollisionAction);
+        }
     }
 }

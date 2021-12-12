@@ -8,6 +8,9 @@
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="500" MinWidth="800">
+    <Window.Resources>
+        <local:RadioButtonCheckedConverter x:Key="enumConverter"></local:RadioButtonCheckedConverter>
+    </Window.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
         <TabItem Header="{DynamicResource TabNormalView}">
             <Grid Margin="0 20">
@@ -85,6 +88,20 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </ScrollViewer>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Advanced">
+            <Grid>
+                <WrapPanel>
+                    <Viewbox Height="60" Margin="10">
+                        <WrapPanel Orientation="Vertical">
+                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.DoNothing}}" Content="Do nothing"></RadioButton>
+                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
+                            <RadioButton GroupName="EnumGroup" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.HashCheck}}" Content="Hash compare"></RadioButton>
+                        </WrapPanel>
+                    </Viewbox>
+                    <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
+                </WrapPanel>
             </Grid>
         </TabItem>
     </TabControl>

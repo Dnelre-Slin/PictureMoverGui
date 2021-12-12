@@ -46,6 +46,7 @@ namespace PictureMoverGui
 
             _sourceDirSat = false;
             _destinationDirSat = false;
+            _nameCollisionAction = NameCollisionActionEnum.HashCheck;
             _runningState = RunStates.Idle;
             _nrOfFilesInCurrentDir = 0;
             //_extensionMapInCurrentDir = new Dictionary<string, int>();
@@ -274,6 +275,17 @@ namespace PictureMoverGui
                 OnPropertyChanged("statusPercentage");
                 OnPropertyChanged("StatusMessageContent");
                 OnPropertyChanged("ArcEndAngle");
+            }
+        }
+
+        private NameCollisionActionEnum _nameCollisionAction;
+        public NameCollisionActionEnum nameCollisionAction
+        {
+            get { return _nameCollisionAction; }
+            set
+            {
+                _nameCollisionAction = value;
+                OnPropertyChanged("nameCollisionAction");
             }
         }
 
