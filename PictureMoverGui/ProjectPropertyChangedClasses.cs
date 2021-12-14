@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace PictureMoverGui
 {
     [Serializable]
-    public class EventStruct: INotifyPropertyChanged
+    public class EventData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)
@@ -18,7 +19,7 @@ namespace PictureMoverGui
             }
         }
 
-        public EventStruct(string Name, EventDateTime StartDateTime, EventDateTime EndDateTime)
+        public EventData(string Name, EventDateTime StartDateTime, EventDateTime EndDateTime)
         {
             this._name = Name;
             this._startDateTime = StartDateTime;
@@ -57,6 +58,22 @@ namespace PictureMoverGui
                 OnPropertyChanged("EndDateTime");
             }
         }
+
+        [NonSerialized] private bool _edit;
+        public bool Edit
+        {
+            get { return _edit; }
+            set
+            {
+                _edit = value;
+                OnPropertyChanged("Edit");
+                OnPropertyChanged("ShowEditableView");
+                OnPropertyChanged("ShowNormalView");
+            }
+        }
+
+        public Visibility ShowEditableView => Edit ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ShowNormalView => !Edit ? Visibility.Visible : Visibility.Collapsed;
     }
 
     [Serializable]
@@ -71,6 +88,9 @@ namespace PictureMoverGui
                 handler(this, new PropertyChangedEventArgs(arg));
             }
         }
+
+        public static readonly List<string> StaticListOfValidHours = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
+        public static readonly List<string> StaticListOfValidMinutesAndSeconds = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
 
         public EventDateTime(DateTime dateTime) : 
             this(dateTime.Date.ToString("dd.MM.yyyy"), dateTime.Hour.ToString("D2"), dateTime.Minute.ToString("D2"), dateTime.Second.ToString("D2"))
@@ -135,5 +155,8 @@ namespace PictureMoverGui
         {
             get { return $"{Date} {Hour}:{Minute}:{Second}"; }
         }
+
+        public List<string> ListOfValidHours => StaticListOfValidHours;
+        public List<string> ListOfValidMinutesAndSeconds => StaticListOfValidMinutesAndSeconds;
     }
 }

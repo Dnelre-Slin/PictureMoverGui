@@ -37,7 +37,8 @@ namespace PictureMoverGui
 
             this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
-            this.validExtensions = moverModel.validExtensionsInCurrentDir;
+            this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
+            //this.validExtensions = moverModel.validExtensionsInCurrentDir;
             this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
             this.doStructured = moverModel.chkboxDoStructuredChecked;
             this.doRename = moverModel.chkboxDoRenameChecked;

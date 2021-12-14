@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
@@ -49,13 +50,17 @@ namespace PictureMoverGui
 
             //_timeString = "00:00:00";
 
-            _listOfStuffHours = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
-            _listOfStuffMinutesAndSeconds = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
+            //_listOfStuffHours = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
+            //_listOfStuffMinutesAndSeconds = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
 
-            _editDateTime = false;
+            //_editDateTime = false;
 
-            _eventData = new EventStruct("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
+            EventData eventData1 = new EventData("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
+            EventData eventData2 = new EventData("New York", new EventDateTime(new DateTime(2015, 11, 11, 09, 17, 54)), new EventDateTime(new DateTime(2015, 12, 02, 11, 12, 05)));
 
+            _eventDataList = new ObservableCollection<EventData>();
+            _eventDataList.Add(eventData1);
+            _eventDataList.Add(eventData2);
 
 
             _sourceDirSat = false;
@@ -81,21 +86,21 @@ namespace PictureMoverGui
         }
 
 
-        private bool _editDateTime;
-        public bool editDateTime
-        {
-            get { return _editDateTime; }
-            set
-            {
-                _editDateTime = value;
-                OnPropertyChanged("editDateTime");
-                OnPropertyChanged("ShowEditableListOfStuff");
-                OnPropertyChanged("ShowNormalListOfStuff");
-            }
-        }
+        //private bool _editDateTime;
+        //public bool editDateTime
+        //{
+        //    get { return _editDateTime; }
+        //    set
+        //    {
+        //        _editDateTime = value;
+        //        OnPropertyChanged("editDateTime");
+        //        OnPropertyChanged("ShowEditableListOfStuff");
+        //        OnPropertyChanged("ShowNormalListOfStuff");
+        //    }
+        //}
 
-        private EventStruct _eventData;
-        public EventStruct eventData
+        private EventData _eventData;
+        public EventData eventData
         {
             get { return _eventData; }
             set
@@ -105,14 +110,26 @@ namespace PictureMoverGui
             }
         }
 
-        public Visibility ShowEditableListOfStuff
+
+        private ObservableCollection<EventData> _eventDataList;
+        public ObservableCollection<EventData> eventDataList
         {
-            get { return editDateTime ? Visibility.Visible : Visibility.Collapsed; }
+            get { return _eventDataList; }
+            set
+            {
+                _eventDataList = value;
+                OnPropertyChanged("eventDataList");
+            }
         }
-        public Visibility ShowNormalListOfStuff
-        {
-            get { return !editDateTime ? Visibility.Visible : Visibility.Collapsed; }
-        }
+
+        //public Visibility ShowEditableListOfStuff
+        //{
+        //    get { return editDateTime ? Visibility.Visible : Visibility.Collapsed; }
+        //}
+        //public Visibility ShowNormalListOfStuff
+        //{
+        //    get { return !editDateTime ? Visibility.Visible : Visibility.Collapsed; }
+        //}
 
 
         //private string _timeString;
@@ -126,17 +143,17 @@ namespace PictureMoverGui
         //    }
         //} 
 
-        private List<string> _listOfStuffHours;
-        public List<string> listOfStuffHours
-        {
-            get { return _listOfStuffHours; }
-        }
+        //private List<string> _listOfStuffHours;
+        //public List<string> listOfStuffHours
+        //{
+        //    get { return _listOfStuffHours; }
+        //}
 
-        private List<string> _listOfStuffMinutesAndSeconds;
-        public List<string> listOfStuffMinutesAndSeconds
-        {
-            get { return _listOfStuffMinutesAndSeconds; }
-        }
+        //private List<string> _listOfStuffMinutesAndSeconds;
+        //public List<string> listOfStuffMinutesAndSeconds
+        //{
+        //    get { return _listOfStuffMinutesAndSeconds; }
+        //}
 
 
         //public Visibility ShowEditableListOfStuff

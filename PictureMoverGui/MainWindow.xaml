@@ -78,8 +78,8 @@
             <Grid>
                 <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <ListView 
-                Name="ListCustomer"
-                ItemsSource="{Binding extensionInfoList}">
+                        Name="ListCustomer"
+                        ItemsSource="{Binding extensionInfoList}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Viewbox Height="25">
@@ -100,7 +100,7 @@
                                 <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
                                 <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
                                 <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
-                            </WrapPanel>                        
+                            </WrapPanel>
                         </Viewbox>
                         <Viewbox Height="60">
                             <WrapPanel Orientation="Vertical">
@@ -122,54 +122,50 @@
                         <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.EndDateTime.Minute}"></ComboBox>
                         <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.EndDateTime.Second}"></ComboBox>
                     </DockPanel>
-                    <!--<DockPanel DataContext="{Binding eventData}">
-                            --><!--<TextBox Margin="10 0"></TextBox>
-                            --><!--<xctk:DateTimePicker Margin="10 0" />--><!--
-                            <xctk:DateTimePicker Margin="10 0" />
-                            <xctk:DateTimePicker Margin="10 0" />
-                            <xctk:DateTimePicker Margin="10 0" />
-                            <DatePicker></DatePicker>
-                            <local:MyCustomControl></local:MyCustomControl>--><!--
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                            <DockPanel DataContext="{Binding StartDateTime}">
-                                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffHours}" SelectedItem="{Binding Hour}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Minute}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Second}"></ComboBox>
-                            </DockPanel>                            
-                            <DockPanel DataContext="{Binding EndDateTime}">
-                                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffHours}" SelectedItem="{Binding Hour}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Minute}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Second}"></ComboBox>
-                            </DockPanel>
-                        </DockPanel>-->
-                    <!--</DockPanel>-->
                     <DockPanel Visibility="{Binding ShowNormalListOfStuff}">
                         <TextBlock Text="{Binding eventData.Name}"></TextBlock>
                         <TextBlock Text="  -  "></TextBlock>
                         <TextBlock Text="{Binding eventData.StartDateTime.DateTimePrettyString}"></TextBlock>
                         <TextBlock Text="  -  "></TextBlock>
                         <TextBlock Text="{Binding eventData.EndDateTime.DateTimePrettyString}"></TextBlock>
-                        <!--<DockPanel DataContext="{Binding eventData}">
-                            --><!--<DockPanel DataContext="{Binding StartDateTime}">
-                                <TextBlock Text="{Binding Date}"></TextBlock>
-                                <TextBlock Text="  "></TextBlock>
-                                <TextBlock Text="{Binding Hour}"></TextBlock>
-                                <TextBlock Text=":"></TextBlock>
-                                <TextBlock Text="{Binding Minute}"></TextBlock>
-                                <TextBlock Text=":"></TextBlock>
-                                <TextBlock Text="{Binding Second}"></TextBlock>
-                            </DockPanel>-->
-
-                            <!--<DockPanel DataContext="{Binding EndDateTime}">
-                                <TextBlock Text="{Binding DateTimePrettyString}"></TextBlock>
-                            </DockPanel>-->
-                        <!--</DockPanel>-->
                     </DockPanel>
                     <CheckBox Content="Edit" IsChecked="{Binding editDateTime}"></CheckBox>
-                    <!--<local:TimeTextBox MinWidth="100" Text="00:00:00"></local:TimeTextBox>-->
                 </WrapPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Events">
+            <Grid>
+                <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListView 
+                            Name="Bist"
+                            ItemsSource="{Binding eventDataList}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <DockPanel Visibility="{Binding ShowEditableView}">
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                        <DatePicker Text="{Binding StartDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                        <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidHours}" SelectedItem="{Binding StartDateTime.Hour}"></ComboBox>
+                                        <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Minute}"></ComboBox>
+                                        <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Second}"></ComboBox>
+                                        <DatePicker Text="{Binding EndDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                        <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidHours}" SelectedItem="{Binding EndDateTime.Hour}"></ComboBox>
+                                        <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
+                                        <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
+                                    </DockPanel>
+                                    <DockPanel Visibility="{Binding ShowNormalView}">
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                        <TextBlock Text="  -  "></TextBlock>
+                                        <TextBlock Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
+                                        <TextBlock Text="  -  "></TextBlock>
+                                        <TextBlock Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
+                                    </DockPanel>
+                                    <CheckBox Content="Edit" IsChecked="{Binding Edit}"></CheckBox>
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Grid>
         </TabItem>
     </TabControl>
