@@ -18,6 +18,8 @@ namespace PictureMoverGui
         private int total_files;
         private bool doStructured;
         private bool doRename;
+        private NameCollisionActionEnum nameCollisionAction;
+        private CompareFilesActionEnum compareFilesAction;
 
         private int nrOfErrors;
         private int current_progress;
@@ -39,6 +41,8 @@ namespace PictureMoverGui
             this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
             this.doStructured = moverModel.chkboxDoStructuredChecked;
             this.doRename = moverModel.chkboxDoRenameChecked;
+            this.nameCollisionAction = moverModel.nameCollisionAction;
+            this.compareFilesAction = moverModel.compareFilesAction;
 
             this.nrOfErrors = 0;
             this.current_progress = 0;
@@ -135,13 +139,13 @@ namespace PictureMoverGui
         {
             try
             {
+                this.copyMoveAction(file, path_to_dir, new_filename);
+
                 if (worker_sender.CancellationPending)
                 {
                     this.dirSearcher.cancel = true;
                     return;
                 }
-
-                this.copyMoveAction(file, path_to_dir, new_filename);
 
                 this.current_progress++;
                 int progress_percent = (this.current_progress * 100) / this.total_files;

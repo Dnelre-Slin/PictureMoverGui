@@ -42,7 +42,21 @@ namespace PictureMoverGui
 
         public PictureMoverModel()
         {
-            _disableAllConfigDuringRun = true;
+            ////_eventThing = new EventStruct("Test", DateTime.Now, DateTime.Now);
+            //_eventThing = new EventStruct("Test", "13.12.2021 17:13:05", "13.12.2021 17:13:05");
+            ////_eventThing = DateTime.Now;
+            ////_eventThing = "13.12.2021 17:13:05";
+
+            //_timeString = "00:00:00";
+
+            _listOfStuffHours = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
+            _listOfStuffMinutesAndSeconds = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
+
+            _editDateTime = false;
+
+            _eventData = new EventStruct("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
+
+
 
             _sourceDirSat = false;
             _destinationDirSat = false;
@@ -65,6 +79,86 @@ namespace PictureMoverGui
             //Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
             labelDestinationDirContent = Properties.Settings.Default.SortedDir;
         }
+
+
+        private bool _editDateTime;
+        public bool editDateTime
+        {
+            get { return _editDateTime; }
+            set
+            {
+                _editDateTime = value;
+                OnPropertyChanged("editDateTime");
+                OnPropertyChanged("ShowEditableListOfStuff");
+                OnPropertyChanged("ShowNormalListOfStuff");
+            }
+        }
+
+        private EventStruct _eventData;
+        public EventStruct eventData
+        {
+            get { return _eventData; }
+            set
+            {
+                _eventData = value;
+                OnPropertyChanged("eventData");
+            }
+        }
+
+        public Visibility ShowEditableListOfStuff
+        {
+            get { return editDateTime ? Visibility.Visible : Visibility.Collapsed; }
+        }
+        public Visibility ShowNormalListOfStuff
+        {
+            get { return !editDateTime ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+
+        //private string _timeString;
+        //public string timeString
+        //{
+        //    get { return _timeString; }
+        //    set
+        //    {
+        //        _timeString = value;
+        //        OnPropertyChanged("timeString");
+        //    }
+        //} 
+
+        private List<string> _listOfStuffHours;
+        public List<string> listOfStuffHours
+        {
+            get { return _listOfStuffHours; }
+        }
+
+        private List<string> _listOfStuffMinutesAndSeconds;
+        public List<string> listOfStuffMinutesAndSeconds
+        {
+            get { return _listOfStuffMinutesAndSeconds; }
+        }
+
+
+        //public Visibility ShowEditableListOfStuff
+        //{
+        //    get { return !chkboxDoCopyChecked ? Visibility.Visible : Visibility.Collapsed; }
+        //}
+        //public Visibility ShowNormalListOfStuff
+        //{
+        //    get { return chkboxDoCopyChecked ? Visibility.Visible : Visibility.Collapsed; }
+        //}
+
+
+        //private EventStruct _eventThing;
+        //public EventStruct eventThing
+        //{
+        //    get { return _eventThing; }
+        //    set
+        //    {
+        //        _eventThing = value;
+        //        OnPropertyChanged("eventThing");
+        //    }
+        //}
 
 
         private bool _disableAllConfigDuringRun;

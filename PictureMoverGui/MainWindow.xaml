@@ -6,6 +6,7 @@
         xmlns:properties="clr-namespace:PictureMoverGui.Properties"
         xmlns:local="clr-namespace:PictureMoverGui"
         xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="500" MinWidth="800">
     <Window.Resources>
@@ -93,21 +94,81 @@
         <TabItem Header="Advanced">
             <Grid>
                 <WrapPanel>
-                    <Viewbox Height="60" Margin="10">
-                        <WrapPanel Orientation="Vertical">
-                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
-                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
-                            <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
-                        </WrapPanel>                        
-                    </Viewbox>
-                    <Viewbox Height="60">
-                        <WrapPanel Orientation="Vertical">
-                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
-                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.MD5}}" Content="Name, date and MD5"></RadioButton>
-                            <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.SHA256}}" Content="Name, date and SHA256"></RadioButton>
-                        </WrapPanel>
-                    </Viewbox>
-                    <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
+                    <WrapPanel Width="800">
+                        <Viewbox Height="60" Margin="10">
+                            <WrapPanel Orientation="Vertical">
+                                <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
+                                <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
+                                <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
+                            </WrapPanel>                        
+                        </Viewbox>
+                        <Viewbox Height="60">
+                            <WrapPanel Orientation="Vertical">
+                                <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
+                                <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.MD5}}" Content="Name, date and MD5"></RadioButton>
+                                <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.SHA256}}" Content="Name, date and SHA256"></RadioButton>
+                            </WrapPanel>
+                        </Viewbox>
+                        <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
+                    </WrapPanel>
+                    <DockPanel Visibility="{Binding ShowEditableListOfStuff}">
+                        <TextBlock Text="{Binding eventData.Name}"></TextBlock>
+                        <DatePicker Text="{Binding eventData.StartDateTime.Date, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding listOfStuffHours}" SelectedItem="{Binding eventData.StartDateTime.Hour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.StartDateTime.Minute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.StartDateTime.Second}"></ComboBox>
+                        <DatePicker Text="{Binding eventData.EndDateTime.Date, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding listOfStuffHours}" SelectedItem="{Binding eventData.EndDateTime.Hour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.EndDateTime.Minute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding listOfStuffMinutesAndSeconds}" SelectedItem="{Binding eventData.EndDateTime.Second}"></ComboBox>
+                    </DockPanel>
+                    <!--<DockPanel DataContext="{Binding eventData}">
+                            --><!--<TextBox Margin="10 0"></TextBox>
+                            --><!--<xctk:DateTimePicker Margin="10 0" />--><!--
+                            <xctk:DateTimePicker Margin="10 0" />
+                            <xctk:DateTimePicker Margin="10 0" />
+                            <xctk:DateTimePicker Margin="10 0" />
+                            <DatePicker></DatePicker>
+                            <local:MyCustomControl></local:MyCustomControl>--><!--
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <DockPanel DataContext="{Binding StartDateTime}">
+                                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffHours}" SelectedItem="{Binding Hour}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Minute}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Second}"></ComboBox>
+                            </DockPanel>                            
+                            <DockPanel DataContext="{Binding EndDateTime}">
+                                <DatePicker Text="{Binding Date, Mode=TwoWay}"></DatePicker>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffHours}" SelectedItem="{Binding Hour}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Minute}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.listOfStuffMinutesAndSeconds}" SelectedItem="{Binding Second}"></ComboBox>
+                            </DockPanel>
+                        </DockPanel>-->
+                    <!--</DockPanel>-->
+                    <DockPanel Visibility="{Binding ShowNormalListOfStuff}">
+                        <TextBlock Text="{Binding eventData.Name}"></TextBlock>
+                        <TextBlock Text="  -  "></TextBlock>
+                        <TextBlock Text="{Binding eventData.StartDateTime.DateTimePrettyString}"></TextBlock>
+                        <TextBlock Text="  -  "></TextBlock>
+                        <TextBlock Text="{Binding eventData.EndDateTime.DateTimePrettyString}"></TextBlock>
+                        <!--<DockPanel DataContext="{Binding eventData}">
+                            --><!--<DockPanel DataContext="{Binding StartDateTime}">
+                                <TextBlock Text="{Binding Date}"></TextBlock>
+                                <TextBlock Text="  "></TextBlock>
+                                <TextBlock Text="{Binding Hour}"></TextBlock>
+                                <TextBlock Text=":"></TextBlock>
+                                <TextBlock Text="{Binding Minute}"></TextBlock>
+                                <TextBlock Text=":"></TextBlock>
+                                <TextBlock Text="{Binding Second}"></TextBlock>
+                            </DockPanel>-->
+
+                            <!--<DockPanel DataContext="{Binding EndDateTime}">
+                                <TextBlock Text="{Binding DateTimePrettyString}"></TextBlock>
+                            </DockPanel>-->
+                        <!--</DockPanel>-->
+                    </DockPanel>
+                    <CheckBox Content="Edit" IsChecked="{Binding editDateTime}"></CheckBox>
+                    <!--<local:TimeTextBox MinWidth="100" Text="00:00:00"></local:TimeTextBox>-->
                 </WrapPanel>
             </Grid>
         </TabItem>

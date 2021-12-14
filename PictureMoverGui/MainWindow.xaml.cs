@@ -127,6 +127,49 @@ namespace PictureMoverGui
         {
             Trace.WriteLine(this.moverModel.nameCollisionAction);
             Trace.WriteLine(this.moverModel.compareFilesAction);
+            EventDateTime edt = new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4));
+            Trace.WriteLine(edt.Hour);
+            Trace.WriteLine(edt.Minute);
+
+            //Trace.WriteLine(this.moverModel.eventThing);
+            //Trace.WriteLine(Properties.Settings.Default.EventList.ToString());
+            //foreach(var s in Properties.Settings.Default.EventList)
+            //{
+            //    Trace.WriteLine(s);
+            //}
+            ////Trace.WriteLine(Properties.Settings.Default.TestList);
+            ////Trace.WriteLine(Properties.Settings.Default.ExtList);
+            //foreach (var s in Properties.Settings.Default.ExtList)
+            //{
+            //    Trace.WriteLine($"Name: {s.Name}, Amount: {s.Amount}, Active: {s.Active}");
+            //}
+
+            //List<PictureMoverModel.ExtensionInfo> pe = Properties.Settings.Default.ExtList;
+            //Trace.WriteLine(pe);
+            //Trace.WriteLine(pe.Count);
+            //pe.Add(new PictureMoverModel.ExtensionInfo("Leo", 23, true));
+            //List<List<string>> lls = new List<List<string>>();
+            //Properties.Settings.Default.TestList = lls;
+
+
+            //List<PictureMoverModel.ExtensionInfo> el = new List<PictureMoverModel.ExtensionInfo>();
+            //el.Add(new PictureMoverModel.ExtensionInfo("Ole", 3, true));
+            //el.Add(new PictureMoverModel.ExtensionInfo("Klara", 6, false));
+            //Properties.Settings.Default.ExtList = el;
+            //List<List<string>> tl = new List<List<string>>();
+            //List<string> l1 = new List<string>();
+            //l1.Add("Hello");
+            //l1.Add("World");
+            //List<string> l2 = new List<string>();
+            //l2.Add("43");
+            //tl.Add(l1);
+            //tl.Add(l2);
+            //Properties.Settings.Default.ExtList = pe;
+            //Properties.Settings.Default.Save();
+            //foreach(var s in Properties.Settings.Default.TestList)
+            //{
+            //    Trace.WriteLine(s);
+            //}
         }
     }
 }
