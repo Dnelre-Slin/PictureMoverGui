@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="PictureMoverGui.EventListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PictureMoverGui"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView 
+                Name="EventList"
+                ItemsSource="{Binding eventDataList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid MinHeight="30" MinWidth="700">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Width="140" Grid.Column="0" Visibility="{Binding ShowNormalView}" Text="{Binding Name}"></TextBlock>
+                            <TextBox Width="140"  Grid.Column="0" Visibility="{Binding ShowEditableView}" Text="{Binding Name}"></TextBox>
+                            <TextBlock Width="250" Grid.Column="1" Visibility="{Binding ShowNormalView}" Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
+                            <DockPanel Width="250" Grid.Column="1" Visibility="{Binding ShowEditableView}">
+                                <DatePicker SelectedDateFormat="Short" Text="{Binding StartDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidHours}" SelectedItem="{Binding StartDateTime.Hour}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Minute}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Second}"></ComboBox>
+                            </DockPanel>
+                            <TextBlock Grid.Column="2" Text=" - "></TextBlock>
+                            <TextBlock Width="250" Grid.Column="2" Visibility="{Binding ShowNormalView}" Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
+                            <DockPanel Width="250" Grid.Column="2" Visibility="{Binding ShowEditableView}">
+                                <DatePicker SelectedDateFormat="Short" Text="{Binding EndDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidHours}" SelectedItem="{Binding EndDateTime.Hour}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
+                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
+                            </DockPanel>
+                            <!--<DockPanel Grid.Column="1" Visibility="{Binding ShowNormalView}">
+                                <TextBlock Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
+                                <TextBlock Text=" - "></TextBlock>
+                                <TextBlock Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
+                            </DockPanel>-->
+                            <CheckBox Grid.Column="4" Content="Edit" IsChecked="{Binding Edit}"></CheckBox>
+                            <DockPanel Grid.Column="4">
+                                <Button Width="30" Content="✎" Click="btnEventData_Click"></Button>
+                                <Button Width="30" Content="🗑" Click="btnEventData_Click"></Button>
+                            </DockPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

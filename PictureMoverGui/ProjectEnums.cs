@@ -4,6 +4,14 @@ using System.Text;
 
 namespace PictureMoverGui
 {
+    public enum RunStates
+    {
+        DirectoryValidation,
+        DirectoryGathering,
+        RunningSorter,
+        Idle
+    }
+
     public enum NameCollisionActionEnum
     {
         SkipFile,

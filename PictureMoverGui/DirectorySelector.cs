@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace PictureMoverGui
 {
@@ -76,9 +77,9 @@ namespace PictureMoverGui
 
         private void StartDirGathering(Action callback = null)
         {
-            if (this.moverModel.sourceDirSat && this.moverModel.runningState == PictureMoverModel.RunStates.Idle)
+            if (this.moverModel.sourceDirSat && this.moverModel.runningState == RunStates.Idle)
             {
-                this.moverModel.runningState = PictureMoverModel.RunStates.DirectoryGathering;
+                this.moverModel.runningState = RunStates.DirectoryGathering;
 
                 this.moverModel.lastSourceInfoGatherTime = DateTime.Now;
 
@@ -117,19 +118,19 @@ namespace PictureMoverGui
             {
                 //this.moverModel.extensionMapInCurrentDir = new Dictionary<string, int>();
                 //this.moverModel.nrOfFilesInCurrentDir = 0;
-                this.moverModel.extensionInfoList = new List<PictureMoverModel.ExtensionInfo>();
+                this.moverModel.extensionInfoList = new ObservableCollection<ExtensionInfo>();
                 this.moverModel.labelSourceDirContent = "";
 
                 worker = null;
-                this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+                this.moverModel.runningState = RunStates.Idle;
             }
             else
             {
-                List<PictureMoverModel.ExtensionInfo> newExtensionInfoList = new List<PictureMoverModel.ExtensionInfo>();
+                ObservableCollection<ExtensionInfo> newExtensionInfoList = new ObservableCollection<ExtensionInfo>();
                 //int nrOfFilesInCurrentDir = 0;
                 foreach (var item in extensionInfo)
                 {
-                    newExtensionInfoList.Add(new PictureMoverModel.ExtensionInfo(item.Key, item.Value, ExtensionLookup.imageAndVideoExtensions.Contains(item.Key)));
+                    newExtensionInfoList.Add(new ExtensionInfo(item.Key, item.Value, ExtensionLookup.imageAndVideoExtensions.Contains(item.Key)));
                     //nrOfFilesInCurrentDir += item.Value;
                 }
                 this.moverModel.extensionInfoList = newExtensionInfoList;
@@ -137,7 +138,7 @@ namespace PictureMoverGui
                 //this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
 
                 worker = null;
-                this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+                this.moverModel.runningState = RunStates.Idle;
 
                 if (callback != null)
                 {

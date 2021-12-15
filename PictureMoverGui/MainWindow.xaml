@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:PictureMoverGui.Properties"
         xmlns:local="clr-namespace:PictureMoverGui"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" MinHeight="500" MinWidth="800">
     <Window.Resources>
-        <local:RadioButtonCheckedConverter x:Key="enumConverter"></local:RadioButtonCheckedConverter>
+        <local:PictureMoverModel x:Key="moverModel"></local:PictureMoverModel>
     </Window.Resources>
-    <TabControl SelectionChanged="TabControl_SelectionChanged">
+    <TabControl>
         <TabItem Header="{DynamicResource TabNormalView}">
-            <Grid Margin="0 20">
+            <local:SorterView DataContext="{Binding Source={StaticResource moverModel}}"></local:SorterView>
+            <!--<Grid Margin="0 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -72,10 +72,11 @@
                         <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
                     </Grid>
                 </Grid>
-            </Grid>  
+            </Grid>-->  
         </TabItem>
         <TabItem Header="{DynamicResource TabExtensionView}">
-            <Grid>
+            <local:ExtensionSelectorView DataContext="{Binding Source={StaticResource moverModel}}"></local:ExtensionSelectorView>
+            <!--<Grid>
                 <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <ListView 
                         Name="ListCustomer"
@@ -89,10 +90,11 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </ScrollViewer>
-            </Grid>
+            </Grid>-->
         </TabItem>
         <TabItem Header="Advanced">
-            <Grid>
+            <local:AdvancedOptionsView DataContext="{Binding Source={StaticResource moverModel}}"></local:AdvancedOptionsView>
+            <!--<Grid>
                 <WrapPanel>
                     <WrapPanel Width="800">
                         <Viewbox Height="60" Margin="10">
@@ -112,10 +114,11 @@
                         <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
                     </WrapPanel>
                 </WrapPanel>
-            </Grid>
+            </Grid>-->
         </TabItem>
         <TabItem Header="Events">
-            <Grid>
+            <local:EventListView DataContext="{Binding Source={StaticResource moverModel}}"></local:EventListView>
+            <!--<Grid>
                 <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <ListView 
                             Name="Bist"
@@ -162,7 +165,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </ScrollViewer>
-            </Grid>
+            </Grid>-->
         </TabItem>
     </TabControl>
 

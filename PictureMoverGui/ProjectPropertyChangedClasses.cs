@@ -6,6 +6,58 @@ using System.Windows;
 
 namespace PictureMoverGui
 {
+    public class ExtensionInfo : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string arg)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(arg));
+            }
+        }
+        public ExtensionInfo(string Name, int Amount, bool Active)
+        {
+            this._name = Name;
+            this._amount = Amount;
+            this._active = Active;
+        }
+
+        private string _name;
+        public string Name 
+        { 
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+
+        private int _amount;
+        public int Amount
+        {
+            get { return _amount; }
+            set
+            {
+                _amount = value;
+                OnPropertyChanged("Amount");
+            }
+        }
+
+        private bool _active;
+        public bool Active
+        {
+            get { return _active; }
+            set
+            {
+                _active = value;
+                OnPropertyChanged("Active");
+            }
+        }
+    }
+
     [Serializable]
     public class EventData : INotifyPropertyChanged
     {

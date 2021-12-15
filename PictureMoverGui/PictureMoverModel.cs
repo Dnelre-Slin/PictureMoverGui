@@ -10,26 +10,26 @@ namespace PictureMoverGui
 {
     public class PictureMoverModel : INotifyPropertyChanged
     {
-        public enum RunStates
-        {
-            DirectoryValidation,
-            DirectoryGathering,
-            RunningSorter,
-            Idle
-        }
+        //public enum RunStates
+        //{
+        //    DirectoryValidation,
+        //    DirectoryGathering,
+        //    RunningSorter,
+        //    Idle
+        //}
 
-        public class ExtensionInfo
-        {
-            public ExtensionInfo(string Name, int Amount, bool Active)
-            {
-                this.Name = Name;
-                this.Amount = Amount;
-                this.Active = Active;
-            }
-            public string Name { get; set; }
-            public int Amount { get; set; }
-            public bool Active { get; set; }
-        }
+        //public class ExtensionInfo
+        //{
+        //    public ExtensionInfo(string Name, int Amount, bool Active)
+        //    {
+        //        this.Name = Name;
+        //        this.Amount = Amount;
+        //        this.Active = Active;
+        //    }
+        //    public string Name { get; set; }
+        //    public int Amount { get; set; }
+        //    public bool Active { get; set; }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)
@@ -68,9 +68,9 @@ namespace PictureMoverGui
             _nameCollisionAction = NameCollisionActionEnum.CompareFiles;
             _compareFilesAction = CompareFilesActionEnum.MD5;
             _runningState = RunStates.Idle;
-            _nrOfFilesInCurrentDir = 0;
+            //_nrOfFilesInCurrentDir = 0;
             //_extensionMapInCurrentDir = new Dictionary<string, int>();
-            _extensionInfoList = new List<ExtensionInfo>();
+            _extensionInfoList = new ObservableCollection<ExtensionInfo>();
             _chkboxDoCopyChecked = false;
             _chkboxDoStructuredChecked = true;
             _chkboxDoRenameChecked = true;
@@ -236,47 +236,47 @@ namespace PictureMoverGui
             }
         }
 
-        private int _nrOfFilesInCurrentDir;
-        public int nrOfFilesInCurrentDir
-        {
-            get { return _nrOfFilesInCurrentDir; }
-            private set
-            {
-                _nrOfFilesInCurrentDir = value;
-                OnPropertyChanged("nrOfFilesInCurrentDir");
-            }
-        }
+        //private int _nrOfFilesInCurrentDir;
+        //public int nrOfFilesInCurrentDir
+        //{
+        //    get { return _nrOfFilesInCurrentDir; }
+        //    private set
+        //    {
+        //        _nrOfFilesInCurrentDir = value;
+        //        OnPropertyChanged("nrOfFilesInCurrentDir");
+        //    }
+        //}
 
-        private List<string> _validExtensionsInCurrentDir;
-        public List<string> validExtensionsInCurrentDir
-        {
-            get { return _validExtensionsInCurrentDir; }
-            private set
-            {
-                _validExtensionsInCurrentDir = value;
-                OnPropertyChanged("validExtensionsInCurrentDir");
-            }
-        }
+        //private List<string> _validExtensionsInCurrentDir;
+        //public List<string> validExtensionsInCurrentDir
+        //{
+        //    get { return _validExtensionsInCurrentDir; }
+        //    private set
+        //    {
+        //        _validExtensionsInCurrentDir = value;
+        //        OnPropertyChanged("validExtensionsInCurrentDir");
+        //    }
+        //}
 
-        private List<ExtensionInfo> _extensionInfoList;
-        public List<ExtensionInfo> extensionInfoList
+        private ObservableCollection<ExtensionInfo> _extensionInfoList;
+        public ObservableCollection<ExtensionInfo> extensionInfoList
         {
             get { return _extensionInfoList; }
             set
             {
                 _extensionInfoList = value;
-                int nrOfFiles = 0;
-                List<string> validExtension = new List<string>();
-                foreach (ExtensionInfo info in _extensionInfoList)
-                {
-                    if (info.Active) // Count files that have extensions that are 'Active'
-                    {
-                        nrOfFiles += info.Amount;
-                        validExtension.Add(info.Name);
-                    }
-                }
-                nrOfFilesInCurrentDir = nrOfFiles;
-                validExtensionsInCurrentDir = validExtension;
+                //int nrOfFiles = 0;
+                //List<string> validExtension = new List<string>();
+                //foreach (ExtensionInfo info in _extensionInfoList)
+                //{
+                //    if (info.Active) // Count files that have extensions that are 'Active'
+                //    {
+                //        nrOfFiles += info.Amount;
+                //        validExtension.Add(info.Name);
+                //    }
+                //}
+                //nrOfFilesInCurrentDir = nrOfFiles;
+                //validExtensionsInCurrentDir = validExtension;
                 OnPropertyChanged("extensionInfoList");
                 OnPropertyChanged("nrOfFilesInCurrentDir");
                 OnPropertyChanged("validExtensionsInCurrentDir");

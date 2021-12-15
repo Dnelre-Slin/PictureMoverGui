@@ -34,9 +34,9 @@ namespace PictureMoverGui
 
         private void StartDirValidation()
         {
-            if (this.moverModel.sourceDirSat && this.moverModel.runningState == PictureMoverModel.RunStates.Idle)
+            if (this.moverModel.sourceDirSat && this.moverModel.runningState == RunStates.Idle)
             {
-                this.moverModel.runningState = PictureMoverModel.RunStates.DirectoryValidation;
+                this.moverModel.runningState = RunStates.DirectoryValidation;
 
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.DoWork += worker_DirValidationDoWork;
@@ -80,7 +80,7 @@ namespace PictureMoverGui
         {
             WorkResult result = (WorkResult)e.Result;
 
-            this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+            this.moverModel.runningState = RunStates.Idle;
 
             switch(result)
             {

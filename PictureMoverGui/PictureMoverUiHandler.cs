@@ -19,7 +19,7 @@ namespace PictureMoverGui
         {
             if (this.moverModel.AllowStartingMover)
             {
-                this.moverModel.runningState = PictureMoverModel.RunStates.RunningSorter;
+                this.moverModel.runningState = RunStates.RunningSorter;
 
                 bool doCopy = false;
                 bool doMakeStructures = false;
@@ -79,7 +79,7 @@ namespace PictureMoverGui
             this.moverModel.statusPercentage = 0;
 
             worker = null;
-            this.moverModel.runningState = PictureMoverModel.RunStates.Idle;
+            this.moverModel.runningState = RunStates.Idle;
         }
 
     }

@@ -37,9 +37,9 @@ namespace PictureMoverGui
 
             this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
-            this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
+            //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
             //this.validExtensions = moverModel.validExtensionsInCurrentDir;
-            this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
+            //this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
             this.doStructured = moverModel.chkboxDoStructuredChecked;
             this.doRename = moverModel.chkboxDoRenameChecked;
             this.nameCollisionAction = moverModel.nameCollisionAction;
@@ -47,6 +47,18 @@ namespace PictureMoverGui
 
             this.nrOfErrors = 0;
             this.current_progress = 0;
+
+            this.total_files = 0;
+            this.validExtensions = new List<string>();
+            foreach (ExtensionInfo info in moverModel.extensionInfoList)
+            {
+                if (info.Active) // Count files that have extensions that are 'Active'
+                {
+                    this.total_files += info.Amount;
+                    this.validExtensions.Add(info.Name);
+                }
+            }
+            this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
 
             dirSearcher = null;
 
