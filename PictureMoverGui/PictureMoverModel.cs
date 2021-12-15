@@ -10,27 +10,6 @@ namespace PictureMoverGui
 {
     public class PictureMoverModel : INotifyPropertyChanged
     {
-        //public enum RunStates
-        //{
-        //    DirectoryValidation,
-        //    DirectoryGathering,
-        //    RunningSorter,
-        //    Idle
-        //}
-
-        //public class ExtensionInfo
-        //{
-        //    public ExtensionInfo(string Name, int Amount, bool Active)
-        //    {
-        //        this.Name = Name;
-        //        this.Amount = Amount;
-        //        this.Active = Active;
-        //    }
-        //    public string Name { get; set; }
-        //    public int Amount { get; set; }
-        //    public bool Active { get; set; }
-        //}
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)
         {
@@ -86,97 +65,16 @@ namespace PictureMoverGui
         }
 
 
-        //private bool _editDateTime;
-        //public bool editDateTime
+        //private EventData _eventData;
+        //public EventData eventData
         //{
-        //    get { return _editDateTime; }
+        //    get { return _eventData; }
         //    set
         //    {
-        //        _editDateTime = value;
-        //        OnPropertyChanged("editDateTime");
-        //        OnPropertyChanged("ShowEditableListOfStuff");
-        //        OnPropertyChanged("ShowNormalListOfStuff");
+        //        _eventData = value;
+        //        OnPropertyChanged("eventData");
         //    }
         //}
-
-        private EventData _eventData;
-        public EventData eventData
-        {
-            get { return _eventData; }
-            set
-            {
-                _eventData = value;
-                OnPropertyChanged("eventData");
-            }
-        }
-
-
-        private ObservableCollection<EventData> _eventDataList;
-        public ObservableCollection<EventData> eventDataList
-        {
-            get { return _eventDataList; }
-            set
-            {
-                _eventDataList = value;
-                OnPropertyChanged("eventDataList");
-            }
-        }
-
-        //public Visibility ShowEditableListOfStuff
-        //{
-        //    get { return editDateTime ? Visibility.Visible : Visibility.Collapsed; }
-        //}
-        //public Visibility ShowNormalListOfStuff
-        //{
-        //    get { return !editDateTime ? Visibility.Visible : Visibility.Collapsed; }
-        //}
-
-
-        //private string _timeString;
-        //public string timeString
-        //{
-        //    get { return _timeString; }
-        //    set
-        //    {
-        //        _timeString = value;
-        //        OnPropertyChanged("timeString");
-        //    }
-        //} 
-
-        //private List<string> _listOfStuffHours;
-        //public List<string> listOfStuffHours
-        //{
-        //    get { return _listOfStuffHours; }
-        //}
-
-        //private List<string> _listOfStuffMinutesAndSeconds;
-        //public List<string> listOfStuffMinutesAndSeconds
-        //{
-        //    get { return _listOfStuffMinutesAndSeconds; }
-        //}
-
-
-        //public Visibility ShowEditableListOfStuff
-        //{
-        //    get { return !chkboxDoCopyChecked ? Visibility.Visible : Visibility.Collapsed; }
-        //}
-        //public Visibility ShowNormalListOfStuff
-        //{
-        //    get { return chkboxDoCopyChecked ? Visibility.Visible : Visibility.Collapsed; }
-        //}
-
-
-        //private EventStruct _eventThing;
-        //public EventStruct eventThing
-        //{
-        //    get { return _eventThing; }
-        //    set
-        //    {
-        //        _eventThing = value;
-        //        OnPropertyChanged("eventThing");
-        //    }
-        //}
-
 
         private bool _disableAllConfigDuringRun;
         public bool disableAllConfigDuringRun
@@ -236,28 +134,6 @@ namespace PictureMoverGui
             }
         }
 
-        //private int _nrOfFilesInCurrentDir;
-        //public int nrOfFilesInCurrentDir
-        //{
-        //    get { return _nrOfFilesInCurrentDir; }
-        //    private set
-        //    {
-        //        _nrOfFilesInCurrentDir = value;
-        //        OnPropertyChanged("nrOfFilesInCurrentDir");
-        //    }
-        //}
-
-        //private List<string> _validExtensionsInCurrentDir;
-        //public List<string> validExtensionsInCurrentDir
-        //{
-        //    get { return _validExtensionsInCurrentDir; }
-        //    private set
-        //    {
-        //        _validExtensionsInCurrentDir = value;
-        //        OnPropertyChanged("validExtensionsInCurrentDir");
-        //    }
-        //}
-
         private ObservableCollection<ExtensionInfo> _extensionInfoList;
         public ObservableCollection<ExtensionInfo> extensionInfoList
         {
@@ -265,34 +141,22 @@ namespace PictureMoverGui
             set
             {
                 _extensionInfoList = value;
-                //int nrOfFiles = 0;
-                //List<string> validExtension = new List<string>();
-                //foreach (ExtensionInfo info in _extensionInfoList)
-                //{
-                //    if (info.Active) // Count files that have extensions that are 'Active'
-                //    {
-                //        nrOfFiles += info.Amount;
-                //        validExtension.Add(info.Name);
-                //    }
-                //}
-                //nrOfFilesInCurrentDir = nrOfFiles;
-                //validExtensionsInCurrentDir = validExtension;
                 OnPropertyChanged("extensionInfoList");
                 OnPropertyChanged("nrOfFilesInCurrentDir");
                 OnPropertyChanged("validExtensionsInCurrentDir");
             }
         }
 
-        //private Dictionary<string, int> _extensionMapInCurrentDir;
-        //public Dictionary<string, int> extensionMapInCurrentDir
-        //{
-        //    get { return _extensionMapInCurrentDir; }
-        //    set
-        //    {
-        //        _extensionMapInCurrentDir = value;
-        //        OnPropertyChanged("extensionMapInCurrentDir");
-        //    }
-        //}
+        private ObservableCollection<EventData> _eventDataList;
+        public ObservableCollection<EventData> eventDataList
+        {
+            get { return _eventDataList; }
+            set
+            {
+                _eventDataList = value;
+                OnPropertyChanged("eventDataList");
+            }
+        }
 
         private bool _chkboxDoCopyChecked;
         public bool chkboxDoCopyChecked

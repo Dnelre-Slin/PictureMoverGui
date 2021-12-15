@@ -38,11 +38,6 @@
                                 <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
                                 <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
                             </DockPanel>
-                            <!--<DockPanel Grid.Column="1" Visibility="{Binding ShowNormalView}">
-                                <TextBlock Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
-                                <TextBlock Text=" - "></TextBlock>
-                                <TextBlock Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
-                            </DockPanel>-->
                             <CheckBox Grid.Column="4" Content="Edit" IsChecked="{Binding Edit}"></CheckBox>
                             <DockPanel Grid.Column="4">
                                 <Button Width="30" Content="✎" Click="btnEventData_Click"></Button>
