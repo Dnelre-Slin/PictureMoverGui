@@ -11,41 +11,60 @@
             <ListView 
                 Name="EventList"
                 ItemsSource="{Binding eventDataList}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MinHeight="30" MinWidth="700">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Width="140" Grid.Column="0" Visibility="{Binding ShowNormalView}" Text="{Binding Name}"></TextBlock>
-                            <TextBox Width="140"  Grid.Column="0" Visibility="{Binding ShowEditableView}" Text="{Binding Name}"></TextBox>
-                            <TextBlock Width="250" Grid.Column="1" Visibility="{Binding ShowNormalView}" Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
-                            <DockPanel Width="250" Grid.Column="1" Visibility="{Binding ShowEditableView}">
-                                <DatePicker SelectedDateFormat="Short" Text="{Binding StartDateTime.Date, Mode=TwoWay}"></DatePicker>
-                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidHours}" SelectedItem="{Binding StartDateTime.Hour}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Minute}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Second}"></ComboBox>
-                            </DockPanel>
-                            <TextBlock Grid.Column="2" Text=" - "></TextBlock>
-                            <TextBlock Width="250" Grid.Column="2" Visibility="{Binding ShowNormalView}" Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
-                            <DockPanel Width="250" Grid.Column="2" Visibility="{Binding ShowEditableView}">
-                                <DatePicker SelectedDateFormat="Short" Text="{Binding EndDateTime.Date, Mode=TwoWay}"></DatePicker>
-                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidHours}" SelectedItem="{Binding EndDateTime.Hour}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
-                                <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
-                            </DockPanel>
-                            <CheckBox Grid.Column="4" Content="Edit" IsChecked="{Binding Edit}"></CheckBox>
-                            <DockPanel Grid.Column="4">
-                                <Button Width="30" Content="✎" Click="btnEventData_Click"></Button>
-                                <Button Width="30" Content="🗑" Click="btnEventData_Click"></Button>
-                            </DockPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding Name}"></TextBlock>
+                                        <TextBox Visibility="{Binding ShowEditableView}" Text="{Binding Name}"></TextBox>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Start time" Width="140">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
+                                        <DockPanel Visibility="{Binding ShowEditableView}">
+                                            <DatePicker SelectedDateFormat="Short" Text="{Binding StartDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidHours}" SelectedItem="{Binding StartDateTime.Hour}"></ComboBox>
+                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Minute}"></ComboBox>
+                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Second}"></ComboBox>
+                                        </DockPanel>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="End time" Width="140">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
+                                        <DockPanel Visibility="{Binding ShowEditableView}">
+                                            <DatePicker SelectedDateFormat="Short" Text="{Binding EndDateTime.Date, Mode=TwoWay}"></DatePicker>
+                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidHours}" SelectedItem="{Binding EndDateTime.Hour}"></ComboBox>
+                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
+                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
+                                        </DockPanel>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions" Width="140">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Button Margin="5 0" Width="30" Content="✎" Click="btnEventData_Click"></Button>
+                                        <Button Margin="5 0" Width="30" Content="🗑" Click="btnEventData_Click"></Button>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
             </ListView>
         </ScrollViewer>
     </Grid>
