@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Threading;
@@ -37,6 +37,8 @@ namespace PictureMoverGui
             Trace.AutoFlush = true;
 
             InitializeComponent();
+
+
             this.moverModel = new PictureMoverModel();
             this.DataContext = this.moverModel;
 
@@ -117,6 +119,23 @@ namespace PictureMoverGui
             }
         }
 
+        private void btnEventData_Click(object sender, RoutedEventArgs e)
+        {
+            //try
+            //{
+            Trace.WriteLine("Clicked");
+                Button button = sender as Button;
+            EventData edl = button.DataContext as EventData;
+            edl.Edit = !edl.Edit;
+            Trace.WriteLine(edl.Name);
+            Trace.WriteLine(this.moverModel.eventDataList.IndexOf(edl));
+            //}
+            //catch (Exception err)
+            //{
+            //    Trace.TraceError(err.Message);
+            //}
+        }
+
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //Trace.TraceInformation("TabControl changed");
@@ -129,6 +148,7 @@ namespace PictureMoverGui
             Trace.WriteLine(this.moverModel.compareFilesAction);
             EventData ed = new EventData("Test", new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4)), new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4)));
             EventDateTime edt = new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4));
+            Trace.WriteLine(edt.DateTimePrettyString);
             Trace.WriteLine(edt.Hour);
             Trace.WriteLine(edt.Minute);
             Trace.WriteLine(edt.ListOfValidHours);
