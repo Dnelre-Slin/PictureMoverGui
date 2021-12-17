@@ -20,6 +20,7 @@ namespace PictureMoverGui
         private bool doRename;
         private NameCollisionActionEnum nameCollisionAction;
         private CompareFilesActionEnum compareFilesAction;
+        private List<SimpleEventData> eventData;
 
         private int nrOfErrors;
         private int current_progress;
@@ -44,6 +45,7 @@ namespace PictureMoverGui
             this.doRename = moverModel.chkboxDoRenameChecked;
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
+            this.eventData = Simplifiers.ToSimpleList(moverModel.eventDataList);
 
             this.nrOfErrors = 0;
             this.current_progress = 0;

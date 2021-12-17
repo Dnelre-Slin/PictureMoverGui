@@ -50,5 +50,51 @@ namespace PictureMoverGui
             //    Trace.TraceError(err.Message);
             //}
         }
+
+        private void btnEventListEdit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button button = sender as Button;
+                this.moverModel.eventDataEdit = button.DataContext as EventData; // Set this event data to the eventDataEdit.
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+        }
+
+        private void btnEventListDelete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button button = sender as Button;
+                EventData eventDataToRemove = button.DataContext as EventData;
+
+                MessageBoxResult result = MessageBox.Show($"{App.Current.FindResource("MessageBoxDeleteEventText")} \"{eventDataToRemove.Name}\"?", $"{App.Current.FindResource("MessageBoxDeleteEventTitle")} \"{eventDataToRemove.Name}\"", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    this.moverModel.eventDataList.Remove(eventDataToRemove);
+                }
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+        }
+
+        private void btnEventListCreate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                EventData newEventData = new EventData("New Event", new EventDateTime(DateTime.Now), new EventDateTime(DateTime.Now));
+                this.moverModel.eventDataList.Add(newEventData);
+                this.moverModel.eventDataEdit = newEventData;
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+        }
     }
 }

@@ -17,6 +17,9 @@
         <System:String x:Key="DoneStatusMessage">Done</System:String>-->
         <!--<System:String x:Key="ErrorStatusMessage">Done, with errors. Number of errors: </System:String>-->
 
+        <!--<System:String x:Key="MessageBoxDeleteEventTitle">Delete event</System:String>
+        <System:String x:Key="MessageBoxDeleteEventText">Are you sure you want to delete the event</System:String>-->
+
         <System:String x:Key="SourceLabelContent">Usortert mappe:</System:String>
         <System:String x:Key="DestinationLabelContent">Sortert mappe:</System:String>
         <System:String x:Key="FolderButtonContent">Velg mappe</System:String>
@@ -35,6 +38,9 @@
         <System:String x:Key="DirGatherStatusMessage">Prosesserer...</System:String>
         <System:String x:Key="TabNormalView">Sorterer</System:String>
         <System:String x:Key="TabExtensionView">Filtyper</System:String>
+
+        <System:String x:Key="MessageBoxDeleteEventTitle">Slett hendelse</System:String>
+        <System:String x:Key="MessageBoxDeleteEventText">Er du sikker på at du vil slette hendelse</System:String>
         
         <System:Double x:Key="DoneStatusMessageTime">3</System:Double>
     </Application.Resources>

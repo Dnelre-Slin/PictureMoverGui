@@ -136,36 +136,12 @@ namespace PictureMoverGui
             }
         }
 
-        [NonSerialized] private bool _edit;
-        public bool Edit
-        {
-            get { return _edit; }
-            set
-            {
-                _edit = value;
-                OnPropertyChanged("Edit");
-                OnPropertyChanged("ShowEditableView");
-                OnPropertyChanged("ShowNormalView");
-            }
-        }
-
-        public Visibility ShowEditableView => Edit ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility ShowNormalView => !Edit ? Visibility.Visible : Visibility.Collapsed;
-
         public bool ValidDateOrder => StartDateTime.ToDateTime() <= EndDateTime.ToDateTime();
     }
 
     [Serializable]
     public class EventDateTime: INotifyPropertyChanged
     {
-        public static bool operator >=(EventDateTime left, EventDateTime right)
-        {
-            return left.DateTimePrettyString.CompareTo(right.DateTimePrettyString) >= 0;
-        }        
-        public static bool operator <=(EventDateTime left, EventDateTime right)
-        {
-            return left.DateTimePrettyString.CompareTo(right.DateTimePrettyString) <= 0;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)

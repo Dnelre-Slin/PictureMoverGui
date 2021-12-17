@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ScrollViewer Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView 
                 Name="EventList"
                 ItemsSource="{Binding eventDataList}">
@@ -17,8 +21,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding Name}"></TextBlock>
-                                        <TextBox Visibility="{Binding ShowEditableView}" Text="{Binding Name}"></TextBox>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -27,13 +30,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
-                                        <DockPanel Visibility="{Binding ShowEditableView}">
-                                            <DatePicker SelectedDateFormat="Short" Text="{Binding StartDateTime.Date, Mode=TwoWay}"></DatePicker>
-                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidHours}" SelectedItem="{Binding StartDateTime.Hour}"></ComboBox>
-                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Minute}"></ComboBox>
-                                            <ComboBox ItemsSource="{Binding StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding StartDateTime.Second}"></ComboBox>
-                                        </DockPanel>
+                                        <TextBlock Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -42,13 +39,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Visibility="{Binding ShowNormalView}" Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
-                                        <DockPanel Visibility="{Binding ShowEditableView}">
-                                            <DatePicker SelectedDateFormat="Short" Text="{Binding EndDateTime.Date, Mode=TwoWay}"></DatePicker>
-                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidHours}" SelectedItem="{Binding EndDateTime.Hour}"></ComboBox>
-                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Minute}"></ComboBox>
-                                            <ComboBox ItemsSource="{Binding EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding EndDateTime.Second}"></ComboBox>
-                                        </DockPanel>
+                                        <TextBlock Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -57,8 +48,8 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <Button Margin="5 0" Width="30" Content="✎" Click="btnEventData_Click"></Button>
-                                        <Button Margin="5 0" Width="30" Content="🗑" Click="btnEventData_Click"></Button>
+                                        <Button Margin="5 0" Width="30" Content="✎" Click="btnEventListEdit_Click"></Button>
+                                        <Button Margin="5 0" Width="30" Content="🗑" Click="btnEventListDelete_Click"></Button>
                                     </DockPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -67,5 +58,8 @@
                 </ListView.View>
             </ListView>
         </ScrollViewer>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Margin="30 0" MinWidth="80" Content="Add event" Click="btnEventListCreate_Click"></Button>
+        </WrapPanel>
     </Grid>
 </UserControl>
