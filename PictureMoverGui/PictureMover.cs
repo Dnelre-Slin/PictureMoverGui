@@ -100,7 +100,6 @@ namespace PictureMoverGui
 
         private string GetNewFilename(FileInfo file, DirectoryInfo destinationDir)
         {
-
             string new_filename = file.Name;
             if (this.doRename) // Do date prefix renaming. Example: filename.png -> 20210304_filename.png
             {
