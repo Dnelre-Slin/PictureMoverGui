@@ -22,8 +22,14 @@
             <local:AdvancedOptionsView DataContext="{Binding Source={StaticResource moverModel}}"></local:AdvancedOptionsView>
         </TabItem>
         <TabItem Header="Events">
-            <local:EventListView DataContext="{Binding Source={StaticResource moverModel}}"></local:EventListView>
+            <Grid>
+                <local:EventListView Visibility="{Binding ShowEventListView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventListView>
+                <local:EventEditView Visibility="{Binding ShowEventEditView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventEditView>
+            </Grid>
         </TabItem>
+        <!--<TabItem Header="EventEdit">
+            <local:EventEditView DataContext="{Binding Source={StaticResource moverModel}}"></local:EventEditView>
+        </TabItem>-->
     </TabControl>
 
 </Window>

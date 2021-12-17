@@ -40,9 +40,10 @@ namespace PictureMoverGui
             Trace.WriteLine("Clicked");
             Button button = sender as Button;
             EventData edl = button.DataContext as EventData;
-            edl.Edit = !edl.Edit;
+            //edl.Edit = !edl.Edit;
             Trace.WriteLine(edl.Name);
             Trace.WriteLine(this.moverModel.eventDataList.IndexOf(edl));
+            this.moverModel.eventDataEdit = edl;
             //}
             //catch (Exception err)
             //{

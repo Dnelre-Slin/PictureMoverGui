@@ -41,6 +41,7 @@ namespace PictureMoverGui
             _eventDataList.Add(eventData1);
             _eventDataList.Add(eventData2);
 
+            _eventDataEdit = null;
 
             _sourceDirSat = false;
             _destinationDirSat = false;
@@ -64,17 +65,6 @@ namespace PictureMoverGui
             labelDestinationDirContent = Properties.Settings.Default.SortedDir;
         }
 
-
-        //private EventData _eventData;
-        //public EventData eventData
-        //{
-        //    get { return _eventData; }
-        //    set
-        //    {
-        //        _eventData = value;
-        //        OnPropertyChanged("eventData");
-        //    }
-        //}
 
         private bool _disableAllConfigDuringRun;
         public bool disableAllConfigDuringRun
@@ -155,6 +145,22 @@ namespace PictureMoverGui
             {
                 _eventDataList = value;
                 OnPropertyChanged("eventDataList");
+                OnPropertyChanged("eventDataEdit");
+                OnPropertyChanged("ShowEventListView");
+                OnPropertyChanged("ShowEventEditView");
+            }
+        }
+
+        private EventData _eventDataEdit;
+        public EventData eventDataEdit
+        {
+            get { return _eventDataEdit; }
+            set
+            {
+                _eventDataEdit = value;
+                OnPropertyChanged("eventDataEdit");
+                OnPropertyChanged("ShowEventListView");
+                OnPropertyChanged("ShowEventEditView");
             }
         }
 
@@ -346,6 +352,16 @@ namespace PictureMoverGui
         public bool AllowConfigationButtons
         {
             get { return !disableAllConfigDuringRun || runningState != RunStates.RunningSorter; }
+        }
+
+        public Visibility ShowEventListView
+        {
+            get { return _eventDataEdit == null ? Visibility.Visible : Visibility.Collapsed; }
+        }    
+        
+        public Visibility ShowEventEditView
+        {
+            get { return _eventDataEdit != null ? Visibility.Visible : Visibility.Collapsed; }
         }
     }
 }

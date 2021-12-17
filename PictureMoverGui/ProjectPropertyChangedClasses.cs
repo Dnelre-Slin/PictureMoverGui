@@ -71,11 +71,18 @@ namespace PictureMoverGui
             }
         }
 
+        private void ChildDateTimeChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("StartDateTime");
+            OnPropertyChanged("EndDateTime");
+            OnPropertyChanged("ValidDateOrder");
+        }
+
         public EventData(string Name, EventDateTime StartDateTime, EventDateTime EndDateTime)
         {
-            this._name = Name;
-            this._startDateTime = StartDateTime;
-            this._endDateTime = EndDateTime;
+            this.Name = Name;
+            this.StartDateTime = StartDateTime;
+            this.EndDateTime = EndDateTime;
         }
 
         private string _name;
@@ -95,8 +102,17 @@ namespace PictureMoverGui
             get { return _startDateTime; }
             set
             {
+                if (_startDateTime != null)
+                {
+                    _startDateTime.PropertyChanged -= ChildDateTimeChanged;
+                }
                 _startDateTime = value;
+                if (_startDateTime != null)
+                {
+                    _startDateTime.PropertyChanged += ChildDateTimeChanged;
+                }
                 OnPropertyChanged("StartDateTime");
+                OnPropertyChanged("ValidDateOrder");
             }
         }
 
@@ -106,8 +122,17 @@ namespace PictureMoverGui
             get { return _endDateTime; }
             set
             {
+                if (_endDateTime != null)
+                {
+                    _endDateTime.PropertyChanged -= ChildDateTimeChanged;
+                }
                 _endDateTime = value;
+                if (_endDateTime != null)
+                {
+                    _endDateTime.PropertyChanged += ChildDateTimeChanged;
+                }
                 OnPropertyChanged("EndDateTime");
+                OnPropertyChanged("ValidDateOrder");
             }
         }
 
@@ -126,11 +151,22 @@ namespace PictureMoverGui
 
         public Visibility ShowEditableView => Edit ? Visibility.Visible : Visibility.Collapsed;
         public Visibility ShowNormalView => !Edit ? Visibility.Visible : Visibility.Collapsed;
+
+        public bool ValidDateOrder => StartDateTime.ToDateTime() <= EndDateTime.ToDateTime();
     }
 
     [Serializable]
     public class EventDateTime: INotifyPropertyChanged
     {
+        public static bool operator >=(EventDateTime left, EventDateTime right)
+        {
+            return left.DateTimePrettyString.CompareTo(right.DateTimePrettyString) >= 0;
+        }        
+        public static bool operator <=(EventDateTime left, EventDateTime right)
+        {
+            return left.DateTimePrettyString.CompareTo(right.DateTimePrettyString) <= 0;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string arg)
         {
@@ -210,5 +246,10 @@ namespace PictureMoverGui
 
         public List<string> ListOfValidHours => StaticListOfValidHours;
         public List<string> ListOfValidMinutesAndSeconds => StaticListOfValidMinutesAndSeconds;
+
+        public DateTime ToDateTime()
+        {
+            return DateTime.Parse(DateTimePrettyString);
+        }
     }
 }
