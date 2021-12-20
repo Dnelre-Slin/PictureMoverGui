@@ -11,35 +11,41 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-            <WrapPanel>
-                <TextBlock MinWidth="100"  Text="{Binding eventDataEdit.Name}"></TextBlock>
-                <TextBox MinWidth="100"  Text="{Binding eventDataEdit.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock MinWidth="100"  Text="{Binding eventDataEdit.StartDateTime.DateTimePrettyString}"></TextBlock>
-                <DockPanel>
-                    <DatePicker SelectedDateFormat="Short" Text="{Binding eventDataEdit.StartDateTime.Date, Mode=TwoWay}"></DatePicker>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.StartDateTime.Hour}"></ComboBox>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Minute}"></ComboBox>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Second}"></ComboBox>
-                </DockPanel>
-                <Button Content="From file" Click="btnOpenStartDateFile_Click"></Button>
-                <TextBlock MinWidth="100"  Text="{Binding eventDataEdit.ValidDateOrder}"></TextBlock>
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock MinWidth="100"  Text="{Binding eventDataEdit.EndDateTime.DateTimePrettyString}"></TextBlock>
-                <DockPanel>
-                    <DatePicker SelectedDateFormat="Short" Text="{Binding eventDataEdit.EndDateTime.Date, Mode=TwoWay}"></DatePicker>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.EndDateTime.Hour}"></ComboBox>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Minute}"></ComboBox>
-                    <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Second}"></ComboBox>
-                </DockPanel>
-                <Button Content="From file" Click="btnOpenEndDateFile_Click"></Button>
-            </WrapPanel>
+        <StackPanel Grid.Row="0" Margin="10">
+            <GroupBox Margin="10" Header="Name of event" FontSize="15">
+                <WrapPanel Margin="10">
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.Name}"></TextBlock>
+                    <TextBox MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Margin="10" Header="Start date" FontSize="15">
+                <WrapPanel Margin="10">
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.StartDateTime.DateTimePrettyString}"></TextBlock>
+                    <DockPanel Margin="0 0 10 0">
+                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding eventDataEdit.StartDateTime.Date, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.StartDateTime.Hour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Minute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Second}"></ComboBox>
+                    </DockPanel>
+                    <Button Margin="10 0" Padding="2" Content="Date from file" Click="btnOpenStartDateFile_Click"></Button>
+                    <TextBlock MinWidth="100"  Text="{Binding eventDataEdit.ValidDateOrder}"></TextBlock>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Margin="10" Header="End date" FontSize="15">
+                <WrapPanel Margin="10">
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.EndDateTime.DateTimePrettyString}"></TextBlock>
+                    <DockPanel Margin="0 0 10 0">
+                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding eventDataEdit.EndDateTime.Date, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.EndDateTime.Hour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Minute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Second}"></ComboBox>
+                    </DockPanel>
+                    <Button Margin="10 0" Padding="2" Content="Date from file" Click="btnOpenEndDateFile_Click"></Button>
+                </WrapPanel>
+            </GroupBox>
         </StackPanel>
         <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Button MinWidth="50" Margin="10 0 10 0" Content="Back" Click="btnBack_Click"></Button>
+            <Button MinWidth="50" Margin="10 0 10 0" FontSize="15" Content="Back" Click="btnBack_Click"></Button>
         </WrapPanel>
     </Grid>
 </UserControl>

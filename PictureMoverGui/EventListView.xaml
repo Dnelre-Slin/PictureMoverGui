@@ -11,7 +11,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer FontSize="15" Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView 
                 Name="EventList"
                 ItemsSource="{Binding eventDataList}">
@@ -26,7 +26,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Start time" Width="140">
+                        <GridViewColumn Header="Start time" Width="160">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
@@ -35,7 +35,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="End time" Width="140">
+                        <GridViewColumn Header="End time" Width="160">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>

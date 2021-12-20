@@ -11,7 +11,10 @@
     </UserControl.Resources>
     <Grid>
         <WrapPanel Orientation="Vertical">
-            <GroupBox Header="Name Collision Action" Padding="10" Margin="10">
+            <GroupBox Padding="10" Margin="10">
+                <GroupBox.Header>
+                    <TextBlock Text="Name Collision Action" FontSize="15"></TextBlock>
+                </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
@@ -20,7 +23,10 @@
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>
-            <GroupBox Header="Name Compare Operation" Padding="10" Margin="10">
+            <GroupBox Padding="10" Margin="10">
+                <GroupBox.Header>
+                    <TextBlock Text="Name Compare Operation" FontSize="15"></TextBlock>
+                </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
