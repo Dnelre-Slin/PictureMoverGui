@@ -34,6 +34,9 @@ namespace PictureMoverGui
 
             //_editDateTime = false;
 
+            _disableAllConfigDuringRun = true;
+
+
             EventData eventData1 = new EventData("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
             EventData eventData2 = new EventData("New York", new EventDateTime(new DateTime(2015, 11, 11, 09, 17, 54)), new EventDateTime(new DateTime(2015, 12, 02, 11, 12, 05)));
 
