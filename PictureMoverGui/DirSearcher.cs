@@ -21,6 +21,13 @@ namespace PictureMoverGui
             this.validExtensions = validExtensions;
         }
 
+        public List<FileInfo> GetAllFileInfosInDirectoryRecursively(DirectoryInfo d, int estimated_amount)
+        {
+            List<FileInfo> fileInfos = new List<FileInfo>(estimated_amount);
+            this.DirSearch(d, (subD, file) => { fileInfos.Add(file); });
+            return fileInfos;
+        }
+
         public void DirSearch(DirectoryInfo d, Action<DirectoryInfo, FileInfo> callback)
         {
             try

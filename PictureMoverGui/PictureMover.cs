@@ -28,11 +28,12 @@ namespace PictureMoverGui
 
         //const int max_rename_tries = 100;
 
-        Action<FileInfo, string, string> copyOrMoveTransferAction;
-        Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
-        Func<FileInfo, string> datePrependOrOriginalFilenameAction;
+        private Action<FileInfo, string, string> copyOrMoveTransferAction;
+        private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
+        private Func<FileInfo, string> datePrependOrOriginalFilenameAction;
 
-        DirSearcher dirSearcher;
+        private DirSearcher dirSearcher;
+        private bool cancel;
 
         public PictureMover(PictureMoverModel moverModel, BackgroundWorker worker_sender)
         {
@@ -50,6 +51,8 @@ namespace PictureMoverGui
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
             this.eventDataList = Simplifiers.EventListToSimpleList(moverModel.eventDataList);
+
+            this.cancel = false;
 
             this.nrOfErrors = 0;
             this.current_progress = 0;
@@ -103,7 +106,18 @@ namespace PictureMoverGui
 
             dirSearcher = new DirSearcher(this.validExtensions);
 
-            dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
+            List<FileInfo> fileInfos = dirSearcher.GetAllFileInfosInDirectoryRecursively(d, this.total_files);
+
+            foreach (FileInfo fileInfo in fileInfos)
+            {
+                DoStructuredOrDirectTransferFile(null, fileInfo);
+                if (this.cancel)
+                {
+                    break;
+                }
+            }
+
+            //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
 
             //if (this.doStructured)
             //{
@@ -120,7 +134,7 @@ namespace PictureMoverGui
             return this.nrOfErrors;
         }
 
-        private void DoStructuredOrDirectTransferFile(DirectoryInfo d, FileInfo file)
+        private void DoStructuredOrDirectTransferFile(DirectoryInfo _, FileInfo file)
         {
             //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             DirectoryInfo destinationDir = GetDestinationDirectory(file);
@@ -148,6 +162,7 @@ namespace PictureMoverGui
             if (worker_sender.CancellationPending)
             {
                 this.dirSearcher.cancel = true;
+                this.cancel = true;
                 return;
             }
 
