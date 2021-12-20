@@ -12,7 +12,7 @@
     <Grid>
         <WrapPanel Orientation="Vertical">
             <GroupBox Header="Name Collision Action" Padding="10" Margin="10">
-                <Viewbox Height="60">
+                <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
@@ -21,7 +21,7 @@
                 </Viewbox>
             </GroupBox>
             <GroupBox Header="Name Compare Operation" Padding="10" Margin="10">
-                <Viewbox Height="60">
+                <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.MD5}}" Content="Name, date and MD5"></RadioButton>
