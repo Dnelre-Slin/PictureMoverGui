@@ -23,15 +23,26 @@
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>
-            <GroupBox Padding="10" Margin="10">
+            <GroupBox Padding="10" Margin="10" IsEnabled="{Binding CompareFilesOptionsEditable}">
                 <GroupBox.Header>
                     <TextBlock Text="File Compare Operation" FontSize="15"></TextBlock>
                 </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
-                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.MD5}}" Content="Name, date and MD5"></RadioButton>
-                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.SHA256}}" Content="Name, date and SHA256"></RadioButton>
+                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndHashOnly}}" Content="Name and hash only"></RadioButton>
+                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameDateAndHash}}" Content="Name, date and hash"></RadioButton>
+                    </WrapPanel>
+                </Viewbox>
+            </GroupBox>
+            <GroupBox Padding="10" Margin="10" IsEnabled="{Binding HashTypeOptionsEditable}">
+                <GroupBox.Header>
+                    <TextBlock Text="Hash Type" FontSize="15"></TextBlock>
+                </GroupBox.Header>
+                <Viewbox Height="40" HorizontalAlignment="Left">
+                    <WrapPanel Orientation="Vertical">
+                        <RadioButton GroupName="CompareHash" IsChecked="{Binding hashTypeAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:HashTypeEnum.MD5}}" Content="MD5"></RadioButton>
+                        <RadioButton GroupName="CompareHash" IsChecked="{Binding hashTypeAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:HashTypeEnum.SHA256}}" Content="SHA256"></RadioButton>
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>

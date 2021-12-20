@@ -22,6 +22,12 @@ namespace PictureMoverGui
     public enum CompareFilesActionEnum
     {
         NameAndDateOnly,
+        NameAndHashOnly,
+        NameDateAndHash
+    }
+
+    public enum HashTypeEnum
+    {
         MD5,
         SHA256
     }

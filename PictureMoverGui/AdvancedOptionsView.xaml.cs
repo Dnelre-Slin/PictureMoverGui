@@ -36,27 +36,31 @@ namespace PictureMoverGui
 
         private void btnTestOutput_Click(object sender, RoutedEventArgs e)
         {
+            //Trace.WriteLine(this.moverModel.nameCollisionAction);
+            //Trace.WriteLine(this.moverModel.compareFilesAction);
+            //EventData ed = new EventData("Test", new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4)), new EventDateTime(new DateTime(2017, 11, 03, 3, 3, 4)));
+            //EventDateTime edt = new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4));
+            //Trace.WriteLine(edt.DateTimePrettyString);
+            //Trace.WriteLine(edt.Hour);
+            //Trace.WriteLine(edt.Minute);
+            //Trace.WriteLine(edt.ListOfValidHours);
+            ////System.IO.DirectoryInfo d = new System.IO.DirectoryInfo("");
+
+            //foreach (var s in this.moverModel.extensionInfoList)
+            //{
+            //    Trace.WriteLine($"{s.Name} : {s.Active}");
+            //}
+
+            ////DateTime eddt = DateTime.Parse(ed.StartDateTime.DateTimePrettyString);
+            ////Trace.WriteLine(ed.StartDateTime.ToDateTime().DayOfWeek);            
+            ////Trace.WriteLine(this.moverModel.eventData.ValidDateOrder);
+            //Trace.WriteLine(DateTime.Now.Ticks);
+            //Trace.WriteLine(DateTime.MinValue);
+            //Trace.WriteLine(DateTime.MaxValue);
+
             Trace.WriteLine(this.moverModel.nameCollisionAction);
             Trace.WriteLine(this.moverModel.compareFilesAction);
-            EventData ed = new EventData("Test", new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4)), new EventDateTime(new DateTime(2017, 11, 03, 3, 3, 4)));
-            EventDateTime edt = new EventDateTime(new DateTime(2017, 11, 03, 2, 3, 4));
-            Trace.WriteLine(edt.DateTimePrettyString);
-            Trace.WriteLine(edt.Hour);
-            Trace.WriteLine(edt.Minute);
-            Trace.WriteLine(edt.ListOfValidHours);
-            //System.IO.DirectoryInfo d = new System.IO.DirectoryInfo("");
-
-            foreach (var s in this.moverModel.extensionInfoList)
-            {
-                Trace.WriteLine($"{s.Name} : {s.Active}");
-            }
-
-            //DateTime eddt = DateTime.Parse(ed.StartDateTime.DateTimePrettyString);
-            //Trace.WriteLine(ed.StartDateTime.ToDateTime().DayOfWeek);            
-            //Trace.WriteLine(this.moverModel.eventData.ValidDateOrder);
-            Trace.WriteLine(DateTime.Now.Ticks);
-            Trace.WriteLine(DateTime.MinValue);
-            Trace.WriteLine(DateTime.MaxValue);
+            Trace.WriteLine(this.moverModel.hashTypeAction);
 
             //Trace.WriteLine(this.moverModel.eventThing);
             //Trace.WriteLine(Properties.Settings.Default.EventList.ToString());

@@ -49,7 +49,8 @@ namespace PictureMoverGui
             _sourceDirSat = false;
             _destinationDirSat = false;
             _nameCollisionAction = NameCollisionActionEnum.CompareFiles;
-            _compareFilesAction = CompareFilesActionEnum.MD5;
+            _compareFilesAction = CompareFilesActionEnum.NameDateAndHash;
+            _hashTypeAction = HashTypeEnum.MD5;
             _runningState = RunStates.Idle;
             //_nrOfFilesInCurrentDir = 0;
             //_extensionMapInCurrentDir = new Dictionary<string, int>();
@@ -271,6 +272,8 @@ namespace PictureMoverGui
             {
                 _nameCollisionAction = value;
                 OnPropertyChanged("nameCollisionAction");
+                OnPropertyChanged("CompareFilesOptionsEditable");
+                OnPropertyChanged("HashTypeOptionsEditable");
             }
         }
 
@@ -282,6 +285,18 @@ namespace PictureMoverGui
             {
                 _compareFilesAction = value;
                 OnPropertyChanged("compareFilesAction");
+                OnPropertyChanged("HashTypeOptionsEditable");
+            }
+        }
+
+        private HashTypeEnum _hashTypeAction;
+        public HashTypeEnum hashTypeAction
+        {
+            get { return _hashTypeAction; }
+            set
+            {
+                _hashTypeAction = value;
+                OnPropertyChanged("hashTypeAction");
             }
         }
 
@@ -359,12 +374,22 @@ namespace PictureMoverGui
 
         public Visibility ShowEventListView
         {
-            get { return _eventDataEdit == null ? Visibility.Visible : Visibility.Collapsed; }
+            get { return eventDataEdit == null ? Visibility.Visible : Visibility.Collapsed; }
         }    
         
         public Visibility ShowEventEditView
         {
-            get { return _eventDataEdit != null ? Visibility.Visible : Visibility.Collapsed; }
+            get { return eventDataEdit != null ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public bool CompareFilesOptionsEditable
+        {
+            get { return nameCollisionAction == NameCollisionActionEnum.CompareFiles; }
+        }
+
+        public bool HashTypeOptionsEditable
+        {
+            get { return CompareFilesOptionsEditable && compareFilesAction != CompareFilesActionEnum.NameAndDateOnly; }
         }
     }
 }

@@ -19,6 +19,7 @@ namespace PictureMoverGui
 
         private NameCollisionActionEnum nameCollisionAction;
         private CompareFilesActionEnum compareFilesAction;
+        private HashTypeEnum hashType;
         private DirectoryInfo destinationDir;
         private FileInfo file;
         private string filename;
@@ -28,10 +29,11 @@ namespace PictureMoverGui
         private bool isValidIsCalled;
         private bool fileWasRenamed;
 
-        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, DirectoryInfo destinationDir, FileInfo file, string filename)
+        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, HashTypeEnum hashType, DirectoryInfo destinationDir, FileInfo file, string filename)
         {
             this.nameCollisionAction = nameCollisionAction;
             this.compareFilesAction = compareFilesAction;
+            this.hashType = hashType;
             this.destinationDir = destinationDir;
             this.file = file;
             this.filename = filename;
@@ -136,12 +138,17 @@ namespace PictureMoverGui
             {
                 case CompareFilesActionEnum.NameAndDateOnly:
                     return CompareWriteDate(otherFile);
-                case CompareFilesActionEnum.MD5:
-                    return CompareWriteDateAndMD5(otherFile);
-                case CompareFilesActionEnum.SHA256:
-                    return CompareWriteDateAndSHA256(otherFile);
+                case CompareFilesActionEnum.NameAndHashOnly:
+                    return CompareHashValue(otherFile);
+                case CompareFilesActionEnum.NameDateAndHash:
+                    return CompareWriteDateAndHashValue(otherFile);
             }
             throw new FilenameCollisionRenamerException("Switch case in CompareFiles, did not handle all cases.");
+        }
+
+        private bool CompareWriteDateAndHashValue(FileInfo otherFile)
+        {
+            return CompareWriteDate(otherFile) && CompareHashValue(otherFile);
         }
 
         private bool CompareWriteDate(FileInfo otherFile)
@@ -149,36 +156,40 @@ namespace PictureMoverGui
             return this.file.LastWriteTime == otherFile.LastWriteTime;
         }
 
-        private bool CompareWriteDateAndMD5(FileInfo otherFile)
+        private bool CompareHashValue(FileInfo otherFile)
         {
-            if (CompareWriteDate(otherFile))
+            switch (this.hashType)
             {
-                using (MD5 md5Instance = MD5.Create())
-                using (FileStream fileStream = File.OpenRead(this.file.FullName))
-                using (FileStream otherFileStream = File.OpenRead(otherFile.FullName))
-                {
-                    string fileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
-                    string otherFileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
-                    return fileMd5Value == otherFileMd5Value;
-                }
+                case HashTypeEnum.MD5:
+                    return CompareHashMD5(otherFile);
+                case HashTypeEnum.SHA256:
+                    return CompareHashSHA256(otherFile);
             }
-            return false;
+            throw new FilenameCollisionRenamerException("Switch case in CompareHashValue, did not handle all cases.");
         }
 
-        private bool CompareWriteDateAndSHA256(FileInfo otherFile)
+        private bool CompareHashMD5(FileInfo otherFile)
         {
-            if (CompareWriteDate(otherFile))
+            using (MD5 md5Instance = MD5.Create())
+            using (FileStream fileStream = File.OpenRead(this.file.FullName))
+            using (FileStream otherFileStream = File.OpenRead(otherFile.FullName))
             {
-                using (var sha256Instance = SHA256.Create())
-                using (var fileStream = File.OpenRead(this.file.FullName))
-                using (var otherFileStream = File.OpenRead(otherFile.FullName))
-                {
-                    string fileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
-                    string otherFileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
-                    return fileSha256Value == otherFileSha256Value;
-                }
+                string fileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
+                string otherFileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
+                return fileMd5Value == otherFileMd5Value;
             }
-            return false;
+        }
+
+        private bool CompareHashSHA256(FileInfo otherFile)
+        {
+            using (var sha256Instance = SHA256.Create())
+            using (var fileStream = File.OpenRead(this.file.FullName))
+            using (var otherFileStream = File.OpenRead(otherFile.FullName))
+            {
+                string fileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
+                string otherFileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
+                return fileSha256Value == otherFileSha256Value;
+            }
         }
 
         private string GetNewFilename()

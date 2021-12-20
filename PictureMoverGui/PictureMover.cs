@@ -20,6 +20,7 @@ namespace PictureMoverGui
         //private bool doRename;
         private NameCollisionActionEnum nameCollisionAction;
         private CompareFilesActionEnum compareFilesAction;
+        private HashTypeEnum hashType;
         private List<SimpleEventData> eventData;
 
         private int nrOfErrors;
@@ -47,6 +48,7 @@ namespace PictureMoverGui
             //this.doRename = moverModel.chkboxDoRenameChecked;
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
+            this.hashType = moverModel.hashTypeAction;
             this.eventData = Simplifiers.ToSimpleList(moverModel.eventDataList);
 
             this.nrOfErrors = 0;
@@ -122,7 +124,7 @@ namespace PictureMoverGui
         {
             DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             string destinationFilename = this.datePrependOrOriginalFilenameAction(file);
-            FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(this.nameCollisionAction, this.compareFilesAction, destinationDir, file, destinationFilename);
+            FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(this.nameCollisionAction, this.compareFilesAction, this.hashType, destinationDir, file, destinationFilename);
             //if (this.CheckAllowedFilename(destinationDir, destinationFilename, out destinationFilename)) // Only transfer file, if CheckAllowedFilename has allowed it
             if (filenameCollisionRenamer.IsValid()) // Only transfer file, if FilenameCollisionRenamer has allowed it
             {
