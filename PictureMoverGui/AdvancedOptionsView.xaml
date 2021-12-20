@@ -25,7 +25,7 @@
             </GroupBox>
             <GroupBox Padding="10" Margin="10">
                 <GroupBox.Header>
-                    <TextBlock Text="Name Compare Operation" FontSize="15"></TextBlock>
+                    <TextBlock Text="File Compare Operation" FontSize="15"></TextBlock>
                 </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
