@@ -21,7 +21,7 @@ namespace PictureMoverGui
         private NameCollisionActionEnum nameCollisionAction;
         private CompareFilesActionEnum compareFilesAction;
         private HashTypeEnum hashType;
-        private List<SimpleEventData> eventData;
+        private List<SimpleEventData> eventDataList;
 
         private int nrOfErrors;
         private int current_progress;
@@ -49,7 +49,7 @@ namespace PictureMoverGui
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
-            this.eventData = Simplifiers.EventListToSimpleList(moverModel.eventDataList);
+            this.eventDataList = Simplifiers.EventListToSimpleList(moverModel.eventDataList);
 
             this.nrOfErrors = 0;
             this.current_progress = 0;
@@ -78,11 +78,11 @@ namespace PictureMoverGui
             }
             if (moverModel.chkboxDoStructuredChecked)
             {
-                this.structuredOrDirectTransferAction = DoStructuredTransferFile;
+                this.structuredOrDirectTransferAction = GetDestinationDirectoryStructured;
             }
             else
             {
-                this.structuredOrDirectTransferAction = DoDirectTransferFile;
+                this.structuredOrDirectTransferAction = GetDestinationDirectoryDirect;
             }
             if (moverModel.chkboxDoRenameChecked)
             {
@@ -122,7 +122,8 @@ namespace PictureMoverGui
 
         private void DoStructuredOrDirectTransferFile(DirectoryInfo d, FileInfo file)
         {
-            DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
+            //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
+            DirectoryInfo destinationDir = GetDestinationDirectory(file);
             string destinationFilename = this.datePrependOrOriginalFilenameAction(file);
             FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(this.nameCollisionAction, this.compareFilesAction, this.hashType, destinationDir, file, destinationFilename);
             //if (this.CheckAllowedFilename(destinationDir, destinationFilename, out destinationFilename)) // Only transfer file, if CheckAllowedFilename has allowed it
@@ -252,7 +253,36 @@ namespace PictureMoverGui
             return new_filename;
         }
 
-        private DirectoryInfo DoStructuredTransferFile(FileInfo file)
+        private DirectoryInfo GetDestinationDirectory(FileInfo file)
+        {
+            string eventName = "";
+            if (FileInEvent(file, out eventName))
+            {
+                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{this.destinationDir}\\{eventName}");
+                return eventDirectory;
+            }
+            else
+            {
+                return this.structuredOrDirectTransferAction(file);
+            }
+        }
+
+        private bool FileInEvent(FileInfo file, out string eventName)
+        {
+            eventName = "";
+            long fileTick = file.LastWriteTime.Ticks;
+            foreach (var evnt in this.eventDataList)
+            {
+                if (fileTick >= evnt.StartTick && fileTick <= evnt.EndTick)
+                {
+                    eventName = evnt.Name;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private DirectoryInfo GetDestinationDirectoryStructured(FileInfo file)
         {
             DateTime dt = file.LastWriteTime;
 
@@ -267,9 +297,10 @@ namespace PictureMoverGui
             //this.DoCopyMoveFile(file, thisDirectory, new_filename);
         }
 
-        private DirectoryInfo DoDirectTransferFile(FileInfo file)
+        private DirectoryInfo GetDestinationDirectoryDirect(FileInfo file)
         {
-            DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
+            //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
+            DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationDir);
             return destinationDir;
             //string new_filename = this.GetNewFilename(file, destinationDir);
             //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
