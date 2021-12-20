@@ -26,37 +26,24 @@ namespace PictureMoverGui.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UnsortedDir {
+        public string SourceDir {
             get {
-                return ((string)(this["UnsortedDir"]));
+                return ((string)(this["SourceDir"]));
             }
             set {
-                this["UnsortedDir"] = value;
+                this["SourceDir"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SortedDir {
+        public string DestinationDir {
             get {
-                return ((string)(this["SortedDir"]));
+                return ((string)(this["DestinationDir"]));
             }
             set {
-                this["SortedDir"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AAEAAAD/////AQAAAAAAAAAMAgAAAEZQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAEAAACcAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbUGljdHVyZU1vdmVyR3VpLlBpY3R1cmVNb3Zlck1vZGVsK0V4dGVuc2lvbkluZm8sIFBpY3R1cmVNb3Zlckd1aSwgVmVyc2lvbj0xLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGxdXQMAAAAGX2l0ZW1zBV9zaXplCF92ZXJzaW9uBAAAMVBpY3R1cmVNb3Zlckd1aS5QaWN0dXJlTW92ZXJNb2RlbCtFeHRlbnNpb25JbmZvW10CAAAACAgJAwAAAAAAAAAAAAAABwMAAAAAAQAAAAAAAAAEL1BpY3R1cmVNb3Zlckd1aS5QaWN0dXJlTW92ZXJNb2RlbCtFeHRlbnNpb25JbmZvAgAAAAs=")]  // Binary value for an empty list of this object
-        public System.Collections.Generic.List<ExtensionInfo> ExtList {
-            get {
-                return ((System.Collections.Generic.List<ExtensionInfo>)(this["ExtList"]));
-            }
-            set {
-                this["ExtList"] = value;
+                this["DestinationDir"] = value;
             }
         }
     }

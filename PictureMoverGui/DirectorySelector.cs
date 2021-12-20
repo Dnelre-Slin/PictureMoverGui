@@ -83,7 +83,7 @@ namespace PictureMoverGui
 
                 this.moverModel.lastSourceInfoGatherTime = DateTime.Now;
 
-                string search_dir = Properties.Settings.Default.UnsortedDir;
+                string search_dir = Properties.Settings.Default.SourceDir;
 
                 worker = new BackgroundWorker();
                 worker.WorkerSupportsCancellation = true;

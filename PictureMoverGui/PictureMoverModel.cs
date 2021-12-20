@@ -63,10 +63,10 @@ namespace PictureMoverGui
             _lastSourceInfoGatherTime = DateTime.Now;
 
             //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
-            string start_source_dir = Properties.Settings.Default.UnsortedDir;
+            string start_source_dir = Properties.Settings.Default.SourceDir;
             labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
             //Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
-            labelDestinationDirContent = Properties.Settings.Default.SortedDir;
+            labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
         }
 
 
@@ -207,9 +207,9 @@ namespace PictureMoverGui
             get { return _labelSourceDirContent; }
             set
             {
-                if (value != Properties.Settings.Default.UnsortedDir)
+                if (value != Properties.Settings.Default.SourceDir)
                 {
-                    Properties.Settings.Default.UnsortedDir = value;
+                    Properties.Settings.Default.SourceDir = value;
                     Properties.Settings.Default.Save();
                 }
                 if (string.IsNullOrEmpty(value))
@@ -232,9 +232,9 @@ namespace PictureMoverGui
             get { return _labelDestinationDirContent; }
             set
             {
-                if (value != Properties.Settings.Default.SortedDir)
+                if (value != Properties.Settings.Default.DestinationDir)
                 {
-                    Properties.Settings.Default.SortedDir = value;
+                    Properties.Settings.Default.DestinationDir = value;
                     Properties.Settings.Default.Save();
                 }
                 if (string.IsNullOrEmpty(value))
