@@ -79,6 +79,20 @@ namespace PictureMoverGui
             return false;
         }
 
+        static public bool FilenameInDir(DirectoryInfo d, string filename, out FileInfo otherFile)
+        {
+            foreach (FileInfo file in d.GetFiles())
+            {
+                if (file.Name.ToLower() == filename.ToLower())
+                {
+                    otherFile = file;
+                    return true;
+                }
+            }
+            otherFile = null;
+            return false;
+        }
+
         // Check if there are any directories in d, with a newer 'LastWriteTime' than dt.
         static public bool DirLastWriteCompare(DirectoryInfo d, DateTime dt, int max_depth = 10, int current_depth = 0)
         {
