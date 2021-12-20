@@ -10,15 +10,17 @@
         <local:RadioButtonCheckedConverter x:Key="enumConverter"></local:RadioButtonCheckedConverter>
     </UserControl.Resources>
     <Grid>
-        <WrapPanel>
-            <WrapPanel Width="800">
-                <Viewbox Height="60" Margin="10">
+        <WrapPanel Orientation="Vertical">
+            <GroupBox Header="Name Collision Action" Padding="10" Margin="10">
+                <Viewbox Height="60">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
                         <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
                     </WrapPanel>
                 </Viewbox>
+            </GroupBox>
+            <GroupBox Header="Name Compare Operation" Padding="10" Margin="10">
                 <Viewbox Height="60">
                     <WrapPanel Orientation="Vertical">
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
@@ -26,8 +28,8 @@
                         <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.SHA256}}" Content="Name, date and SHA256"></RadioButton>
                     </WrapPanel>
                 </Viewbox>
-                <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
-            </WrapPanel>
+            </GroupBox>
+            <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
         </WrapPanel>
     </Grid>
 </UserControl>
