@@ -75,6 +75,8 @@ namespace PictureMoverGui
                 if (result == MessageBoxResult.OK)
                 {
                     this.moverModel.eventDataList.Remove(eventDataToRemove);
+
+                    this.moverModel.UpdateEventListInSettings();
                 }
             }
             catch (Exception err)

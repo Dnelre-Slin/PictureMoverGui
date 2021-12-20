@@ -72,6 +72,7 @@ namespace PictureMoverGui
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.moverModel.eventDataEdit = null;
+            this.moverModel.UpdateEventListInSettings();
         }
     }
 }

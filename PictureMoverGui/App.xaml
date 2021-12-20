@@ -41,6 +41,8 @@
 
         <System:String x:Key="MessageBoxDeleteEventTitle">Slett hendelse</System:String>
         <System:String x:Key="MessageBoxDeleteEventText">Er du sikker på at du vil slette hendelse</System:String>
+        <System:String x:Key="MessageBoxResetSettingsTitle">Tilbakestill innstillinger</System:String>
+        <System:String x:Key="MessageBoxResetSettingsText">Er du sikker på at du vil tilbakestille innstillinger?</System:String>
         
         <System:Double x:Key="DoneStatusMessageTime">3</System:Double>
     </Application.Resources>

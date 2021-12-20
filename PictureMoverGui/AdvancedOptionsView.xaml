@@ -46,6 +46,9 @@
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>
+            <WrapPanel HorizontalAlignment="Center">
+                <Button FontSize="20" Padding="10" Margin="10" Content="Reset settings" x:Name="btnResetSettings" Click="btnResetSettings_Click"></Button>
+            </WrapPanel>
             <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
         </WrapPanel>
     </Grid>

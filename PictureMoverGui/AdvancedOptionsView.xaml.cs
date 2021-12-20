@@ -34,6 +34,23 @@ namespace PictureMoverGui
             this.moverModel = this.DataContext as PictureMoverModel;
         }
 
+        private void btnResetSettings_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MessageBoxResult result = MessageBox.Show($"{App.Current.FindResource("MessageBoxResetSettingsText")}", $"{App.Current.FindResource("MessageBoxResetSettingsTitle")}", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    Properties.Settings.Default.Reset();
+                    this.moverModel.SettingsRefresh();
+                }
+            }
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
+        }
+
         private void btnTestOutput_Click(object sender, RoutedEventArgs e)
         {
             //Trace.WriteLine(this.moverModel.nameCollisionAction);
@@ -58,9 +75,25 @@ namespace PictureMoverGui
             //Trace.WriteLine(DateTime.MinValue);
             //Trace.WriteLine(DateTime.MaxValue);
 
-            Trace.WriteLine(this.moverModel.nameCollisionAction);
-            Trace.WriteLine(this.moverModel.compareFilesAction);
-            Trace.WriteLine(this.moverModel.hashTypeAction);
+            //Trace.WriteLine(this.moverModel.nameCollisionAction);
+            //Trace.WriteLine(this.moverModel.compareFilesAction);
+            //Trace.WriteLine(this.moverModel.hashTypeAction);
+
+            //System.Collections.ObjectModel.ObservableCollection<EventData> eventDataList = this.moverModel.eventDataList;
+            //EventData newEvent = new EventData("Egypt", new EventDateTime(new DateTime(2010, 10, 10)), new EventDateTime(new DateTime(2011, 02, 02)));
+            //eventDataList.Add(newEvent);
+
+            System.Collections.ObjectModel.ObservableCollection<EventData> eventDataList = new System.Collections.ObjectModel.ObservableCollection<EventData>();
+
+            Properties.Settings.Default.EventList = Simplifiers.EventListToSimpleList(eventDataList);
+            Properties.Settings.Default.Save();
+
+            System.Collections.ObjectModel.ObservableCollection<EventData> eventDataList2 = Simplifiers.SimpleListToEventList(Properties.Settings.Default.EventList);
+            this.moverModel.eventDataList = eventDataList2;
+            foreach (var ed in eventDataList2)
+            {
+                Trace.WriteLine($"Name: {ed.Name}  |  Start: {ed.StartDateTime}  |  End: {ed.EndDateTime}");
+            }
 
             //Trace.WriteLine(this.moverModel.eventThing);
             //Trace.WriteLine(Properties.Settings.Default.EventList.ToString());

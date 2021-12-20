@@ -58,7 +58,6 @@ namespace PictureMoverGui
         }
     }
 
-    [Serializable]
     public class EventData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,7 +88,7 @@ namespace PictureMoverGui
         public string Name
         {
             get { return _name; }
-            set 
+            set
             {
                 _name = value;
                 OnPropertyChanged("Name");
@@ -139,7 +138,6 @@ namespace PictureMoverGui
         public bool ValidDateOrder => StartDateTime.ToDateTime() <= EndDateTime.ToDateTime();
     }
 
-    [Serializable]
     public class EventDateTime: INotifyPropertyChanged
     {
 

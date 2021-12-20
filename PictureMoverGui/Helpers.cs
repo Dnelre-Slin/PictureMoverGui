@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PictureMoverGui
 {
+    [Serializable]
     public struct SimpleEventData
     {
         public string Name;
@@ -20,7 +21,7 @@ namespace PictureMoverGui
 
     public class Simplifiers
     {
-        public static List<SimpleEventData> ToSimpleList(ObservableCollection<EventData> eventList)
+        public static List<SimpleEventData> EventListToSimpleList(ObservableCollection<EventData> eventList)
         {
             List<SimpleEventData> simpleList = new List<SimpleEventData>(eventList.Count);
             foreach (var eventData in eventList)
@@ -28,6 +29,16 @@ namespace PictureMoverGui
                 simpleList.Add(new SimpleEventData(eventData.Name, eventData.StartDateTime.ToDateTime().Ticks, eventData.EndDateTime.ToDateTime().Ticks));
             }
             return simpleList;
+        }
+
+        public static ObservableCollection<EventData> SimpleListToEventList(List<SimpleEventData> simpleList)
+        {
+            ObservableCollection<EventData> eventList = new ObservableCollection<EventData>();
+            foreach (var simpleData in simpleList)
+            {
+                eventList.Add(new EventData(simpleData.Name, new EventDateTime(new DateTime(simpleData.StartTick)), new EventDateTime(new DateTime(simpleData.EndTick))));
+            }
+            return eventList;
         }
     }
 }

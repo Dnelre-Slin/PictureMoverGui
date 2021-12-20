@@ -20,6 +20,38 @@ namespace PictureMoverGui
             }
         }
 
+        public void SettingsRefresh()
+        {
+            string start_source_dir = Properties.Settings.Default.SourceDir;
+            labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
+            //Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
+            labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
+            chkboxDoCopyChecked = Properties.Settings.Default.DoCopy;
+            chkboxDoStructuredChecked = Properties.Settings.Default.DoStructured;
+            chkboxDoRenameChecked = Properties.Settings.Default.DoDateName;
+            nameCollisionAction = (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction;
+            compareFilesAction = (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction;
+            hashTypeAction = (HashTypeEnum)Properties.Settings.Default.HashTypeAction;
+
+            //OnPropertyChanged("chkboxDoCopyChecked");
+            //OnPropertyChanged("chkboxDoStructuredChecked");
+            //OnPropertyChanged("chkboxDoRenameChecked");
+            //OnPropertyChanged("labelSourceDirContent");
+            //OnPropertyChanged("labelDestinationDirContent");
+            //OnPropertyChanged("nameCollisionAction");
+            //OnPropertyChanged("compareFilesAction");
+            //OnPropertyChanged("hashTypeAction");
+
+            //OnPropertyChanged("CompareFilesOptionsEditable");
+            //OnPropertyChanged("HashTypeOptionsEditable");
+        }
+
+        public void UpdateEventListInSettings()
+        {
+            Properties.Settings.Default.EventList = Simplifiers.EventListToSimpleList(this.eventDataList);
+            Properties.Settings.Default.Save();
+        }
+
         public PictureMoverModel()
         {
             ////_eventThing = new EventStruct("Test", DateTime.Now, DateTime.Now);
@@ -37,12 +69,12 @@ namespace PictureMoverGui
             _disableAllConfigDuringRun = true;
 
 
-            EventData eventData1 = new EventData("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
-            EventData eventData2 = new EventData("New York", new EventDateTime(new DateTime(2015, 11, 11, 09, 17, 54)), new EventDateTime(new DateTime(2015, 12, 02, 11, 12, 05)));
+            //EventData eventData1 = new EventData("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
+            //EventData eventData2 = new EventData("New York", new EventDateTime(new DateTime(2015, 11, 11, 09, 17, 54)), new EventDateTime(new DateTime(2015, 12, 02, 11, 12, 05)));
 
-            _eventDataList = new ObservableCollection<EventData>();
-            _eventDataList.Add(eventData1);
-            _eventDataList.Add(eventData2);
+            //_eventDataList = new ObservableCollection<EventData>();
+            //_eventDataList.Add(eventData1);
+            //_eventDataList.Add(eventData2);
 
             _eventDataEdit = null;
 
@@ -62,11 +94,21 @@ namespace PictureMoverGui
             _labelDestinationDirContent = "";
             _lastSourceInfoGatherTime = DateTime.Now;
 
-            //Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
-            string start_source_dir = Properties.Settings.Default.SourceDir;
-            labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
-            //Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
-            labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
+            SettingsRefresh();
+
+            _eventDataList = Simplifiers.SimpleListToEventList(Properties.Settings.Default.EventList);
+
+            ////Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
+            //string start_source_dir = Properties.Settings.Default.SourceDir;
+            //labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
+            ////Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
+            //labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
+            //chkboxDoCopyChecked = Properties.Settings.Default.DoCopy;
+            //chkboxDoStructuredChecked = Properties.Settings.Default.DoStructured;
+            //chkboxDoRenameChecked = Properties.Settings.Default.DoDateName;
+            //nameCollisionAction = (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction;
+            //compareFilesAction = (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction;
+            //hashTypeAction = (HashTypeEnum)Properties.Settings.Default.HashTypeAction;
         }
 
 
@@ -174,6 +216,11 @@ namespace PictureMoverGui
             get { return _chkboxDoCopyChecked; }
             set
             {
+                if (value != Properties.Settings.Default.DoCopy)
+                {
+                    Properties.Settings.Default.DoCopy = value;
+                    Properties.Settings.Default.Save();
+                }
                 _chkboxDoCopyChecked = value;
                 OnPropertyChanged("chkboxDoCopyChecked");
             }
@@ -185,6 +232,11 @@ namespace PictureMoverGui
             get { return _chkboxDoStructuredChecked; }
             set
             {
+                if (value != Properties.Settings.Default.DoStructured)
+                {
+                    Properties.Settings.Default.DoStructured = value;
+                    Properties.Settings.Default.Save();
+                }
                 _chkboxDoStructuredChecked = value;
                 OnPropertyChanged("chkboxDoStructuredChecked");
             }
@@ -196,6 +248,11 @@ namespace PictureMoverGui
             get { return _chkboxDoRenameChecked; }
             set
             {
+                if (value != Properties.Settings.Default.DoDateName)
+                {
+                    Properties.Settings.Default.DoDateName = value;
+                    Properties.Settings.Default.Save();
+                }
                 _chkboxDoRenameChecked = value;
                 OnPropertyChanged("chkboxDoRenameChecked");
             }
@@ -270,6 +327,12 @@ namespace PictureMoverGui
             get { return _nameCollisionAction; }
             set
             {
+                int int_value = (int)value;
+                if (int_value != Properties.Settings.Default.NameCollisionAction)
+                {
+                    Properties.Settings.Default.NameCollisionAction = int_value;
+                    Properties.Settings.Default.Save();
+                }
                 _nameCollisionAction = value;
                 OnPropertyChanged("nameCollisionAction");
                 OnPropertyChanged("CompareFilesOptionsEditable");
@@ -283,6 +346,12 @@ namespace PictureMoverGui
             get { return _compareFilesAction; }
             set
             {
+                int int_value = (int)value;
+                if (int_value != Properties.Settings.Default.CompareFilesAction)
+                {
+                    Properties.Settings.Default.CompareFilesAction = int_value;
+                    Properties.Settings.Default.Save();
+                }
                 _compareFilesAction = value;
                 OnPropertyChanged("compareFilesAction");
                 OnPropertyChanged("HashTypeOptionsEditable");
@@ -295,6 +364,12 @@ namespace PictureMoverGui
             get { return _hashTypeAction; }
             set
             {
+                int int_value = (int)value;
+                if (int_value != Properties.Settings.Default.HashTypeAction)
+                {
+                    Properties.Settings.Default.HashTypeAction = int_value;
+                    Properties.Settings.Default.Save();
+                }
                 _hashTypeAction = value;
                 OnPropertyChanged("hashTypeAction");
             }

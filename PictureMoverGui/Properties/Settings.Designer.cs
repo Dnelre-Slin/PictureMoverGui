@@ -46,5 +46,94 @@ namespace PictureMoverGui.Properties {
                 this["DestinationDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoCopy {
+            get {
+                return ((bool)(this["DoCopy"]));
+            }
+            set {
+                this["DoCopy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoStructured {
+            get {
+                return ((bool)(this["DoStructured"]));
+            }
+            set {
+                this["DoStructured"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DoDateName {
+            get {
+                return ((bool)(this["DoDateName"]));
+            }
+            set {
+                this["DoDateName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int NameCollisionAction {
+            get {
+                return ((int)(this["NameCollisionAction"]));
+            }
+            set {
+                this["NameCollisionAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CompareFilesAction {
+            get {
+                return ((int)(this["CompareFilesAction"]));
+            }
+            set {
+                this["CompareFilesAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int HashTypeAction {
+            get {
+                return ((int)(this["HashTypeAction"]));
+            }
+            set {
+                this["HashTypeAction"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //[global::System.Configuration.DefaultSettingValueAttribute("AAEAAAD/////AQAAAAAAAAAMAgAAAEZQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAEAAACcAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbUGljdHVyZU1vdmVyR3VpLlBpY3R1cmVNb3Zlck1vZGVsK0V4dGVuc2lvbkluZm8sIFBpY3R1cmVNb3Zlckd1aSwgVmVyc2lvbj0xLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGxdXQMAAAAGX2l0ZW1zBV9zaXplCF92ZXJzaW9uBAAAMVBpY3R1cmVNb3Zlckd1aS5QaWN0dXJlTW92ZXJNb2RlbCtFeHRlbnNpb25JbmZvW10CAAAACAgJAwAAAAAAAAAAAAAABwMAAAAAAQAAAAAAAAAEL1BpY3R1cmVNb3Zlckd1aS5QaWN0dXJlTW92ZXJNb2RlbCtFeHRlbnNpb25JbmZvAgAAAAs=")]  // Binary value for an empty list of this object
+        //[global::System.Configuration.DefaultSettingValueAttribute("AAEAAAD/////AQAAAAAAAAAMAgAAAEZQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAEAAACMAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbUGljdHVyZU1vdmVyR3VpLlNpbXBsZUV2ZW50RGF0YSwgUGljdHVyZU1vdmVyR3VpLCBWZXJzaW9uPTEuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49bnVsbF1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAhUGljdHVyZU1vdmVyR3VpLlNpbXBsZUV2ZW50RGF0YVtdAgAAAAgICQMAAAAAAAAAAAAAAAcDAAAAAAEAAAAAAAAABB9QaWN0dXJlTW92ZXJHdWkuU2ltcGxlRXZlbnREYXRhAgAAAAs=")]  // Binary value for an empty list of this object
+        public System.Collections.Generic.List<SimpleEventData> EventList
+        {
+            get
+            {
+                return ((System.Collections.Generic.List<SimpleEventData>)(this["EventList"]));
+            }
+            set
+            {
+                this["EventList"] = value;
+            }
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace PictureMoverGui
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
-            this.eventData = Simplifiers.ToSimpleList(moverModel.eventDataList);
+            this.eventData = Simplifiers.EventListToSimpleList(moverModel.eventDataList);
 
             this.nrOfErrors = 0;
             this.current_progress = 0;
