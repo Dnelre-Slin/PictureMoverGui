@@ -12,37 +12,31 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="45"></RowDefinition>
-            <RowDefinition/>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2.25*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
-                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource SourceLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0 5 0" x:Name="btnChooseSourceDir" Click="btnChooseSourceDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
-                <Button Visibility="{Binding GatherDirInfoCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnChooseSourceDirCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}"/>
-            </WrapPanel>
-            <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
-        <Grid Grid.Row="1">
-            <Button FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Click="btnSwapSourceDestination_Click" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwapOperation}" />
-        </Grid>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Grid.Row="0" VerticalAlignment="Center">
-                <Label FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{DynamicResource DestinationLabelContent}"/>
-                <Button Width="150" Height="40" FontSize="20" Margin="30 0" x:Name="btnChooseDestinationDir" Click="btnChooseDestinationDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
-            </WrapPanel>
-            <Label x:Name="DestinationDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
+        <GroupBox Grid.Row="0" Padding="10 0">
+            <GroupBox.Header>
+                <WrapPanel>
+                    <Label MinWidth="500" FontSize="20" Content="{DynamicResource SourceLabelContent}"/>
+                    <Button Padding="10 0" Margin="5 0" FontSize="20" x:Name="btnChooseSourceDir" Click="btnChooseSourceDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
+                    <Button Padding="10 -20" FontSize="20" x:Name="btnChooseSourceDirCancel" Click="btnChooseSourceDirCancel_Click" Content="{DynamicResource CancelContent}" Visibility="{Binding GatherDirInfoCancelButtonVisibility}"/>
+                </WrapPanel>
+            </GroupBox.Header>
+            <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}"/>
+        </GroupBox>
+        <Button Grid.Row="1" FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Click="btnSwapSourceDestination_Click" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwapOperation}" />
+        <GroupBox Grid.Row="2" Padding="10 0">
+            <GroupBox.Header>
+                <WrapPanel>
+                    <Label MinWidth="500" FontSize="20" Content="{DynamicResource DestinationLabelContent}"/>
+                    <Button FontSize="20" Padding="10 5" Margin="5 0" x:Name="btnChooseDestinationDir" Click="btnChooseDestinationDir_Click" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowConfigationButtons}"/>
+                </WrapPanel>
+            </GroupBox.Header>
+            <Label Grid.Column="0" x:Name="DestinationDirLabel" Background="GhostWhite" FontSize="20" Content="{Binding labelDestinationDirContent}"/>
+        </GroupBox>
         <Grid Grid.Row="3" Margin="20,20,20,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
