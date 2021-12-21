@@ -56,8 +56,6 @@ namespace PictureMoverGui
                 PictureMover pictureMover = new PictureMover(this.moverModel, sender as BackgroundWorker);
                 List<string> infoStatusMessages = pictureMover.Mover();
                 e.Result = infoStatusMessages;
-                //int nrOfErrors = pictureMover.GetNrOfErrors();
-                //e.Result = nrOfErrors;
             }
             catch (Exception err)
             {
@@ -72,7 +70,6 @@ namespace PictureMoverGui
 
         private void worker_PictureMoverWorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            //int nrOfErrors = (int)e.Result;
             List<string> infoStatusMessages = e.Result as List<string>;
 
             this.moverModel.infoStatusMessagesLastRun = infoStatusMessages;

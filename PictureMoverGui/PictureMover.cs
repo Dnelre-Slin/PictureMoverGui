@@ -110,17 +110,6 @@ namespace PictureMoverGui
             }
 
             return this.infoStatusMessages;
-
-            //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
-
-            //if (this.doStructured)
-            //{
-            //    dirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
-            //}
-            //else
-            //{
-            //    dirSearcher.DirSearch(d, DoNormalCopyMoveFile);
-            //}
         }
 
         public int GetNrOfErrors()
@@ -139,14 +128,12 @@ namespace PictureMoverGui
                 if (filenameCollisionRenamer.WasFileRenamed())
                 {
                     this.infoStatusMessages.Add($"Renamed {file.Name} to {validFilename}");
-                    //Trace.TraceInformation($"Renamed {file.Name} to {validFilename}");
                 }
                 DoTransferFile(file, destinationDir.FullName, validFilename);
             }
             else
             {
                 this.infoStatusMessages.Add($"File: \"{file.Name}\" was not transferred");
-                //Trace.TraceInformation($"File: \"{file.Name}\" was not transferred");
             }
             UpdateWorker();
         }
