@@ -267,7 +267,7 @@ namespace PictureMoverGui
         private string RenameFileDatePrepend(FileInfo file)
         {
             string new_filename = file.Name;
-            string date_str = file.LastWriteTime.ToString("yyyyMMdd");
+            string date_str = file.LastWriteTime.ToString("yyyyMMdd_HHmmss");
             if (!file.Name.StartsWith(date_str)) // Do not rename, if it is already a date prepended filename
             {
                 new_filename = date_str + "_" + new_filename;
