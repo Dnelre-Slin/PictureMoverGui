@@ -27,9 +27,9 @@
         <TabItem Header="{DynamicResource TabAdvancedView}">
             <local:AdvancedOptionsView DataContext="{Binding Source={StaticResource moverModel}}"></local:AdvancedOptionsView>
         </TabItem>
-        <!--<TabItem Header="EventEdit">
-            <local:EventEditView DataContext="{Binding Source={StaticResource moverModel}}"></local:EventEditView>
-        </TabItem>-->
+        <TabItem Header="{DynamicResource TabStatusView}">
+            <local:StatusInfoView DataContext="{Binding Source={StaticResource moverModel}}"></local:StatusInfoView>
+        </TabItem>
     </TabControl>
 
 </Window>

@@ -30,7 +30,7 @@ namespace PictureMoverGui
 
         public MainWindow()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener("MyTextFile.log"));
+            Trace.Listeners.Add(new TextWriterTraceListener("Error.log"));
             Trace.AutoFlush = true;
 
             InitializeComponent();

@@ -70,6 +70,8 @@
         <System:String x:Key="EventEditSelectDateButtonText">Dato fra fil</System:String>
         <System:String x:Key="EventEditBackButtonText">Tilbake</System:String>
         <System:String x:Key="EventEditShowErrorText">Feil: Slutt dato er tidligere enn start dato</System:String>
+        
+        <System:String x:Key="TabStatusView">Status</System:String>
 
         <System:String x:Key="MessageBoxDeleteEventTitle">Slett hendelse</System:String>
         <System:String x:Key="MessageBoxDeleteEventText">Er du sikker på at du vil slette hendelse</System:String>

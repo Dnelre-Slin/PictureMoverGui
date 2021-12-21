@@ -32,6 +32,8 @@ namespace PictureMoverGui
         private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
         private Func<FileInfo, string> datePrependOrOriginalFilenameAction;
 
+        private List<string> infoStatusMessages;
+
         private DirSearcher dirSearcher;
         private bool cancel;
 
@@ -51,6 +53,7 @@ namespace PictureMoverGui
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
             this.eventDataList = Simplifiers.EventListToSimpleListValidOnly(moverModel.eventDataList);
+            this.infoStatusMessages = new List<string>();
 
             this.cancel = false;
 
@@ -97,7 +100,7 @@ namespace PictureMoverGui
             }
         }
 
-        public void Mover()
+        public List<string> Mover()
         {
             Directory.CreateDirectory(this.destinationDir);
             DirectoryInfo d = new DirectoryInfo(this.sourceDir);
@@ -116,6 +119,8 @@ namespace PictureMoverGui
                     break;
                 }
             }
+
+            return this.infoStatusMessages;
 
             //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
 
@@ -146,13 +151,15 @@ namespace PictureMoverGui
                 string validFilename = filenameCollisionRenamer.GetValidFilename();
                 if (filenameCollisionRenamer.WasFileRenamed())
                 {
-                    Trace.TraceInformation($"Renamed {file.Name} to {validFilename}");
+                    this.infoStatusMessages.Add($"Renamed {file.Name} to {validFilename}");
+                    //Trace.TraceInformation($"Renamed {file.Name} to {validFilename}");
                 }
                 DoTransferFile(file, destinationDir.FullName, validFilename);
             }
             else
             {
-                Trace.TraceInformation($"File: \"{file.Name}\" was not transferred");
+                this.infoStatusMessages.Add($"File: \"{file.Name}\" was not transferred");
+                //Trace.TraceInformation($"File: \"{file.Name}\" was not transferred");
             }
             UpdateWorker();
         }
