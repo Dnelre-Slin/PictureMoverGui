@@ -60,6 +60,8 @@ namespace PictureMoverGui
             _labelDestinationDirContent = "";
             _lastSourceInfoGatherTime = DateTime.Now;
 
+            _infoStatusMessagesLastRun = new List<string>();
+
             SettingsRefresh();
 
             _eventDataList = Simplifiers.SimpleListToEventList(Properties.Settings.Default.EventList);
@@ -337,6 +339,17 @@ namespace PictureMoverGui
             {
                 _lastSourceInfoGatherTime = value;
                 OnPropertyChanged("lastSourceInfoGatherTime");
+            }
+        }
+
+        private List<string> _infoStatusMessagesLastRun;
+        public List<string> infoStatusMessagesLastRun
+        {
+            get { return _infoStatusMessagesLastRun; }
+            set
+            {
+                _infoStatusMessagesLastRun = value;
+                OnPropertyChanged("infoStatusMessagesLastRun");
             }
         }
 

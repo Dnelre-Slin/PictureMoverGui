@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PictureMoverGui
@@ -53,9 +54,10 @@ namespace PictureMoverGui
             try
             {
                 PictureMover pictureMover = new PictureMover(this.moverModel, sender as BackgroundWorker);
-                pictureMover.Mover();
-                int nrOfErrors = pictureMover.GetNrOfErrors();
-                e.Result = nrOfErrors;
+                List<string> infoStatusMessages = pictureMover.Mover();
+                e.Result = infoStatusMessages;
+                //int nrOfErrors = pictureMover.GetNrOfErrors();
+                //e.Result = nrOfErrors;
             }
             catch (Exception err)
             {
@@ -70,8 +72,10 @@ namespace PictureMoverGui
 
         private void worker_PictureMoverWorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            int nrOfErrors = (int)e.Result;
+            //int nrOfErrors = (int)e.Result;
+            List<string> infoStatusMessages = e.Result as List<string>;
 
+            this.moverModel.infoStatusMessagesLastRun = infoStatusMessages;
             this.moverModel.statusPercentage = 0;
 
             worker = null;

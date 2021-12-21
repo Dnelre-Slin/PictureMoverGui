@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PictureMoverGui.ExtensionSelectorView"
+﻿<UserControl x:Class="PictureMoverGui.StatusInfoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,22 +13,14 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView 
-                Name="ListCustomer"
-                ItemsSource="{Binding extensionInfoList}">
+                Name="ListStatusMessages"
+                ItemsSource="{Binding infoStatusMessagesLastRun}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Viewbox Height="25">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding Active}"></CheckBox>
-                        </Viewbox>
+                        <TextBlock FontSize="14" Text="{Binding}"></TextBlock>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-        <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="30 0">
-            <TextBlock Text="Number of files: " FontSize="20"></TextBlock>
-            <TextBlock Text="{Binding NrOfActiveFilesInCurrentDir}" FontSize="20"></TextBlock>
-            <TextBlock Text="/" FontSize="20"></TextBlock>
-            <TextBlock Text="{Binding TotalNrOfFilesInCurrentDir}" FontSize="20"></TextBlock>
-        </WrapPanel>
     </Grid>
 </UserControl>
