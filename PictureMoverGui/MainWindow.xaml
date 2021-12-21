@@ -18,10 +18,10 @@
         <TabItem Header="{DynamicResource TabExtensionView}">
             <local:ExtensionSelectorView DataContext="{Binding Source={StaticResource moverModel}}"></local:ExtensionSelectorView>
         </TabItem>
-        <TabItem Header="Advanced">
+        <TabItem Header="{DynamicResource TabAdvancedView}">
             <local:AdvancedOptionsView DataContext="{Binding Source={StaticResource moverModel}}"></local:AdvancedOptionsView>
         </TabItem>
-        <TabItem Header="Events">
+        <TabItem Header="{DynamicResource TabEventView}">
             <Grid>
                 <local:EventListView Visibility="{Binding ShowEventListView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventListView>
                 <local:EventEditView Visibility="{Binding ShowEventEditView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventEditView>

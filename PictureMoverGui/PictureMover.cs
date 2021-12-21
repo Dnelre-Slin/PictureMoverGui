@@ -50,7 +50,7 @@ namespace PictureMoverGui
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
-            this.eventDataList = Simplifiers.EventListToSimpleList(moverModel.eventDataList);
+            this.eventDataList = Simplifiers.EventListToSimpleListValidOnly(moverModel.eventDataList);
 
             this.cancel = false;
 

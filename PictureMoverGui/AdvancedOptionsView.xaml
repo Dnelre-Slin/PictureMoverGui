@@ -13,31 +13,31 @@
         <WrapPanel Orientation="Vertical">
             <GroupBox Padding="10" Margin="10">
                 <GroupBox.Header>
-                    <TextBlock Text="Name Collision Action" FontSize="15"></TextBlock>
+                    <TextBlock Text="{DynamicResource NameCollisionGroupbox}" FontSize="15"></TextBlock>
                 </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
-                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="Skip file"></RadioButton>
-                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="Append number"></RadioButton>
-                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="Compare files"></RadioButton>
+                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.SkipFile}}" Content="{DynamicResource RadioButtonSkipFile}"></RadioButton>
+                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.NrAppend}}" Content="{DynamicResource RadioButtonAppendNr}"></RadioButton>
+                        <RadioButton GroupName="NameCollision" IsChecked="{Binding nameCollisionAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:NameCollisionActionEnum.CompareFiles}}" Content="{DynamicResource RadioButtonCompareFiles}"></RadioButton>
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>
             <GroupBox Padding="10" Margin="10" IsEnabled="{Binding CompareFilesOptionsEditable}">
                 <GroupBox.Header>
-                    <TextBlock Text="File Compare Operation" FontSize="15"></TextBlock>
+                    <TextBlock Text="{DynamicResource FileCompareGroupbox}" FontSize="15"></TextBlock>
                 </GroupBox.Header>
                 <Viewbox Height="60" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
-                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="Name and date only"></RadioButton>
-                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndHashOnly}}" Content="Name and hash only"></RadioButton>
-                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameDateAndHash}}" Content="Name, date and hash"></RadioButton>
+                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndDateOnly}}" Content="{DynamicResource RadioButtonNameDate}"></RadioButton>
+                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameAndHashOnly}}" Content="{DynamicResource RadioButtonNameHash}"></RadioButton>
+                        <RadioButton GroupName="CompareFiles" IsChecked="{Binding compareFilesAction, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:CompareFilesActionEnum.NameDateAndHash}}" Content="{DynamicResource RadioButtonNameDateHash}"></RadioButton>
                     </WrapPanel>
                 </Viewbox>
             </GroupBox>
             <GroupBox Padding="10" Margin="10" IsEnabled="{Binding HashTypeOptionsEditable}">
                 <GroupBox.Header>
-                    <TextBlock Text="Hash Type" FontSize="15"></TextBlock>
+                    <TextBlock Text="{DynamicResource HashTypeGroupbox}" FontSize="15"></TextBlock>
                 </GroupBox.Header>
                 <Viewbox Height="40" HorizontalAlignment="Left">
                     <WrapPanel Orientation="Vertical">
@@ -47,7 +47,7 @@
                 </Viewbox>
             </GroupBox>
             <WrapPanel HorizontalAlignment="Center">
-                <Button FontSize="20" Padding="10" Margin="10" Content="Reset settings" x:Name="btnResetSettings" Click="btnResetSettings_Click"></Button>
+                <Button FontSize="20" Padding="10" Margin="10" Content="{DynamicResource ResetSettingsButton}" x:Name="btnResetSettings" Click="btnResetSettings_Click"></Button>
             </WrapPanel>
             <Button Width="100" Height="30" FontSize="20" Margin="10" Content="Test" x:Name="btnTestOutput" Click="btnTestOutput_Click"></Button>
         </WrapPanel>

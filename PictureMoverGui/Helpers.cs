@@ -21,6 +21,19 @@ namespace PictureMoverGui
 
     public class Simplifiers
     {
+        public static List<SimpleEventData> EventListToSimpleListValidOnly(ObservableCollection<EventData> eventList)
+        {
+            List<SimpleEventData> simpleList = new List<SimpleEventData>(eventList.Count);
+            foreach (var eventData in eventList)
+            {
+                if (eventData.ValidDateOrder)
+                {
+                    simpleList.Add(new SimpleEventData(eventData.Name, eventData.StartDateTime.ToDateTime().Ticks, eventData.EndDateTime.ToDateTime().Ticks));
+                }
+            }
+            return simpleList;
+        }
+
         public static List<SimpleEventData> EventListToSimpleList(ObservableCollection<EventData> eventList)
         {
             List<SimpleEventData> simpleList = new List<SimpleEventData>(eventList.Count);

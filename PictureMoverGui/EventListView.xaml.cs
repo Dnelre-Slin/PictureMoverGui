@@ -89,7 +89,7 @@ namespace PictureMoverGui
         {
             try
             {
-                EventData newEventData = new EventData("New Event", new EventDateTime(DateTime.Now), new EventDateTime(DateTime.Now));
+                EventData newEventData = new EventData(App.Current.FindResource("EventEditNameNewEvent").ToString(), new EventDateTime(DateTime.Now), new EventDateTime(DateTime.Now));
                 this.moverModel.eventDataList.Add(newEventData);
                 this.moverModel.eventDataEdit = newEventData;
             }

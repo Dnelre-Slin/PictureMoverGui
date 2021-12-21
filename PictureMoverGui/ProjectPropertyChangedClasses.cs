@@ -75,6 +75,8 @@ namespace PictureMoverGui
             OnPropertyChanged("StartDateTime");
             OnPropertyChanged("EndDateTime");
             OnPropertyChanged("ValidDateOrder");
+            OnPropertyChanged("ShowErrorText");
+            OnPropertyChanged("DontShowErrorText");
         }
 
         public EventData(string Name, EventDateTime StartDateTime, EventDateTime EndDateTime)
@@ -112,6 +114,8 @@ namespace PictureMoverGui
                 }
                 OnPropertyChanged("StartDateTime");
                 OnPropertyChanged("ValidDateOrder");
+                OnPropertyChanged("ShowErrorText");
+                OnPropertyChanged("DontShowErrorText");
             }
         }
 
@@ -132,10 +136,14 @@ namespace PictureMoverGui
                 }
                 OnPropertyChanged("EndDateTime");
                 OnPropertyChanged("ValidDateOrder");
+                OnPropertyChanged("ShowErrorText");
+                OnPropertyChanged("DontShowErrorText");
             }
         }
 
         public bool ValidDateOrder => StartDateTime.ToDateTime() <= EndDateTime.ToDateTime();
+        public Visibility ShowErrorText => ValidDateOrder ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility DontShowErrorText => ValidDateOrder ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public class EventDateTime: INotifyPropertyChanged

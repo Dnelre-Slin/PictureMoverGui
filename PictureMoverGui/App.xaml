@@ -37,7 +37,37 @@
         <System:String x:Key="DirValidateStatusMessage">Validerer...</System:String>
         <System:String x:Key="DirGatherStatusMessage">Prosesserer...</System:String>
         <System:String x:Key="TabNormalView">Sorterer</System:String>
+        
         <System:String x:Key="TabExtensionView">Filtyper</System:String>
+        
+        <System:String x:Key="TabAdvancedView">Avansert</System:String>
+        <System:String x:Key="NameCollisionGroupbox">Navn Kollisjon handling</System:String>
+        <System:String x:Key="FileCompareGroupbox">Fil Sammenligning handling</System:String>
+        <System:String x:Key="HashTypeGroupbox">Hash typer</System:String>
+        <System:String x:Key="ResetSettingsButton">Tilbakestill innstillinger</System:String>
+        <System:String x:Key="RadioButtonSkipFile">Hopp over fil</System:String>
+        <System:String x:Key="RadioButtonAppendNr">Legg til nummer</System:String>
+        <System:String x:Key="RadioButtonCompareFiles">Sammenlign filer</System:String>
+        <System:String x:Key="RadioButtonNameDate">Kun navn og dato</System:String>
+        <System:String x:Key="RadioButtonNameHash">Kun navn og hash</System:String>
+        <System:String x:Key="RadioButtonNameDateHash">Navn, dato og hash</System:String>
+        
+        <System:String x:Key="TabEventView">Hendelser</System:String>
+        <System:String x:Key="EventListHeaderName">Navn</System:String>
+        <System:String x:Key="EventListHeaderStart">Start tid</System:String>
+        <System:String x:Key="EventListHeaderEnd">Slutt tid</System:String>
+        <System:String x:Key="EventListHeaderAction">Handlinger</System:String>
+        <System:String x:Key="EventListHeaderValid">Gyldig</System:String>
+        <System:String x:Key="EventListAddEvent">Legg til hendelse</System:String>
+        <System:String x:Key="EventListCheckMark">✓</System:String>
+        
+        <System:String x:Key="EventEditName">Navn på hendelse</System:String>
+        <System:String x:Key="EventEditNameNewEvent">Ny hendelse</System:String>
+        <System:String x:Key="EventEditStart">Start dato</System:String>
+        <System:String x:Key="EventEditEnd">Slutt dato</System:String>
+        <System:String x:Key="EventEditSelectDateButtonText">Dato fra fil</System:String>
+        <System:String x:Key="EventEditBackButtonText">Tilbake</System:String>
+        <System:String x:Key="EventEditShowErrorText">Feil: Slutt dato er tidligere enn start dato</System:String>
 
         <System:String x:Key="MessageBoxDeleteEventTitle">Slett hendelse</System:String>
         <System:String x:Key="MessageBoxDeleteEventText">Er du sikker på at du vil slette hendelse</System:String>
