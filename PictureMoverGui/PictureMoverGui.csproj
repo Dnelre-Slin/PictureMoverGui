@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="PictureSorter.png" />
+    <None Remove="PictureSorterIcon.ico" />
+    <None Remove="PictureSorterIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Unnoficial.Microsoft.Expression.Drawing" Version="1.0.0" />
   </ItemGroup>
 
@@ -28,6 +34,12 @@
 
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="PictureSorter.png" />
+    <Resource Include="PictureSorterIcon.ico" />
+    <Resource Include="PictureSorterIcon.png" />
   </ItemGroup>
 
 </Project>
