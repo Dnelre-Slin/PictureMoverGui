@@ -20,8 +20,8 @@
         <!--<System:String x:Key="MessageBoxDeleteEventTitle">Delete event</System:String>
         <System:String x:Key="MessageBoxDeleteEventText">Are you sure you want to delete the event</System:String>-->
 
-        <System:String x:Key="SourceLabelContent">Usortert mappe:</System:String>
-        <System:String x:Key="DestinationLabelContent">Sortert mappe:</System:String>
+        <System:String x:Key="SourceLabelContent">Fra mappe:</System:String>
+        <System:String x:Key="DestinationLabelContent">Til mappe:</System:String>
         <System:String x:Key="FolderButtonContent">Velg mappe</System:String>
         <System:String x:Key="SwapSourceDestinationContent">🗘</System:String>
         <System:String x:Key="CancelContent">🗙</System:String>

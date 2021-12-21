@@ -178,8 +178,10 @@ namespace PictureMoverGui
             {
                 _extensionInfoList = value;
                 OnPropertyChanged("extensionInfoList");
-                OnPropertyChanged("nrOfFilesInCurrentDir");
-                OnPropertyChanged("validExtensionsInCurrentDir");
+                OnPropertyChanged("NrOfActiveFilesInCurrentDir");
+                OnPropertyChanged("TotalNrOfFilesInCurrentDir");
+                //OnPropertyChanged("nrOfFilesInCurrentDir");
+                //OnPropertyChanged("validExtensionsInCurrentDir");
             }
         }
 
@@ -465,6 +467,35 @@ namespace PictureMoverGui
         public bool HashTypeOptionsEditable
         {
             get { return CompareFilesOptionsEditable && compareFilesAction != CompareFilesActionEnum.NameAndDateOnly; }
+        }
+
+        public int TotalNrOfFilesInCurrentDir
+        {
+            get
+            {
+                int total = 0;
+                foreach (ExtensionInfo info in extensionInfoList)
+                {
+                    total += info.Amount;
+                }
+                return total;
+            }
+        }
+
+        public int NrOfActiveFilesInCurrentDir
+        {
+            get
+            {
+                int total = 0;
+                foreach (ExtensionInfo info in extensionInfoList)
+                {
+                    if (info.Active)
+                    {
+                        total += info.Amount;
+                    }
+                }
+                return total;
+            }
         }
     }
 }
