@@ -9,15 +9,12 @@ namespace PictureMoverGui
 {
     class PictureMover
     {
-        //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
 
         private string sourceDir;
         private string destinationDir;
         private List<string> validExtensions;
         private int total_files;
-        //private bool doStructured;
-        //private bool doRename;
         private NameCollisionActionEnum nameCollisionAction;
         private CompareFilesActionEnum compareFilesAction;
         private HashTypeEnum hashType;
@@ -25,8 +22,6 @@ namespace PictureMoverGui
 
         private int nrOfErrors;
         private int current_progress;
-
-        //const int max_rename_tries = 100;
 
         private Action<FileInfo, string, string> copyOrMoveTransferAction;
         private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
@@ -37,16 +32,10 @@ namespace PictureMoverGui
 
         public PictureMover(PictureMoverModel moverModel, BackgroundWorker worker_sender)
         {
-            //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
 
             this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
-            //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
-            //this.validExtensions = moverModel.validExtensionsInCurrentDir;
-            //this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
-            //this.doStructured = moverModel.chkboxDoStructuredChecked;
-            //this.doRename = moverModel.chkboxDoRenameChecked;
             this.nameCollisionAction = moverModel.nameCollisionAction;
             this.compareFilesAction = moverModel.compareFilesAction;
             this.hashType = moverModel.hashTypeAction;
@@ -116,17 +105,6 @@ namespace PictureMoverGui
                     break;
                 }
             }
-
-            //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
-
-            //if (this.doStructured)
-            //{
-            //    dirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
-            //}
-            //else
-            //{
-            //    dirSearcher.DirSearch(d, DoNormalCopyMoveFile);
-            //}
         }
 
         public int GetNrOfErrors()
@@ -136,11 +114,9 @@ namespace PictureMoverGui
 
         private void DoStructuredOrDirectTransferFile(DirectoryInfo _, FileInfo file)
         {
-            //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             DirectoryInfo destinationDir = GetDestinationDirectory(file);
             string destinationFilename = this.datePrependOrOriginalFilenameAction(file);
             FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(this.nameCollisionAction, this.compareFilesAction, this.hashType, destinationDir, file, destinationFilename);
-            //if (this.CheckAllowedFilename(destinationDir, destinationFilename, out destinationFilename)) // Only transfer file, if CheckAllowedFilename has allowed it
             if (filenameCollisionRenamer.IsValid()) // Only transfer file, if FilenameCollisionRenamer has allowed it
             {
                 string validFilename = filenameCollisionRenamer.GetValidFilename();
@@ -171,86 +147,6 @@ namespace PictureMoverGui
 
             this.worker_sender.ReportProgress(progress_percent);
         }
-
-        //private bool CheckFilenameSkipFile(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    new_filename = filename;
-        //    return DirSearcher.FilenameInDir(destinationDir, filename);
-        //}
-
-        //private bool CheckFilenameAlwaysAppend(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
-
-        //private bool CheckFilenameCompareFiles(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    FileInfo otherFile;
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename, out otherFile))
-        //    {
-        //        // Compare file and otherFile
-        //        // If same, return false
-        //        // Else if not same, return result of CheckFilenameAlwaysAppend
-        //        new_filename = filename;
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        new_filename = filename;
-        //        return true;
-        //    }
-        //}
-
-
-        ///* Check if filename is not already in destination directory, and return true, if the out new_filename is allowed */
-        //private bool CheckAllowedFilename(DirectoryInfo destinationDir, string filename, out string new_filename)
-        //{
-        //    //string new_filename = this.datePrependOrOriginalFilenameAction(file);
-        //    //string new_filename = file.Name;
-        //    //if (this.doRename) // Do date prefix renaming. Example: filename.png -> 20210304_filename.png
-        //    //{
-        //    //    string date_str = file.LastWriteTime.ToString("yyyyMMdd");
-        //    //    if (!file.Name.StartsWith(date_str))
-        //    //    {
-        //    //        new_filename = date_str + "_" + new_filename;
-        //    //    }
-        //    //}
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
 
         private string RenameFileOriginal(FileInfo file)
         {
@@ -307,18 +203,12 @@ namespace PictureMoverGui
 
             DirectoryInfo destinationDir = Directory.CreateDirectory(thisDirectory);
             return destinationDir;
-
-            //string new_filename = this.GetNewFilename(file, destinationDir);
-            //this.DoCopyMoveFile(file, thisDirectory, new_filename);
         }
 
         private DirectoryInfo GetDestinationDirectoryDirect(FileInfo file)
         {
-            //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
             DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationDir);
             return destinationDir;
-            //string new_filename = this.GetNewFilename(file, destinationDir);
-            //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
         }
 
         private void DoTransferFile(FileInfo file, string path_to_dir, string new_filename)

@@ -47,9 +47,6 @@ namespace PictureMoverGui
 
         private void worker_DirValidationDoWork(object sender, DoWorkEventArgs e)
         {
-            //System.Threading.Thread.Sleep(4000);
-            //e.Result = WorkResult.DirectoryChanged;
-
             try
             {
                 DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);

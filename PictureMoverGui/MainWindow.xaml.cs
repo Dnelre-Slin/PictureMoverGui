@@ -26,18 +26,12 @@ namespace PictureMoverGui
     /// </summary>
     public partial class MainWindow : Window
     {
-        //PictureMoverModel moverModel;
-
         public MainWindow()
         {
             Trace.Listeners.Add(new TextWriterTraceListener("MyTextFile.log"));
             Trace.AutoFlush = true;
 
             InitializeComponent();
-
-            //this.moverModel = this.Resources["moverModel"] as PictureMoverModel;
-            //this.DataContext = this.moverModel;
-
         }
 
     }

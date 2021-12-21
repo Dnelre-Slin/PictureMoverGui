@@ -31,42 +31,41 @@ namespace PictureMoverGui
 
         private void EventEditView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //Trace.WriteLine("Context changed!!!!");
             this.moverModel = this.DataContext as PictureMoverModel;
         }
 
         private void btnOpenStartDateFile_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
-                this.moverModel.eventDataEdit.StartDateTime = new EventDateTime(fileInfo.LastWriteTime);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
+                    this.moverModel.eventDataEdit.StartDateTime = new EventDateTime(fileInfo.LastWriteTime);
+                }
             }
-            //}
-            //catch (Exception err)
-            //{
-            //    Trace.TraceError(err.Message);
-            //}
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         private void btnOpenEndDateFile_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
-                this.moverModel.eventDataEdit.EndDateTime = new EventDateTime(fileInfo.LastWriteTime);
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
+                    this.moverModel.eventDataEdit.EndDateTime = new EventDateTime(fileInfo.LastWriteTime);
+                }
             }
-            //}
-            //catch (Exception err)
-            //{
-            //    Trace.TraceError(err.Message);
-            //}
+            catch (Exception err)
+            {
+                Trace.TraceError(err.Message);
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

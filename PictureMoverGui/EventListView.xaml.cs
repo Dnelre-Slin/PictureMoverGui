@@ -29,26 +29,7 @@ namespace PictureMoverGui
 
         void EventListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //Trace.WriteLine("Context changed!!!!");
             this.moverModel = this.DataContext as PictureMoverModel;
-        }
-
-        private void btnEventData_Click(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-            Trace.WriteLine("Clicked");
-            Button button = sender as Button;
-            EventData edl = button.DataContext as EventData;
-            //edl.Edit = !edl.Edit;
-            Trace.WriteLine(edl.Name);
-            Trace.WriteLine(this.moverModel.eventDataList.IndexOf(edl));
-            this.moverModel.eventDataEdit = edl;
-            //}
-            //catch (Exception err)
-            //{
-            //    Trace.TraceError(err.Message);
-            //}
         }
 
         private void btnEventListEdit_Click(object sender, RoutedEventArgs e)

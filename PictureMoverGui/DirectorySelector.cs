@@ -95,9 +95,6 @@ namespace PictureMoverGui
 
         private void worker_DirGathererDoWork(object sender, DoWorkEventArgs e, string search_dir)
         {
-            //System.Threading.Thread.Sleep(4000);
-            //e.Result = new Dictionary<string, int>();
-
             try
             {
                 DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
@@ -116,8 +113,6 @@ namespace PictureMoverGui
 
             if (e.Cancelled || extensionInfo == null)
             {
-                //this.moverModel.extensionMapInCurrentDir = new Dictionary<string, int>();
-                //this.moverModel.nrOfFilesInCurrentDir = 0;
                 this.moverModel.extensionInfoList = new ObservableCollection<ExtensionInfo>();
                 this.moverModel.labelSourceDirContent = "";
 
@@ -127,15 +122,11 @@ namespace PictureMoverGui
             else
             {
                 ObservableCollection<ExtensionInfo> newExtensionInfoList = new ObservableCollection<ExtensionInfo>();
-                //int nrOfFilesInCurrentDir = 0;
                 foreach (var item in extensionInfo)
                 {
                     newExtensionInfoList.Add(new ExtensionInfo(item.Key, item.Value, ExtensionLookup.imageAndVideoExtensions.Contains(item.Key)));
-                    //nrOfFilesInCurrentDir += item.Value;
                 }
                 this.moverModel.extensionInfoList = newExtensionInfoList;
-                //this.moverModel.extensionMapInCurrentDir = extensionInfo;
-                //this.moverModel.nrOfFilesInCurrentDir = nrOfFilesInCurrentDir;
 
                 worker = null;
                 this.moverModel.runningState = RunStates.Idle;

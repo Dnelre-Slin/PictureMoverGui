@@ -50,12 +50,8 @@ namespace PictureMoverGui
 
         private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination)
         {
-            //System.Threading.Thread.Sleep(4000);
-            //e.Result = 0;
-
             try
             {
-                //PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked, this.moverModel.validExtensionsInCurrentDir);
                 PictureMover pictureMover = new PictureMover(this.moverModel, sender as BackgroundWorker);
                 pictureMover.Mover();
                 int nrOfErrors = pictureMover.GetNrOfErrors();

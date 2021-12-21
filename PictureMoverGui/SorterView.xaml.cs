@@ -28,13 +28,11 @@ namespace PictureMoverGui
         {
             InitializeComponent();
 
-            //this.Loaded += new RoutedEventHandler(SorterView_Loaded);
             this.DataContextChanged += new DependencyPropertyChangedEventHandler(SorterView_DataContextChanged);
         }
 
         void SorterView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //Trace.WriteLine("Context changed!!!!");
             this.moverModel = this.DataContext as PictureMoverModel;
 
             this.directorySelector = new DirectorySelector(this.moverModel);

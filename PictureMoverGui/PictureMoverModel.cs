@@ -32,18 +32,6 @@ namespace PictureMoverGui
             nameCollisionAction = (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction;
             compareFilesAction = (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction;
             hashTypeAction = (HashTypeEnum)Properties.Settings.Default.HashTypeAction;
-
-            //OnPropertyChanged("chkboxDoCopyChecked");
-            //OnPropertyChanged("chkboxDoStructuredChecked");
-            //OnPropertyChanged("chkboxDoRenameChecked");
-            //OnPropertyChanged("labelSourceDirContent");
-            //OnPropertyChanged("labelDestinationDirContent");
-            //OnPropertyChanged("nameCollisionAction");
-            //OnPropertyChanged("compareFilesAction");
-            //OnPropertyChanged("hashTypeAction");
-
-            //OnPropertyChanged("CompareFilesOptionsEditable");
-            //OnPropertyChanged("HashTypeOptionsEditable");
         }
 
         public void UpdateEventListInSettings()
@@ -54,27 +42,7 @@ namespace PictureMoverGui
 
         public PictureMoverModel()
         {
-            ////_eventThing = new EventStruct("Test", DateTime.Now, DateTime.Now);
-            //_eventThing = new EventStruct("Test", "13.12.2021 17:13:05", "13.12.2021 17:13:05");
-            ////_eventThing = DateTime.Now;
-            ////_eventThing = "13.12.2021 17:13:05";
-
-            //_timeString = "00:00:00";
-
-            //_listOfStuffHours = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
-            //_listOfStuffMinutesAndSeconds = new List<string>() { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" };
-
-            //_editDateTime = false;
-
             _disableAllConfigDuringRun = true;
-
-
-            //EventData eventData1 = new EventData("Paris", new EventDateTime(new DateTime(2019, 03, 04, 12, 13, 14)), new EventDateTime(new DateTime(2019, 05, 14, 21, 04, 55)));
-            //EventData eventData2 = new EventData("New York", new EventDateTime(new DateTime(2015, 11, 11, 09, 17, 54)), new EventDateTime(new DateTime(2015, 12, 02, 11, 12, 05)));
-
-            //_eventDataList = new ObservableCollection<EventData>();
-            //_eventDataList.Add(eventData1);
-            //_eventDataList.Add(eventData2);
 
             _eventDataEdit = null;
 
@@ -84,8 +52,6 @@ namespace PictureMoverGui
             _compareFilesAction = CompareFilesActionEnum.NameDateAndHash;
             _hashTypeAction = HashTypeEnum.MD5;
             _runningState = RunStates.Idle;
-            //_nrOfFilesInCurrentDir = 0;
-            //_extensionMapInCurrentDir = new Dictionary<string, int>();
             _extensionInfoList = new ObservableCollection<ExtensionInfo>();
             _chkboxDoCopyChecked = false;
             _chkboxDoStructuredChecked = true;
@@ -97,18 +63,6 @@ namespace PictureMoverGui
             SettingsRefresh();
 
             _eventDataList = Simplifiers.SimpleListToEventList(Properties.Settings.Default.EventList);
-
-            ////Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
-            //string start_source_dir = Properties.Settings.Default.SourceDir;
-            //labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
-            ////Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
-            //labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
-            //chkboxDoCopyChecked = Properties.Settings.Default.DoCopy;
-            //chkboxDoStructuredChecked = Properties.Settings.Default.DoStructured;
-            //chkboxDoRenameChecked = Properties.Settings.Default.DoDateName;
-            //nameCollisionAction = (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction;
-            //compareFilesAction = (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction;
-            //hashTypeAction = (HashTypeEnum)Properties.Settings.Default.HashTypeAction;
         }
 
 
@@ -180,8 +134,6 @@ namespace PictureMoverGui
                 OnPropertyChanged("extensionInfoList");
                 OnPropertyChanged("NrOfActiveFilesInCurrentDir");
                 OnPropertyChanged("TotalNrOfFilesInCurrentDir");
-                //OnPropertyChanged("nrOfFilesInCurrentDir");
-                //OnPropertyChanged("validExtensionsInCurrentDir");
             }
         }
 

@@ -38,7 +38,6 @@ namespace PictureMoverGui
                     {
                         return;
                     }
-                    //if (file.Extension != ".ini" && file.Extension != ".db")
                     if (this.IsValidFileExtension(file.Extension))
                     {
                         callback(d, file); // Callback will return false, if the dirsearch should break.
