@@ -42,6 +42,8 @@ namespace PictureMoverGui
                 {
                     Properties.Settings.Default.Reset();
                     this.moverModel.SettingsRefresh();
+                    Properties.Settings.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
+                    Properties.Settings.Default.Save();
                 }
             }
             catch (Exception err)
