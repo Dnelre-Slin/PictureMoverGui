@@ -55,9 +55,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="PictureSorter.png" />
-    <Resource Include="PictureSorterIcon.ico" />
-    <Resource Include="PictureSorterIcon.png" />
+    <Resource Include="Images\PictureSorter.png" />
+    <Resource Include="Images\PictureSorterIcon.ico" />
+    <Resource Include="Images\PictureSorterIcon.png" />
   </ItemGroup>
 
 </Project>
