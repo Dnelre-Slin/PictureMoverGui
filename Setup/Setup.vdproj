@@ -43,6 +43,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -199,7 +207,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Bildesorterer"
         "ProductCode" = "8:{4EA025E4-0AB8-4D21-A184-B75C7A7EFC44}"
-        "PackageCode" = "8:{2BD154A9-09A0-4315-9A91-43B2D0AB72A7}"
+        "PackageCode" = "8:{370ACC01-2416-42E1-A8C8-F58BB7C60D03}"
         "UpgradeCode" = "8:{020CB271-359B-4A18-B29F-4E0FB3787E6B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -207,7 +215,7 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Herggem Productions"
+        "Manufacturer" = "8:Heggem Productions"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:BildesortererInstallerer"

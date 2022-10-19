@@ -48,8 +48,15 @@ namespace PictureMoverGui
 
         public void UpdateEventListInSettings()
         {
-            Properties.Settings.Default.EventList = Simplifiers.EventListToSimpleList(this.eventDataList);
-            Properties.Settings.Default.Save();
+            Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.eventDataList);
+            Properties.Datastore.Default.Save();
+            //Properties.Persistant.Default.LastMobilePull
+        }
+
+        public void ExtensionInfoElementChanged()
+        {
+            OnPropertyChanged("NrOfActiveFilesInCurrentDir");
+            OnPropertyChanged("TotalNrOfFilesInCurrentDir");
         }
 
         public PictureMoverModel()
@@ -98,19 +105,7 @@ namespace PictureMoverGui
 
             SettingsRefresh();
 
-            _eventDataList = Simplifiers.SimpleListToEventList(Properties.Settings.Default.EventList);
-
-            ////Set source directory content to the stored value, if it is a valid directory, else set it to an empty string.
-            //string start_source_dir = Properties.Settings.Default.SourceDir;
-            //labelSourceDirContent = !string.IsNullOrEmpty(start_source_dir) && new DirectoryInfo(start_source_dir).Exists ? start_source_dir : "";
-            ////Set destination directory content to the stored value. No need to check if IsNullOrEmpty, as the destination folder is allowed to not exist.
-            //labelDestinationDirContent = Properties.Settings.Default.DestinationDir;
-            //chkboxDoCopyChecked = Properties.Settings.Default.DoCopy;
-            //chkboxDoStructuredChecked = Properties.Settings.Default.DoStructured;
-            //chkboxDoRenameChecked = Properties.Settings.Default.DoDateName;
-            //nameCollisionAction = (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction;
-            //compareFilesAction = (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction;
-            //hashTypeAction = (HashTypeEnum)Properties.Settings.Default.HashTypeAction;
+            _eventDataList = Simplifiers.SimpleListToEventList(Properties.Datastore.Default.EventList);
         }
 
 
@@ -172,18 +167,52 @@ namespace PictureMoverGui
             }
         }
 
+        //private void InfoListChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Sub chagne");
+        //}
+
         private ObservableCollection<ExtensionInfo> _extensionInfoList;
         public ObservableCollection<ExtensionInfo> extensionInfoList
         {
             get { return _extensionInfoList; }
             set
             {
-                _extensionInfoList = value;
-                OnPropertyChanged("extensionInfoList");
-                OnPropertyChanged("NrOfActiveFilesInCurrentDir");
-                OnPropertyChanged("TotalNrOfFilesInCurrentDir");
-                //OnPropertyChanged("nrOfFilesInCurrentDir");
-                //OnPropertyChanged("validExtensionsInCurrentDir");
+                if (value != _extensionInfoList)
+                {
+                    if (_extensionInfoList != null)
+                    {
+                        //_extensionInfoList.CollectionChanged -= InfoListChanged;
+                        foreach (ExtensionInfo extensionInfo in value)
+                        {
+                            extensionInfo.PropertyChanged -= ExtElemChanged;
+                        }
+                    }
+
+                    _extensionInfoList = value;
+
+                    if (_extensionInfoList != null)
+                    {
+                        //_extensionInfoList.CollectionChanged += InfoListChanged;
+                        foreach (ExtensionInfo extensionInfo in _extensionInfoList)
+                        {
+                            extensionInfo.PropertyChanged += ExtElemChanged;
+                        }
+                    }
+
+                    OnPropertyChanged("extensionInfoList");
+                    OnPropertyChanged("NrOfActiveFilesInCurrentDir");
+                    OnPropertyChanged("TotalNrOfFilesInCurrentDir");
+                    
+                }
+
+                //void InfoListChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+                void ExtElemChanged(object sender, PropertyChangedEventArgs args)
+                {
+                    OnPropertyChanged("extensionInfoList");
+                    OnPropertyChanged("NrOfActiveFilesInCurrentDir");
+                    OnPropertyChanged("TotalNrOfFilesInCurrentDir");
+                }
             }
         }
 

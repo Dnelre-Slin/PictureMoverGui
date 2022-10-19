@@ -43,8 +43,8 @@ namespace PictureMoverGui
                 {
                     Properties.Settings.Default.Reset();
                     this.moverModel.SettingsRefresh();
-                    Properties.Settings.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
-                    Properties.Settings.Default.Save();
+                    //Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
+                    //Properties.Settings.Default.Save();
                 }
             }
             catch (Exception err)
@@ -136,6 +136,15 @@ namespace PictureMoverGui
             //{
             //    Trace.WriteLine(s);
             //}
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(this.moverModel.NrOfActiveFilesInCurrentDir);
+            foreach (var ext in this.moverModel.extensionInfoList)
+            {
+                Debug.WriteLine(ext.Name + " : " + ext.Active);
+            }
         }
     }
 }
