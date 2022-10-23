@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PictureMoverGui.Store;
+using PictureMoverGui.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,22 @@ namespace PictureMoverGui
     /// </summary>
     public partial class App : Application
     {
+        private MasterStore _masterStore;
+        public App()
+        {
+            _masterStore = new MasterStore("Let", "Us", "Begin", true);
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            MainWindow = new MainWindow();
+
+            MainWindowViewModel viewModel = new MainWindowViewModel(_masterStore);
+
+            MainWindow.DataContext = viewModel;
+            MainWindow.Show();
+        }
     }
 }

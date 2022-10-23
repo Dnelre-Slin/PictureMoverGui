@@ -11,25 +11,14 @@
     <Window.Resources>
         <local:PictureMoverModel x:Key="moverModel"></local:PictureMoverModel>
     </Window.Resources>
-    <TabControl>
-        <TabItem Header="{DynamicResource TabNormalView}">
-            <local:SorterView DataContext="{Binding Source={StaticResource moverModel}}"></local:SorterView>
-        </TabItem>
-        <TabItem Header="{DynamicResource TabEventView}">
-            <Grid>
-                <local:EventListView Visibility="{Binding ShowEventListView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventListView>
-                <local:EventEditView Visibility="{Binding ShowEventEditView}" DataContext="{Binding Source={StaticResource moverModel}}"></local:EventEditView>
-            </Grid>
-        </TabItem>
-        <TabItem Header="{DynamicResource TabExtensionView}">
-            <local:ExtensionSelectorView DataContext="{Binding Source={StaticResource moverModel}}"></local:ExtensionSelectorView>
-        </TabItem>
-        <TabItem Header="{DynamicResource TabAdvancedView}">
-            <local:AdvancedOptionsView DataContext="{Binding Source={StaticResource moverModel}}"></local:AdvancedOptionsView>
-        </TabItem>
-        <TabItem Header="{DynamicResource TabStatusView}">
-            <local:StatusInfoView DataContext="{Binding Source={StaticResource moverModel}}"></local:StatusInfoView>
-        </TabItem>
-    </TabControl>
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="{Binding Name}"></TextBlock>
+            <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>
+            <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBlock Text="{Binding TypeText}"></TextBlock>
+            <CheckBox Command="{Binding CheckBoxChange}" IsChecked="{Binding Active}" ></CheckBox>
+        </StackPanel>
+    </Grid>
 
 </Window>
