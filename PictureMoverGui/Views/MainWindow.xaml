@@ -16,7 +16,7 @@
         <TabItem Header="Tab1" Name="tab1">
             <StackPanel>
                 <TextBlock Text="{Binding Name}"></TextBlock>
-                <Button Command="{Binding ChangeNameCommand}" Content="{Binding Description}"></Button>
+                <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>
                 <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 <TextBlock Text="{Binding TypeText}"></TextBlock>
                 <CheckBox IsChecked="{Binding Active}" ></CheckBox>
