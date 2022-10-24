@@ -18,7 +18,7 @@ namespace PictureMoverGui
         private MasterStore _masterStore;
         public App()
         {
-            _masterStore = new MasterStore("Let", "Us", "Begin", true);
+            _masterStore = new MasterStore("Defualt Name", true);
         }
 
         protected override void OnStartup(StartupEventArgs e)

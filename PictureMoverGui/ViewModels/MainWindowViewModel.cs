@@ -2,6 +2,9 @@
 using PictureMoverGui.Store;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -34,20 +37,42 @@ namespace PictureMoverGui.ViewModels
                 {
                     _masterStore.Active = value; 
                     OnPropertyChanged(nameof(Active));
+                    OnActiveChanged();
                 }
             }
         }
 
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                if (_selectedIndex != value)
+                {
+                    _selectedIndex = value;
+                    OnPropertyChanged(nameof(SelectedIndex));
+                    OnSelectedIndexChanged();
+                }
+            }
+        }
+
+        public ListShowerViewModel ListShowerVM { get; }
+
         public ICommand ChangeName { get; }
-        public ICommand CheckBoxChange { get; }
+        //public ICommand CheckBoxChange { get; }
 
         public MainWindowViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
             _masterStore.MasterPropertyChanged += MasterStoreChanged;
 
-            ChangeName = new CallbackCommand(_masterStore, ButtonClicked);
-            CheckBoxChange = new CallbackCommand(_masterStore, CheckBoxChanged);
+            _selectedIndex = 0;
+
+            ListShowerVM = new ListShowerViewModel(masterStore);
+
+            ChangeName = new CallbackCommand(OnChangeName);
+            //CheckBoxChange = new CallbackCommand(_masterStore, CheckBoxChanged);
         }
 
         protected override void Dispose()
@@ -65,15 +90,47 @@ namespace PictureMoverGui.ViewModels
             OnPropertyChanged(nameof(Active));
         }
 
-        protected void ButtonClicked()
+        protected IEnumerable<string> GetNames()
+        {
+            List<string> ls = new List<string>();
+            ls.Add("hello");
+            ls.Add("sir");
+            ls.Add("good");
+            ls.Add("lady");
+            ls.Add("person");
+
+            foreach (var s in ls)
+            {
+                yield return s;
+            }
+        }
+
+        protected void OnChangeName()
         {
             _masterStore.Name = TypeText;
             TypeText = "";
+
+            Debug.WriteLine($"Command executed. Name : {_masterStore.Name} , Desc : {_masterStore.Description} , Active : {_masterStore.Active}");
+
+            //foreach (var item in ListShowerVM.FileDatas)
+            //{
+            //    Debug.WriteLine($"{item.Name} : {item.Count} : {item.Active}");
+            //}
         }
 
-        protected void CheckBoxChanged()
+        protected void OnActiveChanged()
         {
-            //_masterStore.Active = Active;
+            Debug.WriteLine($"CheckBox changed : {Active}");
         }
+
+        protected void OnSelectedIndexChanged()
+        {
+            Debug.WriteLine($"Tab changed : {SelectedIndex}");
+        }
+
+        //protected void CheckBoxChanged()
+        //{
+        //    //_masterStore.Active = Active;
+        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureMoverGui.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,19 +33,6 @@ namespace PictureMoverGui.Store
                 }
             }
         }
-        //private string _typeText;
-        //public string TypeText
-        //{ 
-        //    get { return _typeText;}
-        //    set
-        //    {
-        //        if (_typeText != value)
-        //        {
-        //            _typeText = value;
-        //            MasterPropertyChanged?.Invoke();
-        //        }
-        //    }
-        //}
         private bool _active;
         public bool Active
         {
@@ -59,14 +47,23 @@ namespace PictureMoverGui.Store
             }
         }
 
+        private List<FileData> _fileDatas;
+        public IEnumerable<FileData> FileDatas => _fileDatas;
+
         public event Action MasterPropertyChanged;
 
-        public MasterStore(string name, string description, string typeText, bool active)
+        public MasterStore(string name, bool active)
         {
             _name = name;
-            _description = description;
-            //_typeText = typeText;
+            _description = "Change name";
             _active = active;
+
+            _fileDatas = new List<FileData>();
+            _fileDatas.Add(new FileData("jpeg", 14, true));
+            _fileDatas.Add(new FileData("png", 25, true));
+            _fileDatas.Add(new FileData("db", 4, false));
+            _fileDatas.Add(new FileData("mp4", 9, true));
+            _fileDatas.Add(new FileData("ini", 2, false));
         }
     }
 }

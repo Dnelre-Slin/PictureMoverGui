@@ -5,20 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:PictureMoverGui.Properties"
         xmlns:local="clr-namespace:PictureMoverGui"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:views="clr-namespace:PictureMoverGui.Views"
         mc:Ignorable="d"
         Title="{DynamicResource MainWindowTitle}" Height="500" Width="800" MinHeight="500" MinWidth="800" Icon="/Images/PictureSorterIcon.ico">
     <Window.Resources>
         <local:PictureMoverModel x:Key="moverModel"></local:PictureMoverModel>
     </Window.Resources>
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="{Binding Name}"></TextBlock>
-            <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>
-            <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBlock Text="{Binding TypeText}"></TextBlock>
-            <CheckBox Command="{Binding CheckBoxChange}" IsChecked="{Binding Active}" ></CheckBox>
-        </StackPanel>
-    </Grid>
+    <TabControl SelectedIndex="{Binding SelectedIndex}">
+        <TabItem Header="Tab1" Name="tab1">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}"></TextBlock>
+                <Button Command="{Binding ChangeNameCommand}" Content="{Binding Description}"></Button>
+                <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <TextBlock Text="{Binding TypeText}"></TextBlock>
+                <CheckBox IsChecked="{Binding Active}" ></CheckBox>
+            </StackPanel>
+        </TabItem>        
+        <TabItem Header="Tab2" Name="tab2">
+            <views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>
+        </TabItem>
+    </TabControl>
 
 </Window>
