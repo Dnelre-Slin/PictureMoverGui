@@ -15,13 +15,13 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <StackPanel>
-                            <WrapPanel>
-                                <TextBlock Text="{Binding Name}"></TextBlock>
-                                <TextBlock Text="{Binding Count}"></TextBlock>
-                                <CheckBox IsChecked="{Binding Active}"></CheckBox>
-                            </WrapPanel>
-                        </StackPanel>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <TextBlock Text="  :  "></TextBlock>
+                            <TextBlock Text="{Binding Count}"></TextBlock>
+                            <TextBlock Text="    =    "></TextBlock>
+                            <CheckBox IsChecked="{Binding Active}"></CheckBox>
+                        </WrapPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

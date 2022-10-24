@@ -15,18 +15,20 @@ namespace PictureMoverGui.Store
         public FileDataStore()
         {
             _fileDatas = new List<FileData>();
-            int index = 0;
-            _fileDatas.Add(new FileData(index++, "jpeg", 14, true));
-            _fileDatas.Add(new FileData(index++, "png", 25, true));
-            _fileDatas.Add(new FileData(index++, "db", 4, false));
-            _fileDatas.Add(new FileData(index++, "mp4", 9, true));
-            _fileDatas.Add(new FileData(index++, "ini", 2, false));
+            _fileDatas.Add(new FileData("jpeg", 14, true));
+            _fileDatas.Add(new FileData("png", 25, true));
+            _fileDatas.Add(new FileData("db", 4, false));
+            _fileDatas.Add(new FileData("mp4", 9, true));
+            _fileDatas.Add(new FileData("ini", 2, false));
         }
 
-        //public void SetActive(int index, bool state)
-        //{
-        //    _fileDatas[index].Active = state;
-        //    FileDataChanged?.Invoke();
-        //}
+        public void SetActive(FileData fileData, bool state)
+        {
+            //FileData old = _fileDatas[index];
+            //_fileDatas[index] = new FileData(old.Index, old.Name, old.Count, state);
+            _fileDatas.Find((f) => f.Name == fileData.Name).SetActive(state);
+            FileDataChanged?.Invoke();
+            //return _fileDatas[index];
+        }
     }
 }

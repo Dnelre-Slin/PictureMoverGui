@@ -92,7 +92,7 @@ namespace PictureMoverGui.ViewModels
 
             foreach (var fileData in _masterStore.FileData.FileDatas)
             {
-                _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileData, ActiveChanged));
+                _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileData));
             }
         }
 
