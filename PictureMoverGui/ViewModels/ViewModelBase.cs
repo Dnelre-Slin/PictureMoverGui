@@ -14,6 +14,6 @@ namespace PictureMoverGui.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void Dispose() { }
+        public virtual void Dispose() { }
     }
 }

@@ -40,6 +40,12 @@
                 Padding="10"
                 FontSize="16"
             ></Button>
+            <WrapPanel Grid.Column="2" HorizontalAlignment="Right" Margin="30 0">
+                <TextBlock Text="Number of files: " FontSize="20"></TextBlock>
+                <TextBlock Text="{Binding ActiveFiles}" FontSize="20"></TextBlock>
+                <TextBlock Text="/" FontSize="20"></TextBlock>
+                <TextBlock Text="{Binding NumberOfFiles}" FontSize="20"></TextBlock>
+            </WrapPanel>
         </Grid>
     </Grid>
 </UserControl>

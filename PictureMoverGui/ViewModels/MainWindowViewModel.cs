@@ -14,8 +14,8 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        public string Name => _masterStore.Name;
-        public string Description => _masterStore.Description;
+        public string Name => _masterStore.Dummy.Name;
+        public string Description => _masterStore.Dummy.Description;
 
         private string _typeText;
         public string TypeText
@@ -31,11 +31,11 @@ namespace PictureMoverGui.ViewModels
         //private bool _active;
         public bool Active 
         {
-            get => _masterStore.Active;
+            get => _masterStore.Dummy.Active;
             set {
-                if (_masterStore.Active != value)
+                if (_masterStore.Dummy.Active != value)
                 {
-                    _masterStore.Active = value; 
+                    _masterStore.Dummy.Active = value; 
                     OnPropertyChanged(nameof(Active));
                     OnActiveChanged();
                 }
@@ -65,7 +65,7 @@ namespace PictureMoverGui.ViewModels
         public MainWindowViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
-            _masterStore.MasterPropertyChanged += MasterStoreChanged;
+            _masterStore.Dummy.DummyChanged += DummyChanged;
 
             _selectedIndex = 0;
 
@@ -75,14 +75,14 @@ namespace PictureMoverGui.ViewModels
             //CheckBoxChange = new CallbackCommand(_masterStore, CheckBoxChanged);
         }
 
-        protected override void Dispose()
+        public override void Dispose()
         {
             base.Dispose();
 
-            _masterStore.MasterPropertyChanged -= MasterStoreChanged;
+            _masterStore.Dummy.DummyChanged -= DummyChanged;
         }
 
-        protected void MasterStoreChanged()
+        protected void DummyChanged()
         {
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Description));
@@ -105,12 +105,12 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        protected void OnChangeName()
+        protected void OnChangeName(object parameter)
         {
-            _masterStore.Name = TypeText;
+            _masterStore.Dummy.Name = TypeText;
             TypeText = "";
 
-            Debug.WriteLine($"Command executed. Name : {_masterStore.Name} , Desc : {_masterStore.Description} , Active : {_masterStore.Active}");
+            Debug.WriteLine($"Command executed. Name : {_masterStore.Dummy.Name} , Desc : {_masterStore.Dummy.Description} , Active : {_masterStore.Dummy.Active}");
 
             //foreach (var item in ListShowerVM.FileDatas)
             //{

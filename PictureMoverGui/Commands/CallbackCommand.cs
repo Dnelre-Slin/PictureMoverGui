@@ -8,16 +8,16 @@ namespace PictureMoverGui.Commands
 {
     public class CallbackCommand : CommandBase
     {
-        private Action _callback;
+        private Action<object> _callback;
 
-        public CallbackCommand(Action callback)
+        public CallbackCommand(Action<object> callback)
         {
             _callback = callback;
         }
 
         public override void Execute(object parameter)
         {
-            _callback();
+            _callback(parameter);
         }
     }
 }
