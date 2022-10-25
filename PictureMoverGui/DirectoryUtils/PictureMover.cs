@@ -1,4 +1,5 @@
 ﻿using MediaDevices;
+using PictureMoverGui.DirectoryUtils;
 using PictureMoverGui.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace PictureMoverGui
     {
         //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
-        private List<FileInfo> fileInfoList;
+        private List<GenericFileInfo> fileInfoList;
 
         private string destinationDir;
         //private List<string> validExtensions;
@@ -29,15 +30,15 @@ namespace PictureMoverGui
         private int nrOfErrors;
         private int current_progress;
 
-        private Action<FileInfo, string, string> copyOrMoveTransferAction;
-        private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
-        private Func<FileInfo, string> datePrependOrOriginalFilenameAction;
+        private Action<GenericFileInfo, string, string> copyOrMoveTransferAction;
+        private Func<GenericFileInfo, DirectoryInfo> structuredOrDirectTransferAction;
+        private Func<GenericFileInfo, string> datePrependOrOriginalFilenameAction;
 
         private List<string> infoStatusMessages;
 
         private bool cancel;
 
-        public PictureMover(PictureMoverModel moverModel, List<FileInfo> fileInfoList, BackgroundWorker worker_sender)
+        public PictureMover(PictureMoverModel moverModel, List<GenericFileInfo> fileInfoList, BackgroundWorker worker_sender)
         {
             //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
@@ -95,9 +96,9 @@ namespace PictureMoverGui
 
             this.current_progress = 0;
 
-            foreach (FileInfo fileInfo in fileInfoList)
+            foreach (GenericFileInfo fileInfo in fileInfoList)
             {
-                DoStructuredOrDirectTransferFile(null, fileInfo);
+                DoStructuredOrDirectTransferFile(fileInfo);
                 if (this.cancel)
                 {
                     this.infoStatusMessages.Add($"Cancelled during sorting");
@@ -113,7 +114,7 @@ namespace PictureMoverGui
             return this.nrOfErrors;
         }
 
-        private void DoStructuredOrDirectTransferFile(DirectoryInfo _, FileInfo file)
+        private void DoStructuredOrDirectTransferFile(GenericFileInfo file)
         {
             //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             DirectoryInfo destinationDir = GetDestinationDirectory(file);
@@ -153,12 +154,12 @@ namespace PictureMoverGui
             this.worker_sender.ReportProgress(progress_percent);
         }
 
-        private string RenameFileOriginal(FileInfo file)
+        private string RenameFileOriginal(GenericFileInfo file)
         {
             return file.Name;
         }
 
-        private string RenameFileDatePrepend(FileInfo file)
+        private string RenameFileDatePrepend(GenericFileInfo file)
         {
             string new_filename = file.Name;
             string date_str = file.LastWriteTime.ToString("yyyyMMdd_HHmmss");
@@ -169,7 +170,7 @@ namespace PictureMoverGui
             return new_filename;
         }
 
-        private DirectoryInfo GetDestinationDirectory(FileInfo file)
+        private DirectoryInfo GetDestinationDirectory(GenericFileInfo file)
         {
             string eventName = "";
             if (FileInEvent(file, out eventName))
@@ -183,7 +184,7 @@ namespace PictureMoverGui
             }
         }
 
-        private bool FileInEvent(FileInfo file, out string eventName)
+        private bool FileInEvent(GenericFileInfo file, out string eventName)
         {
             eventName = "";
             long fileTick = file.LastWriteTime.Ticks;
@@ -198,7 +199,7 @@ namespace PictureMoverGui
             return false;
         }
 
-        private DirectoryInfo GetDestinationDirectoryStructured(FileInfo file)
+        private DirectoryInfo GetDestinationDirectoryStructured(GenericFileInfo file)
         {
             DateTime dt = file.LastWriteTime;
 
@@ -213,7 +214,7 @@ namespace PictureMoverGui
             //this.DoCopyMoveFile(file, thisDirectory, new_filename);
         }
 
-        private DirectoryInfo GetDestinationDirectoryDirect(FileInfo file)
+        private DirectoryInfo GetDestinationDirectoryDirect(GenericFileInfo _)
         {
             //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
             DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationDir);
@@ -222,7 +223,7 @@ namespace PictureMoverGui
             //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
         }
 
-        private void DoTransferFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoTransferFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             try
             {
@@ -242,11 +243,11 @@ namespace PictureMoverGui
             }
         }
 
-        private void DoCopyFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoCopyFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             file.CopyTo($"{path_to_dir}\\{new_filename}", false);
         }
-        private void DoMoveFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoMoveFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             file.MoveTo($"{path_to_dir}\\{new_filename}", false);
         }

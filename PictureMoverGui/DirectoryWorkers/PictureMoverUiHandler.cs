@@ -1,4 +1,5 @@
-﻿using PictureMoverGui.Helpers;
+﻿using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -83,6 +84,11 @@ namespace PictureMoverGui
             return validExtensions.Contains(ext);
         }
 
+        static private bool IsFileNewerThan(DateTime fileLastWriteTime, DateTime newerThan)
+        {
+            return fileLastWriteTime >= newerThan;
+        }
+
         private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination, List<string> validExtensions)
         {
             //System.Threading.Thread.Sleep(4000);
@@ -90,29 +96,41 @@ namespace PictureMoverGui
 
             try
             {
-                DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
-                if (!d.Exists)
+                using (PictureRetriever pictureRetriever = new PictureRetriever(this.moverModel.sorterMediaType, this.moverModel.PictureRetrieverSource))
                 {
-                    e.Result = new List<string>() { "Source dir no longer exists" };
-                    //e.Result = new List<string>() { "The source dir no longer exists. Please start select source again", "Source dir no longer exists" };
-                    return;
+                    if (!pictureRetriever.IsValid)
+                    {
+                        e.Result = new List<string>() { "Source dir no longer exists" };
+                        return;
+                    }
+                    //DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
+                    //if (!d.Exists)
+                    //{
+                    //    e.Result = new List<string>() { "Source dir no longer exists" };
+                    //    return;
+                    //}
+
+                    List<GenericFileInfo> fileInfoList = pictureRetriever.EnumerateFiles("*", SearchOption.AllDirectories)
+                        .Where(f => IsValidFileExtension(f.Extension, validExtensions) && IsFileNewerThan(f.LastWriteTime, this.moverModel.PictureRetrieverNewerThan))
+                        .CancelWorker(worker)
+                        .CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions)
+                        .ToList();
+
+                    this.moverModel.runningState = RunStates.RunningSorter;
+
+                    if (worker.CancellationPending)
+                    {
+                        e.Result = new List<string>() { "Cancelled during preparation" };
+                        return;
+                    }
+
+                    //PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked, this.moverModel.validExtensionsInCurrentDir);
+                    PictureMover pictureMover = new PictureMover(this.moverModel, fileInfoList, sender as BackgroundWorker);
+                    List<string> infoStatusMessages = pictureMover.Mover();
+                    e.Result = infoStatusMessages;
+                    //int nrOfErrors = pictureMover.GetNrOfErrors();
+                    //e.Result = nrOfErrors;
                 }
-                List<FileInfo> fileInfoList = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension, validExtensions)).CancelWorker(worker).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
-
-                this.moverModel.runningState = RunStates.RunningSorter;
-
-                if (worker.CancellationPending)
-                {
-                    e.Result = new List<string>() { "Cancelled during preparation" };
-                    return;
-                }
-
-                //PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked, this.moverModel.validExtensionsInCurrentDir);
-                PictureMover pictureMover = new PictureMover(this.moverModel, fileInfoList, sender as BackgroundWorker);
-                List<string> infoStatusMessages = pictureMover.Mover();
-                e.Result = infoStatusMessages;
-                //int nrOfErrors = pictureMover.GetNrOfErrors();
-                //e.Result = nrOfErrors;
             }
             catch (Exception err)
             {

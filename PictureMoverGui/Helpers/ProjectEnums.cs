@@ -31,4 +31,10 @@ namespace PictureMoverGui
         MD5,
         SHA256
     }
+
+    public enum MediaTypeEnum
+    {
+        NormalDirectory,
+        MediaDevice
+    }
 }

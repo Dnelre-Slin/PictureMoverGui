@@ -50,6 +50,17 @@
                 <Button FontSize="20" Padding="10" Margin="10" Content="{DynamicResource ResetSettingsButton}" x:Name="btnResetSettings" Click="btnResetSettings_Click"></Button>
                 <Button FontSize="20" Padding="10" Margin="10" Content="TEST" x:Name="btnTest" Click="btnTest_Click"></Button>
             </WrapPanel>
+            <GroupBox Padding="10" Margin="10" IsEnabled="{Binding HashTypeOptionsEditable}">
+                <GroupBox.Header>
+                    <TextBlock Text="{DynamicResource MediaTypeGroupbox}" FontSize="15"></TextBlock>
+                </GroupBox.Header>
+                <Viewbox Height="40" HorizontalAlignment="Left">
+                    <WrapPanel Orientation="Vertical">
+                        <RadioButton GroupName="MediaType" IsChecked="{Binding sorterMediaType, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:MediaTypeEnum.NormalDirectory}}" Content="Normal"></RadioButton>
+                        <RadioButton GroupName="MediaType" IsChecked="{Binding sorterMediaType, Converter={StaticResource enumConverter}, ConverterParameter={x:Static local:MediaTypeEnum.MediaDevice}}" Content="Media"></RadioButton>
+                    </WrapPanel>
+                </Viewbox>
+            </GroupBox>
         </WrapPanel>
     </Grid>
 </UserControl>

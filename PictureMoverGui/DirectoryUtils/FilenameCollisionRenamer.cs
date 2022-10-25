@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureMoverGui.DirectoryUtils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -21,7 +22,7 @@ namespace PictureMoverGui
         private CompareFilesActionEnum compareFilesAction;
         private HashTypeEnum hashType;
         private DirectoryInfo destinationDir;
-        private FileInfo file;
+        private GenericFileInfo file;
         private string filename;
 
         private bool isValid;
@@ -29,7 +30,7 @@ namespace PictureMoverGui
         private bool isValidIsCalled;
         private bool fileWasRenamed;
 
-        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, HashTypeEnum hashType, DirectoryInfo destinationDir, FileInfo file, string filename)
+        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, HashTypeEnum hashType, DirectoryInfo destinationDir, GenericFileInfo file, string filename)
         {
             this.nameCollisionAction = nameCollisionAction;
             this.compareFilesAction = compareFilesAction;
@@ -171,8 +172,8 @@ namespace PictureMoverGui
         private bool CompareHashMD5(FileInfo otherFile)
         {
             using (MD5 md5Instance = MD5.Create())
-            using (FileStream fileStream = File.OpenRead(this.file.FullName))
-            using (FileStream otherFileStream = File.OpenRead(otherFile.FullName))
+            using (Stream fileStream = this.file.OpenRead())
+            using (Stream otherFileStream = otherFile.OpenRead())
             {
                 string fileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
                 string otherFileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
@@ -182,9 +183,9 @@ namespace PictureMoverGui
 
         private bool CompareHashSHA256(FileInfo otherFile)
         {
-            using (var sha256Instance = SHA256.Create())
-            using (var fileStream = File.OpenRead(this.file.FullName))
-            using (var otherFileStream = File.OpenRead(otherFile.FullName))
+            using (SHA256 sha256Instance = SHA256.Create())
+            using (Stream fileStream = this.file.OpenRead())
+            using (Stream otherFileStream = otherFile.OpenRead())
             {
                 string fileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
                 string otherFileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();

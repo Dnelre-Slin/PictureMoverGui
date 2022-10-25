@@ -10,23 +10,57 @@ namespace PictureMoverGui.DirectoryUtils
     public class PictureRetriever : IDisposable
     {
         private GenericFileInfoServer _genericFileInfoServer;
-        public PictureRetriever(string sourceDir)
-        {
-            //DirectoryInfo d = new DirectoryInfo(sourceDir);
-            //_genericFileInfoServer = new GenericFileInfoServer(d, null);
 
-            MediaDevice m = null;
-            foreach (var dev in MediaDevice.GetDevices())
+        public bool IsValid { get; }
+
+        public PictureRetriever(MediaTypeEnum mediaType, string source)
+        {
+            if (mediaType == MediaTypeEnum.NormalDirectory)
             {
-                if (dev.FriendlyName == "Nils sin S20+")
+                DirectoryInfo d = new DirectoryInfo(source);
+                if (d.Exists)
                 {
-                    m = dev;
-                    break;
+                    _genericFileInfoServer = new GenericFileInfoServer(d, null);
+                    IsValid = true;
+                }
+                else
+                {
+                    IsValid = false;
                 }
             }
-            if (m != null)
+            else if (mediaType == MediaTypeEnum.MediaDevice)
             {
-                _genericFileInfoServer = new GenericFileInfoServer(null, m);
+                MediaDevice m = null;
+                foreach (var dev in MediaDevice.GetDevices())
+                {
+                    if (dev.FriendlyName == source)
+                    {
+                        m = dev;
+                        break;
+                    }
+                }
+                if (m != null)
+                {
+                    _genericFileInfoServer = new GenericFileInfoServer(null, m);
+                    IsValid = true;
+                }
+                else
+                {
+                    IsValid = false;
+                }
+            }
+            else
+            {
+                IsValid = false;
+                throw new NotImplementedException($"PictureRetreiver constructor does not account for MediaType : {mediaType}");
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_genericFileInfoServer != null)
+            {
+                _genericFileInfoServer.Dispose();
             }
         }
 
@@ -40,28 +74,34 @@ namespace PictureMoverGui.DirectoryUtils
             return _genericFileInfoServer.EnumerateFiles(searchPattern, searchOption);
         }
 
-        public void Dispose()
-        {
-            if (_genericFileInfoServer != null)
-            {
-                _genericFileInfoServer.Dispose();
-            }
-        }
-
         static private void tmpCatcher(Exception e)
         {
             System.Diagnostics.Debug.WriteLine(e);
         }
 
-        static public Dictionary<string, int> GetExtensions(string search_dir, BackgroundWorker sender_worker)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, BackgroundWorker sender_worker)
+        {
+            return GetExtensions(mediaType, source, sender_worker, DateTime.MinValue);
+        }
+
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, BackgroundWorker sender_worker, DateTime newerThan)
         {
             //DirectoryInfo d = new DirectoryInfo(search_dir);
-            using (PictureRetriever pictureRetriever = new PictureRetriever(search_dir))
+            using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source))
             {
+                if (!pictureRetriever.IsValid)
+                {
+                    return null;
+                }
+
                 Dictionary<string, int> extensionMap = new Dictionary<string, int>();
 
                 foreach (GenericFileInfo file in pictureRetriever.EnumerateFiles("*", SearchOption.AllDirectories).CatchExceptions(tmpCatcher))
                 {
+                    if (file.LastWriteTime < newerThan)
+                    {
+                        continue; // Skip older files
+                    }
                     if (string.IsNullOrEmpty(file.StrictExtension))
                     {
                         continue; // Do not add extension, if file has no extension.
