@@ -15,8 +15,6 @@ namespace PictureMoverGui
 
         private BackgroundWorker worker;
 
-        private EnumerableCancelArgs cancelArgs;
-
         public PictureMoverUiHandler(PictureMoverModel moverModel)
         {
             this.moverModel = moverModel;
@@ -44,8 +42,6 @@ namespace PictureMoverGui
                     }
                 }
 
-                cancelArgs = new EnumerableCancelArgs();
-
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.WorkerSupportsCancellation = true;
@@ -64,7 +60,6 @@ namespace PictureMoverGui
             if (this.worker != null)
             {
                 this.worker.CancelAsync();
-                cancelArgs.Cancel = true;
             }
         }
 
@@ -102,7 +97,7 @@ namespace PictureMoverGui
                     //e.Result = new List<string>() { "The source dir no longer exists. Please start select source again", "Source dir no longer exists" };
                     return;
                 }
-                List<FileInfo> fileInfoList = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension, validExtensions)).Cancel(cancelArgs).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
+                List<FileInfo> fileInfoList = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension, validExtensions)).CancelWorker(worker).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
 
                 this.moverModel.runningState = RunStates.RunningSorter;
 

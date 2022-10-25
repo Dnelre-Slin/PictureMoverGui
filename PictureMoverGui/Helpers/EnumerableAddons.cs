@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace PictureMoverGui.Helpers
 {
-    public class EnumerableCancelArgs
-    {
-        public bool Cancel { get; set; } = false;
-    }
 
     public static class Enumerables
     {
@@ -36,14 +33,14 @@ namespace PictureMoverGui.Helpers
             }
         }
 
-        public static IEnumerable<T> Cancel<T>(this IEnumerable<T> src, EnumerableCancelArgs e)
+        public static IEnumerable<T> CancelWorker<T>(this IEnumerable<T> src, BackgroundWorker worker)
         {
             using (IEnumerator<T> enumerator = src.GetEnumerator())
             {
                 bool next = true;
                 while (next)
                 {
-                    if (e.Cancel)
+                    if (worker.CancellationPending)
                     {
                         break;
                     }
