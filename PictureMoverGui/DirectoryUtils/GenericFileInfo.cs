@@ -118,15 +118,18 @@ namespace PictureMoverGui.DirectoryUtils
             }
         }
 
-        public void CopyTo(string destFileName, bool overwrite = false)
+        public FileInfo CopyTo(string destFileName, bool overwrite = false)
         {
             if (this.fileInfo != null)
             {
-                this.fileInfo.CopyTo(destFileName, overwrite);
+                return this.fileInfo.CopyTo(destFileName, overwrite);
             }
             else
             {
                 this.mediaFileInfo.CopyTo(destFileName, overwrite);
+                FileInfo fileInfo = new FileInfo(destFileName);
+                fileInfo.LastWriteTime = this.mediaFileInfo.LastWriteTime ?? fileInfo.LastWriteTime; // Make sure fileInfo lastWriteTime is preserved
+                return fileInfo;
             }
         }
 

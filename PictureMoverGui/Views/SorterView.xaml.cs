@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PictureMoverGui.DirectoryWorkers;
+using PictureMoverGui.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;

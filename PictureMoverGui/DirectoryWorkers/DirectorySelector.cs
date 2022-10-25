@@ -7,8 +7,10 @@ using System.IO;
 using System.Windows;
 using System.Collections.ObjectModel;
 using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Models;
+using PictureMoverGui.Helpers;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryWorkers
 {
     public class DirectorySelector
     {

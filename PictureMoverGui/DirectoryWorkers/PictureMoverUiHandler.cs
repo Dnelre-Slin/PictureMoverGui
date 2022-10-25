@@ -1,5 +1,6 @@
 ﻿using PictureMoverGui.DirectoryUtils;
 using PictureMoverGui.Helpers;
+using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryWorkers
 {
     public class PictureMoverUiHandler
     {

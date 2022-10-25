@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureMoverGui.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Models
 {
     public class PictureMoverModel : INotifyPropertyChanged
     {
@@ -104,13 +105,15 @@ namespace PictureMoverGui
             _sorterMediaType = MediaTypeEnum.NormalDirectory;
             //_sorterMediaType = MediaTypeEnum.MediaDevice;
             _mediaDeviceSerialId = "Nils sin S20+";
-            _sorterNewerThanDateTime = new DateTime(2021, 1, 1);
+            //_sorterNewerThanDateTime = new DateTime(2021, 1, 1);
+            _sorterNewerThanDateTime = new DateTime(1, 1, 1);
 
             _infoStatusMessagesLastRun = new List<string>();
 
             SettingsRefresh();
 
             _eventDataList = Simplifiers.SimpleListToEventList(Properties.Datastore.Default.EventList);
+            //_eventDataList = new ObservableCollection<EventData>();
         }
 
 

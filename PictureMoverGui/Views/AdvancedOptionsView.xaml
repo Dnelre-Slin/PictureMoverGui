@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PictureMoverGui"
+             xmlns:local="clr-namespace:PictureMoverGui.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -50,7 +50,7 @@
                 <Button FontSize="20" Padding="10" Margin="10" Content="{DynamicResource ResetSettingsButton}" x:Name="btnResetSettings" Click="btnResetSettings_Click"></Button>
                 <Button FontSize="20" Padding="10" Margin="10" Content="TEST" x:Name="btnTest" Click="btnTest_Click"></Button>
             </WrapPanel>
-            <GroupBox Padding="10" Margin="10" IsEnabled="{Binding HashTypeOptionsEditable}">
+            <GroupBox Padding="10" Margin="10">
                 <GroupBox.Header>
                     <TextBlock Text="{DynamicResource MediaTypeGroupbox}" FontSize="15"></TextBlock>
                 </GroupBox.Header>

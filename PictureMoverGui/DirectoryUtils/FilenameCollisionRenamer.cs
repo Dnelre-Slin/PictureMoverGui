@@ -1,11 +1,12 @@
 ﻿using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryUtils
 {
     class FilenameCollisionRenamerException : NullReferenceException
     {
