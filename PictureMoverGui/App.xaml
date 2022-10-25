@@ -45,6 +45,7 @@
         <System:String x:Key="NameCollisionGroupbox">Navn Kollisjon handling</System:String>
         <System:String x:Key="FileCompareGroupbox">Fil Sammenligning handling</System:String>
         <System:String x:Key="HashTypeGroupbox">Hash typer</System:String>
+        <System:String x:Key="MediaTypeGroupbox">Media typer</System:String>
         <System:String x:Key="ResetSettingsButton">Tilbakestill innstillinger</System:String>
         <System:String x:Key="RadioButtonSkipFile">Hopp over fil</System:String>
         <System:String x:Key="RadioButtonAppendNr">Legg til nummer</System:String>

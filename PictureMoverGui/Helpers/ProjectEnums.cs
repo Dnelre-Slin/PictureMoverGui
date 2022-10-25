@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Helpers
 {
     public enum RunStates
     {
@@ -30,5 +30,11 @@ namespace PictureMoverGui
     {
         MD5,
         SHA256
+    }
+
+    public enum MediaTypeEnum
+    {
+        NormalDirectory,
+        MediaDevice
     }
 }

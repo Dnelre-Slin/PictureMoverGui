@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
 {
-    internal class GenericFileInfo
+    public class GenericFileInfo
     {
         private FileInfo fileInfo;
         private MediaFileInfo mediaFileInfo;
@@ -67,6 +68,44 @@ namespace PictureMoverGui.DirectoryUtils
             }
         }
 
+        public string Extension
+        {
+            get
+            {
+                if (this.fileInfo != null)
+                {
+                    return this.fileInfo.Extension;
+                }
+                else
+                {
+                    string name = this.mediaFileInfo.Name ?? "";
+                    string[] splitName = name.Split('.');
+                    return splitName.Length > 1 ? $".{splitName.Last()}" : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
+                }
+            }
+        }
+
+        /** Extension, but with no '.' and lower case. Will be "" if there was no extension
+         * To lower case. Example .JPEG -> .jpeg
+         * Remove leading '.'. Example: .jpeg -> jpeg
+         */
+        public string StrictExtension
+        {
+            get
+            {
+                if (this.fileInfo != null)
+                {
+                    return string.IsNullOrEmpty(this.fileInfo.Extension) ? "" : this.fileInfo.Extension.Substring(1).ToLower();
+                }
+                else
+                {
+                    string name = this.mediaFileInfo.Name ?? "";
+                    string[] splitName = name.Split('.');
+                    return splitName.Length > 1 ? splitName.Last().ToLower() : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
+                }
+            }
+        }
+
         public Stream OpenRead()
         {
             if (this.fileInfo != null)
@@ -79,15 +118,18 @@ namespace PictureMoverGui.DirectoryUtils
             }
         }
 
-        public void CopyTo(string destFileName, bool overwrite = false)
+        public FileInfo CopyTo(string destFileName, bool overwrite = false)
         {
             if (this.fileInfo != null)
             {
-                this.fileInfo.CopyTo(destFileName, overwrite);
+                return this.fileInfo.CopyTo(destFileName, overwrite);
             }
             else
             {
                 this.mediaFileInfo.CopyTo(destFileName, overwrite);
+                FileInfo fileInfo = new FileInfo(destFileName);
+                fileInfo.LastWriteTime = this.mediaFileInfo.LastWriteTime ?? fileInfo.LastWriteTime; // Make sure fileInfo lastWriteTime is preserved
+                return fileInfo;
             }
         }
 

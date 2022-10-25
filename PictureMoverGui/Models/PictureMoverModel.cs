@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureMoverGui.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Models
 {
     public class PictureMoverModel : INotifyPropertyChanged
     {
@@ -101,11 +102,18 @@ namespace PictureMoverGui
             _labelDestinationDirContent = "";
             _lastSourceInfoGatherTime = DateTime.Now;
 
+            _sorterMediaType = MediaTypeEnum.NormalDirectory;
+            //_sorterMediaType = MediaTypeEnum.MediaDevice;
+            _mediaDeviceSerialId = "Nils sin S20+";
+            //_sorterNewerThanDateTime = new DateTime(2021, 1, 1);
+            _sorterNewerThanDateTime = new DateTime(1, 1, 1);
+
             _infoStatusMessagesLastRun = new List<string>();
 
             SettingsRefresh();
 
             _eventDataList = Simplifiers.SimpleListToEventList(Properties.Datastore.Default.EventList);
+            //_eventDataList = new ObservableCollection<EventData>();
         }
 
 
@@ -430,6 +438,48 @@ namespace PictureMoverGui
             }
         }
 
+        private MediaTypeEnum _sorterMediaType;
+        public MediaTypeEnum sorterMediaType
+        {
+            get { return _sorterMediaType; }
+            set
+            {
+                if (_sorterMediaType != value)
+                {
+                    _sorterMediaType = value;
+                    OnPropertyChanged(nameof(sorterMediaType));
+                }
+            }
+        }
+
+        private string _mediaDeviceSerialId;
+        public string mediaDeviceSerialId
+        {
+            get { return _mediaDeviceSerialId; }
+            set
+            {
+                if (_mediaDeviceSerialId != value)
+                {
+                    _mediaDeviceSerialId = value;
+                    OnPropertyChanged(nameof(mediaDeviceSerialId));
+                }
+            }
+        }
+
+        private DateTime _sorterNewerThanDateTime;
+        public DateTime sorterNewerThanDateTime
+        {
+            get { return _sorterNewerThanDateTime; }
+            set
+            {
+                if (_sorterNewerThanDateTime != value)
+                {
+                    _sorterNewerThanDateTime = value;
+                    OnPropertyChanged(nameof(sorterNewerThanDateTime));
+                }
+            }
+        }
+
         public bool AllowSwapOperation
         {
             get { return sourceDirSat && destinationDirSat && runningState == RunStates.Idle; }
@@ -452,7 +502,7 @@ namespace PictureMoverGui
         
         public Visibility StartSorterCancelButtonVisibility
         {
-            get { return runningState == RunStates.RunningSorter ? Visibility.Visible : Visibility.Hidden; }
+            get { return (runningState == RunStates.RunningSorter || runningState == RunStates.DirectoryValidation) ? Visibility.Visible : Visibility.Hidden; }
         }
 
         public string StatusMessageContent
@@ -537,6 +587,38 @@ namespace PictureMoverGui
                     }
                 }
                 return total;
+            }
+        }
+
+        public string PictureRetrieverSource
+        {
+            get
+            {
+                switch (sorterMediaType)
+                {
+                    case MediaTypeEnum.NormalDirectory:
+                        return labelSourceDirContent;
+                    case MediaTypeEnum.MediaDevice:
+                        return mediaDeviceSerialId;
+                    default:
+                        throw new NotSupportedException($"MediaType not supported : {sorterMediaType}");
+                }
+            }
+        }
+
+        public DateTime PictureRetrieverNewerThan
+        {
+            get
+            {
+                switch (sorterMediaType)
+                {
+                    case MediaTypeEnum.NormalDirectory:
+                        return DateTime.MinValue;
+                    case MediaTypeEnum.MediaDevice:
+                        return sorterNewerThanDateTime;
+                    default:
+                        throw new NotSupportedException($"MediaType not supported : {sorterMediaType}");
+                }
             }
         }
     }

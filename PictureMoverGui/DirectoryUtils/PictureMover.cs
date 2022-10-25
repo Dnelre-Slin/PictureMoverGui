@@ -1,20 +1,25 @@
-﻿using System;
+﻿using MediaDevices;
+using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Helpers;
+using PictureMoverGui.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryUtils
 {
-    class PictureMover
+    public class PictureMover
     {
         //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
+        private List<GenericFileInfo> fileInfoList;
 
-        private string sourceDir;
         private string destinationDir;
-        private List<string> validExtensions;
+        //private List<string> validExtensions;
         private int total_files;
         //private bool doStructured;
         //private bool doRename;
@@ -26,23 +31,20 @@ namespace PictureMoverGui
         private int nrOfErrors;
         private int current_progress;
 
-        //const int max_rename_tries = 100;
-
-        private Action<FileInfo, string, string> copyOrMoveTransferAction;
-        private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
-        private Func<FileInfo, string> datePrependOrOriginalFilenameAction;
+        private Action<GenericFileInfo, string, string> copyOrMoveTransferAction;
+        private Func<GenericFileInfo, DirectoryInfo> structuredOrDirectTransferAction;
+        private Func<GenericFileInfo, string> datePrependOrOriginalFilenameAction;
 
         private List<string> infoStatusMessages;
 
-        private DirSearcher dirSearcher;
         private bool cancel;
 
-        public PictureMover(PictureMoverModel moverModel, BackgroundWorker worker_sender)
+        public PictureMover(PictureMoverModel moverModel, List<GenericFileInfo> fileInfoList, BackgroundWorker worker_sender)
         {
             //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
+            this.fileInfoList = fileInfoList;
 
-            this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
             //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
             //this.validExtensions = moverModel.validExtensionsInCurrentDir;
@@ -60,19 +62,8 @@ namespace PictureMoverGui
             this.nrOfErrors = 0;
             this.current_progress = 0;
 
-            this.total_files = 0;
-            this.validExtensions = new List<string>();
-            foreach (ExtensionInfo info in moverModel.extensionInfoList)
-            {
-                if (info.Active) // Count files that have extensions that are 'Active'
-                {
-                    this.total_files += info.Amount;
-                    this.validExtensions.Add(info.Name);
-                }
-            }
+            this.total_files = fileInfoList.Count;
             this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
-
-            dirSearcher = null;
 
             if (moverModel.chkboxDoCopyChecked)
             {
@@ -103,35 +94,20 @@ namespace PictureMoverGui
         public List<string> Mover()
         {
             Directory.CreateDirectory(this.destinationDir);
-            DirectoryInfo d = new DirectoryInfo(this.sourceDir);
 
             this.current_progress = 0;
 
-            dirSearcher = new DirSearcher(this.validExtensions);
-
-            List<FileInfo> fileInfos = dirSearcher.GetAllFileInfosInDirectoryRecursively(d, this.total_files);
-
-            foreach (FileInfo fileInfo in fileInfos)
+            foreach (GenericFileInfo fileInfo in fileInfoList)
             {
-                DoStructuredOrDirectTransferFile(null, fileInfo);
+                DoStructuredOrDirectTransferFile(fileInfo);
                 if (this.cancel)
                 {
+                    this.infoStatusMessages.Add($"Cancelled during sorting");
                     break;
                 }
             }
 
             return this.infoStatusMessages;
-
-            //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
-
-            //if (this.doStructured)
-            //{
-            //    dirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
-            //}
-            //else
-            //{
-            //    dirSearcher.DirSearch(d, DoNormalCopyMoveFile);
-            //}
         }
 
         public int GetNrOfErrors()
@@ -139,7 +115,7 @@ namespace PictureMoverGui
             return this.nrOfErrors;
         }
 
-        private void DoStructuredOrDirectTransferFile(DirectoryInfo _, FileInfo file)
+        private void DoStructuredOrDirectTransferFile(GenericFileInfo file)
         {
             //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             DirectoryInfo destinationDir = GetDestinationDirectory(file);
@@ -168,7 +144,7 @@ namespace PictureMoverGui
         {
             if (worker_sender.CancellationPending)
             {
-                this.dirSearcher.cancel = true;
+                //this.dirSearcher.cancel = true;
                 this.cancel = true;
                 return;
             }
@@ -179,92 +155,12 @@ namespace PictureMoverGui
             this.worker_sender.ReportProgress(progress_percent);
         }
 
-        //private bool CheckFilenameSkipFile(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    new_filename = filename;
-        //    return DirSearcher.FilenameInDir(destinationDir, filename);
-        //}
-
-        //private bool CheckFilenameAlwaysAppend(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
-
-        //private bool CheckFilenameCompareFiles(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    FileInfo otherFile;
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename, out otherFile))
-        //    {
-        //        // Compare file and otherFile
-        //        // If same, return false
-        //        // Else if not same, return result of CheckFilenameAlwaysAppend
-        //        new_filename = filename;
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        new_filename = filename;
-        //        return true;
-        //    }
-        //}
-
-
-        ///* Check if filename is not already in destination directory, and return true, if the out new_filename is allowed */
-        //private bool CheckAllowedFilename(DirectoryInfo destinationDir, string filename, out string new_filename)
-        //{
-        //    //string new_filename = this.datePrependOrOriginalFilenameAction(file);
-        //    //string new_filename = file.Name;
-        //    //if (this.doRename) // Do date prefix renaming. Example: filename.png -> 20210304_filename.png
-        //    //{
-        //    //    string date_str = file.LastWriteTime.ToString("yyyyMMdd");
-        //    //    if (!file.Name.StartsWith(date_str))
-        //    //    {
-        //    //        new_filename = date_str + "_" + new_filename;
-        //    //    }
-        //    //}
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
-
-        private string RenameFileOriginal(FileInfo file)
+        private string RenameFileOriginal(GenericFileInfo file)
         {
             return file.Name;
         }
 
-        private string RenameFileDatePrepend(FileInfo file)
+        private string RenameFileDatePrepend(GenericFileInfo file)
         {
             string new_filename = file.Name;
             string date_str = file.LastWriteTime.ToString("yyyyMMdd_HHmmss");
@@ -275,7 +171,7 @@ namespace PictureMoverGui
             return new_filename;
         }
 
-        private DirectoryInfo GetDestinationDirectory(FileInfo file)
+        private DirectoryInfo GetDestinationDirectory(GenericFileInfo file)
         {
             string eventName = "";
             if (FileInEvent(file, out eventName))
@@ -289,7 +185,7 @@ namespace PictureMoverGui
             }
         }
 
-        private bool FileInEvent(FileInfo file, out string eventName)
+        private bool FileInEvent(GenericFileInfo file, out string eventName)
         {
             eventName = "";
             long fileTick = file.LastWriteTime.Ticks;
@@ -304,7 +200,7 @@ namespace PictureMoverGui
             return false;
         }
 
-        private DirectoryInfo GetDestinationDirectoryStructured(FileInfo file)
+        private DirectoryInfo GetDestinationDirectoryStructured(GenericFileInfo file)
         {
             DateTime dt = file.LastWriteTime;
 
@@ -319,7 +215,7 @@ namespace PictureMoverGui
             //this.DoCopyMoveFile(file, thisDirectory, new_filename);
         }
 
-        private DirectoryInfo GetDestinationDirectoryDirect(FileInfo file)
+        private DirectoryInfo GetDestinationDirectoryDirect(GenericFileInfo _)
         {
             //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
             DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationDir);
@@ -328,7 +224,7 @@ namespace PictureMoverGui
             //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
         }
 
-        private void DoTransferFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoTransferFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             try
             {
@@ -348,11 +244,11 @@ namespace PictureMoverGui
             }
         }
 
-        private void DoCopyFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoCopyFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             file.CopyTo($"{path_to_dir}\\{new_filename}", false);
         }
-        private void DoMoveFile(FileInfo file, string path_to_dir, string new_filename)
+        private void DoMoveFile(GenericFileInfo file, string path_to_dir, string new_filename)
         {
             file.MoveTo($"{path_to_dir}\\{new_filename}", false);
         }

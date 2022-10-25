@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryUtils
 {
     class FilenameCollisionRenamerException : NullReferenceException
     {
@@ -13,7 +15,7 @@ namespace PictureMoverGui
         public FilenameCollisionRenamerException(string? message, Exception? innerException) : base(message, innerException) { }
     }
 
-    class FilenameCollisionRenamer
+    public class FilenameCollisionRenamer
     {
         const int max_rename_tries = 100;
 
@@ -21,7 +23,7 @@ namespace PictureMoverGui
         private CompareFilesActionEnum compareFilesAction;
         private HashTypeEnum hashType;
         private DirectoryInfo destinationDir;
-        private FileInfo file;
+        private GenericFileInfo file;
         private string filename;
 
         private bool isValid;
@@ -29,7 +31,7 @@ namespace PictureMoverGui
         private bool isValidIsCalled;
         private bool fileWasRenamed;
 
-        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, HashTypeEnum hashType, DirectoryInfo destinationDir, FileInfo file, string filename)
+        public FilenameCollisionRenamer(NameCollisionActionEnum nameCollisionAction, CompareFilesActionEnum compareFilesAction, HashTypeEnum hashType, DirectoryInfo destinationDir, GenericFileInfo file, string filename)
         {
             this.nameCollisionAction = nameCollisionAction;
             this.compareFilesAction = compareFilesAction;
@@ -85,7 +87,7 @@ namespace PictureMoverGui
 
         private void CheckFilenameSkipFile()
         {
-            if (DirSearcher.FilenameInDir(destinationDir, filename))
+            if (FilenameInDir(destinationDir, filename))
             {
                 this.isValid = false;
             }
@@ -99,7 +101,7 @@ namespace PictureMoverGui
         private void CheckFilenameAlwaysAppend()
         {
             this.validFilename = filename;
-            if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
+            if (FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
             {
                 string new_filename = GetNewFilename();
                 this.validFilename = new_filename;
@@ -111,7 +113,7 @@ namespace PictureMoverGui
         private void CheckFilenameCompareFiles()
         {
             FileInfo otherFile;
-            if (DirSearcher.FilenameInDir(this.destinationDir, this.filename, out otherFile))
+            if (FilenameInDir(this.destinationDir, this.filename, out otherFile))
             {
                 if (CompareFiles(otherFile)) // Compare file and otherFile. If true, the files are the same file, so do not transfer.
                 {
@@ -171,8 +173,8 @@ namespace PictureMoverGui
         private bool CompareHashMD5(FileInfo otherFile)
         {
             using (MD5 md5Instance = MD5.Create())
-            using (FileStream fileStream = File.OpenRead(this.file.FullName))
-            using (FileStream otherFileStream = File.OpenRead(otherFile.FullName))
+            using (Stream fileStream = this.file.OpenRead())
+            using (Stream otherFileStream = otherFile.OpenRead())
             {
                 string fileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
                 string otherFileMd5Value = BitConverter.ToString(md5Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
@@ -182,9 +184,9 @@ namespace PictureMoverGui
 
         private bool CompareHashSHA256(FileInfo otherFile)
         {
-            using (var sha256Instance = SHA256.Create())
-            using (var fileStream = File.OpenRead(this.file.FullName))
-            using (var otherFileStream = File.OpenRead(otherFile.FullName))
+            using (SHA256 sha256Instance = SHA256.Create())
+            using (Stream fileStream = this.file.OpenRead())
+            using (Stream otherFileStream = otherFile.OpenRead())
             {
                 string fileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(fileStream)).Replace("-", "").ToLowerInvariant();
                 string otherFileSha256Value = BitConverter.ToString(sha256Instance.ComputeHash(otherFileStream)).Replace("-", "").ToLowerInvariant();
@@ -201,7 +203,7 @@ namespace PictureMoverGui
             for (int i = 0; i < max_rename_tries; i++)
             {
                 string renamed_filename = $"{fname}_{i + 1}.{extname}";
-                if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
+                if (!FilenameInDir(destinationDir, renamed_filename))
                 {
                     //Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
                     new_filename = renamed_filename;
@@ -209,6 +211,26 @@ namespace PictureMoverGui
                 }
             }
             return new_filename;
+        }
+
+        static public bool FilenameInDir(DirectoryInfo d, string filename)
+        {
+            FileInfo unused = null;
+            return FilenameInDir(d, filename, out unused);
+        }
+
+        static public bool FilenameInDir(DirectoryInfo d, string filename, out FileInfo otherFile)
+        {
+            foreach (FileInfo file in d.GetFiles())
+            {
+                if (file.Name.ToLower() == filename.ToLower())
+                {
+                    otherFile = file;
+                    return true;
+                }
+            }
+            otherFile = null;
+            return false;
         }
     }
 }

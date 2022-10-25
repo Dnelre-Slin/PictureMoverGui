@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Helpers
 {
     public class ExtensionInfo : INotifyPropertyChanged
     {

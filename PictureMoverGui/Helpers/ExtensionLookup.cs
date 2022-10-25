@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Helpers
 {
     public class ExtensionLookup
     {

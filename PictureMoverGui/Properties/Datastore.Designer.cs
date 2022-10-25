@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using PictureMoverGui.Helpers;
+
 namespace PictureMoverGui.Properties {
     
     
@@ -26,7 +28,7 @@ namespace PictureMoverGui.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Binary)]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AAEAAAD/////AQAAAAAAAAAMAgAAAEZQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAEAAACMAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbUGljdHVyZU1vdmVyR3VpLlNpbXBsZUV2ZW50RGF0YSwgUGljdHVyZU1vdmVyR3VpLCBWZXJzaW9uPTEuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49bnVsbF1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAhUGljdHVyZU1vdmVyR3VpLlNpbXBsZUV2ZW50RGF0YVtdAgAAAAgICQMAAAAAAAAAAAAAAAcDAAAAAAEAAAAAAAAABB9QaWN0dXJlTW92ZXJHdWkuU2ltcGxlRXZlbnREYXRhAgAAAAs=")]  // Binary value for an empty list of this object
+        [global::System.Configuration.DefaultSettingValueAttribute("AAEAAAD/////AQAAAAAAAAAMAgAAAEZQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAEAAACUAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbUGljdHVyZU1vdmVyR3VpLkhlbHBlcnMuU2ltcGxlRXZlbnREYXRhLCBQaWN0dXJlTW92ZXJHdWksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsXV0DAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgQAAClQaWN0dXJlTW92ZXJHdWkuSGVscGVycy5TaW1wbGVFdmVudERhdGFbXQIAAAAICAkDAAAAAAAAAAAAAAAHAwAAAAABAAAAAAAAAAQnUGljdHVyZU1vdmVyR3VpLkhlbHBlcnMuU2ltcGxlRXZlbnREYXRhAgAAAAs=")]  // Binary value for an empty list of this object
         public System.Collections.Generic.List<SimpleEventData> EventList
         {
             get

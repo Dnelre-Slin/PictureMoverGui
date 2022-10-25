@@ -6,10 +6,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Collections.ObjectModel;
+using PictureMoverGui.DirectoryUtils;
+using PictureMoverGui.Models;
+using PictureMoverGui.Helpers;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.DirectoryWorkers
 {
-    class DirectorySelector
+    public class DirectorySelector
     {
         private PictureMoverModel moverModel;
 
@@ -100,8 +103,10 @@ namespace PictureMoverGui
 
             try
             {
-                DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
-                Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
+                //DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
+                //Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
+                //DateTime newerThan = new DateTime(2020, 1, 1);
+                Dictionary<string, int> extensionInfo = PictureRetriever.GetExtensions(moverModel.sorterMediaType, moverModel.PictureRetrieverSource, sender as BackgroundWorker, moverModel.PictureRetrieverNewerThan);
                 e.Result = extensionInfo;
             }
             catch (Exception err)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PictureMoverGui.DirectoryWorkers;
+using PictureMoverGui.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -22,7 +24,7 @@ namespace PictureMoverGui
         private PictureMoverModel moverModel;
         private DirectorySelector directorySelector;
         private PictureMoverUiHandler moverUiHandler;
-        private DirectoryValidator directoryValidator;
+        //private DirectoryValidator directoryValidator;
 
         public SorterView()
         {
@@ -39,7 +41,7 @@ namespace PictureMoverGui
 
             this.directorySelector = new DirectorySelector(this.moverModel);
             this.moverUiHandler = new PictureMoverUiHandler(this.moverModel);
-            this.directoryValidator = new DirectoryValidator(this.moverModel, this.directorySelector, this.moverUiHandler);
+            //this.directoryValidator = new DirectoryValidator(this.moverModel, this.directorySelector, this.moverUiHandler);
         }
 
         private void btnChooseSourceDir_Click(object sender, RoutedEventArgs e)
@@ -93,7 +95,8 @@ namespace PictureMoverGui
         {
             try
             {
-                this.directoryValidator.Run();
+                this.moverUiHandler.StartSorterButtonClick();
+                //this.directoryValidator.Run();
             }
             catch (Exception err)
             {
