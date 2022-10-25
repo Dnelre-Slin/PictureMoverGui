@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace PictureMoverGui
 {
-    class PictureMoverUiHandler
+    public class PictureMoverUiHandler
     {
 
         private PictureMoverModel moverModel;

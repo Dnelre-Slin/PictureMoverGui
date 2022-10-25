@@ -10,13 +10,12 @@ using System.Text;
 
 namespace PictureMoverGui
 {
-    class PictureMover
+    public class PictureMover
     {
         //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
         private List<FileInfo> fileInfoList;
 
-        //private string sourceDir;
         private string destinationDir;
         //private List<string> validExtensions;
         private int total_files;
@@ -30,15 +29,12 @@ namespace PictureMoverGui
         private int nrOfErrors;
         private int current_progress;
 
-        //const int max_rename_tries = 100;
-
         private Action<FileInfo, string, string> copyOrMoveTransferAction;
         private Func<FileInfo, DirectoryInfo> structuredOrDirectTransferAction;
         private Func<FileInfo, string> datePrependOrOriginalFilenameAction;
 
         private List<string> infoStatusMessages;
 
-        //private DirSearcher dirSearcher;
         private bool cancel;
 
         public PictureMover(PictureMoverModel moverModel, List<FileInfo> fileInfoList, BackgroundWorker worker_sender)
@@ -47,7 +43,6 @@ namespace PictureMoverGui
             this.worker_sender = worker_sender;
             this.fileInfoList = fileInfoList;
 
-            //this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
             //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
             //this.validExtensions = moverModel.validExtensionsInCurrentDir;
@@ -66,18 +61,7 @@ namespace PictureMoverGui
             this.current_progress = 0;
 
             this.total_files = fileInfoList.Count;
-            //this.validExtensions = new List<string>();
-            //foreach (ExtensionInfo info in moverModel.extensionInfoList)
-            //{
-            //    if (info.Active) // Count files that have extensions that are 'Active'
-            //    {
-            //        //this.total_files += info.Amount;
-            //        this.validExtensions.Add(info.Name);
-            //    }
-            //}
             this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
-
-            //dirSearcher = null;
 
             if (moverModel.chkboxDoCopyChecked)
             {
@@ -108,14 +92,8 @@ namespace PictureMoverGui
         public List<string> Mover()
         {
             Directory.CreateDirectory(this.destinationDir);
-            //DirectoryInfo d = new DirectoryInfo(this.sourceDir);
 
             this.current_progress = 0;
-
-            //dirSearcher = new DirSearcher(this.validExtensions);
-
-            //List<FileInfo> fileInfos = dirSearcher.GetAllFileInfosInDirectoryRecursively(d, this.total_files);
-            //List<FileInfo> fileInfos = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension)).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
 
             foreach (FileInfo fileInfo in fileInfoList)
             {
@@ -128,17 +106,6 @@ namespace PictureMoverGui
             }
 
             return this.infoStatusMessages;
-
-            //dirSearcher.DirSearch(d, DoStructuredOrDirectTransferFile);
-
-            //if (this.doStructured)
-            //{
-            //    dirSearcher.DirSearch(d, DoStructuredCopyMoveFile);
-            //}
-            //else
-            //{
-            //    dirSearcher.DirSearch(d, DoNormalCopyMoveFile);
-            //}
         }
 
         public int GetNrOfErrors()
@@ -185,86 +152,6 @@ namespace PictureMoverGui
 
             this.worker_sender.ReportProgress(progress_percent);
         }
-
-        //private bool CheckFilenameSkipFile(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    new_filename = filename;
-        //    return DirSearcher.FilenameInDir(destinationDir, filename);
-        //}
-
-        //private bool CheckFilenameAlwaysAppend(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
-
-        //private bool CheckFilenameCompareFiles(DirectoryInfo destinationDir, FileInfo file, string filename, out string new_filename)
-        //{
-        //    FileInfo otherFile;
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename, out otherFile))
-        //    {
-        //        // Compare file and otherFile
-        //        // If same, return false
-        //        // Else if not same, return result of CheckFilenameAlwaysAppend
-        //        new_filename = filename;
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        new_filename = filename;
-        //        return true;
-        //    }
-        //}
-
-
-        ///* Check if filename is not already in destination directory, and return true, if the out new_filename is allowed */
-        //private bool CheckAllowedFilename(DirectoryInfo destinationDir, string filename, out string new_filename)
-        //{
-        //    //string new_filename = this.datePrependOrOriginalFilenameAction(file);
-        //    //string new_filename = file.Name;
-        //    //if (this.doRename) // Do date prefix renaming. Example: filename.png -> 20210304_filename.png
-        //    //{
-        //    //    string date_str = file.LastWriteTime.ToString("yyyyMMdd");
-        //    //    if (!file.Name.StartsWith(date_str))
-        //    //    {
-        //    //        new_filename = date_str + "_" + new_filename;
-        //    //    }
-        //    //}
-        //    if (DirSearcher.FilenameInDir(destinationDir, filename)) // Rename to a int postfix, if name is already taken. Example: filename.png -> filename_1.png
-        //    {
-        //        string[] filename_extension_split = filename.Split(".");
-        //        string fname = filename_extension_split[0];
-        //        string extname = filename_extension_split[1];
-        //        for (int i = 0; i < max_rename_tries; i++)
-        //        {
-        //            string renamed_filename = $"{fname}_{i + 1}.{extname}";
-        //            if (!DirSearcher.FilenameInDir(destinationDir, renamed_filename))
-        //            {
-        //                Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
-        //                filename = renamed_filename;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    new_filename = filename;
-        //    return true;
-        //}
 
         private string RenameFileOriginal(FileInfo file)
         {

@@ -13,7 +13,7 @@ namespace PictureMoverGui
         public FilenameCollisionRenamerException(string? message, Exception? innerException) : base(message, innerException) { }
     }
 
-    class FilenameCollisionRenamer
+    public class FilenameCollisionRenamer
     {
         const int max_rename_tries = 100;
 

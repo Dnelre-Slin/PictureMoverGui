@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
 {
-    internal class GenericFileInfo
+    public class GenericFileInfo
     {
         private FileInfo fileInfo;
         private MediaFileInfo mediaFileInfo;
@@ -78,13 +78,17 @@ namespace PictureMoverGui.DirectoryUtils
                 }
                 else
                 {
-                    string[] splitName = this.mediaFileInfo.Name.Split('.');
+                    string name = this.mediaFileInfo.Name ?? "";
+                    string[] splitName = name.Split('.');
                     return splitName.Length > 1 ? $".{splitName.Last()}" : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
                 }
             }
         }
 
-        /** Extension, but with no '.' and lower case. Will be "" if there was no extension */
+        /** Extension, but with no '.' and lower case. Will be "" if there was no extension
+         * To lower case. Example .JPEG -> .jpeg
+         * Remove leading '.'. Example: .jpeg -> jpeg
+         */
         public string StrictExtension
         {
             get
@@ -95,7 +99,8 @@ namespace PictureMoverGui.DirectoryUtils
                 }
                 else
                 {
-                    string[] splitName = this.mediaFileInfo.Name.Split('.');
+                    string name = this.mediaFileInfo.Name ?? "";
+                    string[] splitName = name.Split('.');
                     return splitName.Length > 1 ? splitName.Last().ToLower() : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
                 }
             }
