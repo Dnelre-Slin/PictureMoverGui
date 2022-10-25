@@ -452,7 +452,7 @@ namespace PictureMoverGui
         
         public Visibility StartSorterCancelButtonVisibility
         {
-            get { return runningState == RunStates.RunningSorter ? Visibility.Visible : Visibility.Hidden; }
+            get { return (runningState == RunStates.RunningSorter || runningState == RunStates.DirectoryValidation) ? Visibility.Visible : Visibility.Hidden; }
         }
 
         public string StatusMessageContent

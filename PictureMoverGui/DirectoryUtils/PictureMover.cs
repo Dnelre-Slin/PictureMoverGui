@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MediaDevices;
+using PictureMoverGui.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace PictureMoverGui
@@ -11,10 +14,11 @@ namespace PictureMoverGui
     {
         //private readonly PictureMoverModel moverModel;
         private BackgroundWorker worker_sender;
+        private List<FileInfo> fileInfoList;
 
-        private string sourceDir;
+        //private string sourceDir;
         private string destinationDir;
-        private List<string> validExtensions;
+        //private List<string> validExtensions;
         private int total_files;
         //private bool doStructured;
         //private bool doRename;
@@ -34,15 +38,16 @@ namespace PictureMoverGui
 
         private List<string> infoStatusMessages;
 
-        private DirSearcher dirSearcher;
+        //private DirSearcher dirSearcher;
         private bool cancel;
 
-        public PictureMover(PictureMoverModel moverModel, BackgroundWorker worker_sender)
+        public PictureMover(PictureMoverModel moverModel, List<FileInfo> fileInfoList, BackgroundWorker worker_sender)
         {
             //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
+            this.fileInfoList = fileInfoList;
 
-            this.sourceDir = moverModel.labelSourceDirContent;
+            //this.sourceDir = moverModel.labelSourceDirContent;
             this.destinationDir = moverModel.labelDestinationDirContent;
             //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
             //this.validExtensions = moverModel.validExtensionsInCurrentDir;
@@ -60,19 +65,19 @@ namespace PictureMoverGui
             this.nrOfErrors = 0;
             this.current_progress = 0;
 
-            this.total_files = 0;
-            this.validExtensions = new List<string>();
-            foreach (ExtensionInfo info in moverModel.extensionInfoList)
-            {
-                if (info.Active) // Count files that have extensions that are 'Active'
-                {
-                    this.total_files += info.Amount;
-                    this.validExtensions.Add(info.Name);
-                }
-            }
+            this.total_files = fileInfoList.Count;
+            //this.validExtensions = new List<string>();
+            //foreach (ExtensionInfo info in moverModel.extensionInfoList)
+            //{
+            //    if (info.Active) // Count files that have extensions that are 'Active'
+            //    {
+            //        //this.total_files += info.Amount;
+            //        this.validExtensions.Add(info.Name);
+            //    }
+            //}
             this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
 
-            dirSearcher = null;
+            //dirSearcher = null;
 
             if (moverModel.chkboxDoCopyChecked)
             {
@@ -103,19 +108,21 @@ namespace PictureMoverGui
         public List<string> Mover()
         {
             Directory.CreateDirectory(this.destinationDir);
-            DirectoryInfo d = new DirectoryInfo(this.sourceDir);
+            //DirectoryInfo d = new DirectoryInfo(this.sourceDir);
 
             this.current_progress = 0;
 
-            dirSearcher = new DirSearcher(this.validExtensions);
+            //dirSearcher = new DirSearcher(this.validExtensions);
 
-            List<FileInfo> fileInfos = dirSearcher.GetAllFileInfosInDirectoryRecursively(d, this.total_files);
+            //List<FileInfo> fileInfos = dirSearcher.GetAllFileInfosInDirectoryRecursively(d, this.total_files);
+            //List<FileInfo> fileInfos = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension)).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
 
-            foreach (FileInfo fileInfo in fileInfos)
+            foreach (FileInfo fileInfo in fileInfoList)
             {
                 DoStructuredOrDirectTransferFile(null, fileInfo);
                 if (this.cancel)
                 {
+                    this.infoStatusMessages.Add($"Cancelled during sorting");
                     break;
                 }
             }
@@ -168,7 +175,7 @@ namespace PictureMoverGui
         {
             if (worker_sender.CancellationPending)
             {
-                this.dirSearcher.cancel = true;
+                //this.dirSearcher.cancel = true;
                 this.cancel = true;
                 return;
             }

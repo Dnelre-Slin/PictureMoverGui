@@ -1,14 +1,21 @@
-﻿using System;
+﻿using PictureMoverGui.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
 
 namespace PictureMoverGui
 {
     class PictureMoverUiHandler
     {
+
         private PictureMoverModel moverModel;
 
         private BackgroundWorker worker;
+
+        private EnumerableCancelArgs cancelArgs;
 
         public PictureMoverUiHandler(PictureMoverModel moverModel)
         {
@@ -20,7 +27,7 @@ namespace PictureMoverGui
         {
             if (this.moverModel.AllowStartingMover)
             {
-                this.moverModel.runningState = RunStates.RunningSorter;
+                this.moverModel.runningState = RunStates.DirectoryValidation;
 
                 bool doCopy = false;
                 bool doMakeStructures = false;
@@ -28,10 +35,21 @@ namespace PictureMoverGui
                 string path_to_source = "";
                 string path_to_destination = "";
 
+                List<string> validExtensions = new List<string>();
+                foreach (ExtensionInfo info in moverModel.extensionInfoList)
+                {
+                    if (info.Active) // Count files that have extensions that are 'Active'
+                    {
+                        validExtensions.Add(info.Name);
+                    }
+                }
+
+                cancelArgs = new EnumerableCancelArgs();
+
                 worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.WorkerSupportsCancellation = true;
-                worker.DoWork += (obj, e) => worker_PictureMoverDoWork(obj, e, doCopy, doMakeStructures, doRename, path_to_source, path_to_destination);
+                worker.DoWork += (obj, e) => worker_PictureMoverDoWork(obj, e, doCopy, doMakeStructures, doRename, path_to_source, path_to_destination, validExtensions);
                 worker.ProgressChanged += worker_PictureMoverProgressChanged;
                 worker.RunWorkerCompleted += worker_PictureMoverWorkDone;
 
@@ -46,18 +64,56 @@ namespace PictureMoverGui
             if (this.worker != null)
             {
                 this.worker.CancelAsync();
+                cancelArgs.Cancel = true;
             }
         }
 
-        private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination)
+        static private void HandleFileAccessExceptions(Exception e)
+        {
+            System.Diagnostics.Trace.TraceError(e.Message);
+        }
+
+        static private bool IsValidFileExtension(string extension, List<string> validExtensions)
+        {
+            if (string.IsNullOrEmpty(extension))
+            {
+                return false; // Not a valid extension, if it has no extension.
+            }
+            string ext = extension.ToLower(); // To lower case. Example .JPEG -> .jpeg
+            ext = ext.Substring(1);           // Remove leading '.'. Example: .jpeg -> jpeg
+            if (validExtensions == null)
+            {
+                return true;
+            }
+            return validExtensions.Contains(ext);
+        }
+
+        private void worker_PictureMoverDoWork(object sender, DoWorkEventArgs e, bool doCopy, bool doMakeStructures, bool doRename, string path_to_source, string path_to_destination, List<string> validExtensions)
         {
             //System.Threading.Thread.Sleep(4000);
             //e.Result = 0;
 
             try
             {
+                DirectoryInfo d = new DirectoryInfo(this.moverModel.labelSourceDirContent);
+                if (!d.Exists)
+                {
+                    e.Result = new List<string>() { "Source dir no longer exists" };
+                    //e.Result = new List<string>() { "The source dir no longer exists. Please start select source again", "Source dir no longer exists" };
+                    return;
+                }
+                List<FileInfo> fileInfoList = d.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => IsValidFileExtension(f.Extension, validExtensions)).Cancel(cancelArgs).CatchUnauthorizedAccessExceptions(HandleFileAccessExceptions).ToList();
+
+                this.moverModel.runningState = RunStates.RunningSorter;
+
+                if (worker.CancellationPending)
+                {
+                    e.Result = new List<string>() { "Cancelled during preparation" };
+                    return;
+                }
+
                 //PictureMover pictureMover = new PictureMover(this.moverModel.labelSourceDirContent, this.moverModel.labelDestinationDirContent, this.moverModel.chkboxDoCopyChecked, sender as BackgroundWorker, this.moverModel.nrOfFilesInCurrentDir, this.moverModel.chkboxDoStructuredChecked, this.moverModel.chkboxDoRenameChecked, this.moverModel.validExtensionsInCurrentDir);
-                PictureMover pictureMover = new PictureMover(this.moverModel, sender as BackgroundWorker);
+                PictureMover pictureMover = new PictureMover(this.moverModel, fileInfoList, sender as BackgroundWorker);
                 List<string> infoStatusMessages = pictureMover.Mover();
                 e.Result = infoStatusMessages;
                 //int nrOfErrors = pictureMover.GetNrOfErrors();
@@ -78,6 +134,12 @@ namespace PictureMoverGui
         {
             //int nrOfErrors = (int)e.Result;
             List<string> infoStatusMessages = e.Result as List<string>;
+
+            if (infoStatusMessages != null && infoStatusMessages.Count == 1 && infoStatusMessages[0] == "Source dir no longer exists")
+            {
+                MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
+                this.moverModel.labelSourceDirContent = "";
+            }
 
             this.moverModel.infoStatusMessagesLastRun = infoStatusMessages;
             this.moverModel.statusPercentage = 0;

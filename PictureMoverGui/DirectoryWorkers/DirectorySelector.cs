@@ -93,6 +93,38 @@ namespace PictureMoverGui
             }
         }
 
+        static private Dictionary<string, int> GetExtensions(string search_dir, BackgroundWorker sender_worker)
+        {
+            DirectoryInfo d = new DirectoryInfo(search_dir);
+            Dictionary<string, int> extensionMap = new Dictionary<string, int>();
+
+            foreach (FileInfo file in d.EnumerateFiles("*", SearchOption.AllDirectories))
+            {
+                if (string.IsNullOrEmpty(file.Extension))
+                {
+                    continue; // Do not add extension, if file has no extension.
+                }
+
+                string ext = file.Extension.ToLower(); // To lower case. Example .JPEG -> .jpeg
+                ext = ext.Substring(1); // Remove leading '.'. Example: .jpeg -> jpeg
+                if (extensionMap.ContainsKey(ext))
+                {
+                    extensionMap[ext] += 1;
+                }
+                else
+                {
+                    extensionMap[ext] = 1;
+                }
+
+                if (sender_worker.CancellationPending)
+                {
+                    break;
+                }
+            }
+
+            return extensionMap;
+        }
+
         private void worker_DirGathererDoWork(object sender, DoWorkEventArgs e, string search_dir)
         {
             //System.Threading.Thread.Sleep(4000);
@@ -100,8 +132,9 @@ namespace PictureMoverGui
 
             try
             {
-                DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
-                Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
+                //DirectoryInfoGatherer directoryInfoGatherer = new DirectoryInfoGatherer(search_dir, sender as BackgroundWorker);
+                //Dictionary<string, int> extensionInfo = directoryInfoGatherer.GatherInfo();
+                Dictionary<string, int> extensionInfo = GetExtensions(search_dir, sender as BackgroundWorker);
                 e.Result = extensionInfo;
             }
             catch (Exception err)

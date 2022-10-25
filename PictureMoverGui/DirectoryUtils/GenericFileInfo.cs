@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
@@ -63,6 +64,39 @@ namespace PictureMoverGui.DirectoryUtils
                 else
                 {
                     return this.mediaFileInfo.Name;
+                }
+            }
+        }
+
+        public string Extension
+        {
+            get
+            {
+                if (this.fileInfo != null)
+                {
+                    return this.fileInfo.Extension;
+                }
+                else
+                {
+                    string[] splitName = this.mediaFileInfo.Name.Split('.');
+                    return splitName.Length > 1 ? $".{splitName.Last()}" : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
+                }
+            }
+        }
+
+        /** Extension, but with no '.' and lower case. Will be "" if there was no extension */
+        public string StrictExtension
+        {
+            get
+            {
+                if (this.fileInfo != null)
+                {
+                    return string.IsNullOrEmpty(this.fileInfo.Extension) ? "" : this.fileInfo.Extension.Substring(1).ToLower();
+                }
+                else
+                {
+                    string[] splitName = this.mediaFileInfo.Name.Split('.');
+                    return splitName.Length > 1 ? splitName.Last().ToLower() : ""; // Trys to get extension. Assumes that the extension is after a '.'. If not '.' is present, will return "" for no extension
                 }
             }
         }
