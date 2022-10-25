@@ -21,9 +21,9 @@ namespace PictureMoverGui
     /// </summary>
     public partial class SorterView : UserControl
     {
-        private PictureMoverModel moverModel;
-        private DirectorySelector directorySelector;
-        private PictureMoverUiHandler moverUiHandler;
+        //private PictureMoverModel moverModel;
+        //private DirectorySelector directorySelector;
+        //private PictureMoverUiHandler moverUiHandler;
         //private DirectoryValidator directoryValidator;
 
         public SorterView()
@@ -31,89 +31,89 @@ namespace PictureMoverGui
             InitializeComponent();
 
             //this.Loaded += new RoutedEventHandler(SorterView_Loaded);
-            this.DataContextChanged += new DependencyPropertyChangedEventHandler(SorterView_DataContextChanged);
+            //this.DataContextChanged += new DependencyPropertyChangedEventHandler(SorterView_DataContextChanged);
         }
 
-        void SorterView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //Trace.WriteLine("Context changed!!!!");
-            this.moverModel = this.DataContext as PictureMoverModel;
+        //void SorterView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    //Trace.WriteLine("Context changed!!!!");
+        //    this.moverModel = this.DataContext as PictureMoverModel;
 
-            this.directorySelector = new DirectorySelector(this.moverModel);
-            this.moverUiHandler = new PictureMoverUiHandler(this.moverModel);
-            //this.directoryValidator = new DirectoryValidator(this.moverModel, this.directorySelector, this.moverUiHandler);
-        }
+        //    this.directorySelector = new DirectorySelector(this.moverModel);
+        //    this.moverUiHandler = new PictureMoverUiHandler(this.moverModel);
+        //    //this.directoryValidator = new DirectoryValidator(this.moverModel, this.directorySelector, this.moverUiHandler);
+        //}
 
-        private void btnChooseSourceDir_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.directorySelector.ChooseSourceButtonClick();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
-        private void btnChooseSourceDirCancel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.directorySelector.ChooseSourceButtonCancelClick();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
+        //private void btnChooseSourceDir_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.directorySelector.ChooseSourceButtonClick();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
+        //private void btnChooseSourceDirCancel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.directorySelector.ChooseSourceButtonCancelClick();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
 
-        private void btnChooseDestinationDir_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.directorySelector.ChooseDestinationButtonClick();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
+        //private void btnChooseDestinationDir_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.directorySelector.ChooseDestinationButtonClick();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
 
-        private void btnSwapSourceDestination_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.directorySelector.SwapSourceDestinationButtonClick();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
+        //private void btnSwapSourceDestination_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.directorySelector.SwapSourceDestinationButtonClick();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.moverUiHandler.StartSorterButtonClick();
-                //this.directoryValidator.Run();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
+        //private void btnStart_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.moverUiHandler.StartSorterButtonClick();
+        //        //this.directoryValidator.Run();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
 
-        private void btnStartCancel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                this.moverUiHandler.StartSorterButtonCancelClick();
-            }
-            catch (Exception err)
-            {
-                Trace.TraceError(err.Message);
-            }
-        }
+        //private void btnStartCancel_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        this.moverUiHandler.StartSorterButtonCancelClick();
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        Trace.TraceError(err.Message);
+        //    }
+        //}
     }
 }

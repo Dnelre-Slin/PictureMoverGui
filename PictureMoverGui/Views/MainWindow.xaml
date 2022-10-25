@@ -15,13 +15,14 @@
     </Window.Resources>
     <TabControl SelectedIndex="{Binding SelectedIndex}">
         <TabItem Header="Tab1" Name="tab1">
-            <StackPanel>
+            <local:SorterView></local:SorterView>
+            <!--<StackPanel>
                 <TextBlock Text="{Binding Name}"></TextBlock>
                 <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>
                 <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 <TextBlock Text="{Binding TypeText}"></TextBlock>
                 <CheckBox IsChecked="{Binding Active}" ></CheckBox>
-            </StackPanel>
+            </StackPanel>-->
         </TabItem>        
         <TabItem Header="Tab2" Name="tab2">
             <views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>
