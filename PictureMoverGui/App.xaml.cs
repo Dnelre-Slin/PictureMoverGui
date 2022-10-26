@@ -18,12 +18,14 @@ namespace PictureMoverGui
         private MasterStore _masterStore;
         public App()
         {
-            _masterStore = new MasterStore("Defualt Name", true);
+            _masterStore = new MasterStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            _masterStore.RunningStore.SetStatusPercentage(0); // Fix to make sure StatusMessage is sat after base.OnStartup
 
             MainWindow = new MainWindow();
 

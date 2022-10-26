@@ -13,8 +13,8 @@
     <Window.Resources>
         <localmodels:PictureMoverModel x:Key="moverModel"></localmodels:PictureMoverModel>
     </Window.Resources>
-    <TabControl SelectedIndex="{Binding SelectedIndex}">
-        <TabItem Header="Sorter">
+    <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+        <TabItem Header="{DynamicResource TabNormalView}">
             <local:SorterView DataContext="{Binding Sorter}"></local:SorterView>
             <!--<StackPanel>
                 <TextBlock Text="{Binding Name}"></TextBlock>
@@ -24,7 +24,7 @@
                 <CheckBox IsChecked="{Binding Active}" ></CheckBox>
             </StackPanel>-->
         </TabItem>
-        <TabItem Header="Extensions">
+        <TabItem Header="{DynamicResource TabExtensionView}">
             <local:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></local:ExtensionSelectorView>
             <!--<views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>-->
         </TabItem>

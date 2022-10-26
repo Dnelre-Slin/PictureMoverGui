@@ -7,14 +7,12 @@ namespace PictureMoverGui.Store
 {
     public class MasterStore
     {
-        public DummyStore DummyStore { get; }
         public FileExtensionStore FileExtensionStore { get; }
         public SorterConfigurationStore SorterConfigurationStore { get; }
         public RunningStore RunningStore { get; }
 
-        public MasterStore(string name, bool active)
+        public MasterStore()
         {
-            DummyStore = new DummyStore(name, active);
             FileExtensionStore = new FileExtensionStore();
             SorterConfigurationStore = new SorterConfigurationStore();
             RunningStore = new RunningStore();
