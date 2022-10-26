@@ -14,8 +14,8 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        public string Name => _masterStore.Dummy.Name;
-        public string Description => _masterStore.Dummy.Description;
+        public string Name => _masterStore.DummyStore.Name;
+        public string Description => _masterStore.DummyStore.Description;
 
         private string _typeText;
         public string TypeText
@@ -31,11 +31,11 @@ namespace PictureMoverGui.ViewModels
         //private bool _active;
         public bool Active 
         {
-            get => _masterStore.Dummy.Active;
+            get => _masterStore.DummyStore.Active;
             set {
-                if (_masterStore.Dummy.Active != value)
+                if (_masterStore.DummyStore.Active != value)
                 {
-                    _masterStore.Dummy.Active = value; 
+                    _masterStore.DummyStore.Active = value; 
                     OnPropertyChanged(nameof(Active));
                     OnActiveChanged();
                 }
@@ -58,6 +58,7 @@ namespace PictureMoverGui.ViewModels
         }
 
         public ListShowerViewModel ListShowerVM { get; }
+        public SorterViewModel Sorter { get; }
 
         public ICommand ChangeName { get; }
         //public ICommand CheckBoxChange { get; }
@@ -65,11 +66,12 @@ namespace PictureMoverGui.ViewModels
         public MainWindowViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
-            _masterStore.Dummy.DummyChanged += DummyChanged;
+            _masterStore.DummyStore.DummyChanged += DummyChanged;
 
             _selectedIndex = 0;
 
             ListShowerVM = new ListShowerViewModel(masterStore);
+            Sorter = new SorterViewModel(masterStore);
 
             ChangeName = new CallbackCommand(OnChangeName);
             //CheckBoxChange = new CallbackCommand(_masterStore, CheckBoxChanged);
@@ -79,7 +81,7 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
 
-            _masterStore.Dummy.DummyChanged -= DummyChanged;
+            _masterStore.DummyStore.DummyChanged -= DummyChanged;
         }
 
         protected void DummyChanged()
@@ -107,10 +109,10 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnChangeName(object parameter)
         {
-            _masterStore.Dummy.Name = TypeText;
+            _masterStore.DummyStore.Name = TypeText;
             TypeText = "";
 
-            Debug.WriteLine($"Command executed. Name : {_masterStore.Dummy.Name} , Desc : {_masterStore.Dummy.Description} , Active : {_masterStore.Dummy.Active}");
+            Debug.WriteLine($"Command executed. Name : {_masterStore.DummyStore.Name} , Desc : {_masterStore.DummyStore.Description} , Active : {_masterStore.DummyStore.Active}");
 
             //foreach (var item in ListShowerVM.FileDatas)
             //{

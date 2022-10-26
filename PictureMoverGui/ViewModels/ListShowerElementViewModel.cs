@@ -11,28 +11,34 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        private FileData _fileData;
+        //private FileData _fileData;
+        //private int _index;
+        private string _key;
 
-        public string Name => _fileData.Name;
-        public int Count => _fileData.Count;
+        private FileData FileData => _masterStore.FileDataStore.GetFileData(_key);
+
+        public string Name => FileData.Name;
+        public int Count => FileData.Count;
 
         public bool Active
         {
-            get { return _fileData.Active; }
+            get { return FileData.Active; }
             set
             {
-                if (_fileData.Active != value)
+                if (FileData.Active != value)
                 {
-                    _masterStore.FileData.SetActive(_fileData, value);
+                    _masterStore.FileDataStore.SetActive(_key, value);
                     OnPropertyChanged(nameof(Active));
                 }
             }
         }
 
-        public ListShowerElementViewModel(MasterStore masterStore, FileData fileData)
+        public ListShowerElementViewModel(MasterStore masterStore, string key)
         {
             _masterStore = masterStore;
-            _fileData = fileData;
+            //_fileData = fileData;
+            //_index = index;
+            _key = key;
         }
     }
 }

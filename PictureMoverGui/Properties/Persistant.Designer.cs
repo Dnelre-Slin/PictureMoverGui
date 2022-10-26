@@ -12,7 +12,7 @@ namespace PictureMoverGui.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.0.3.0")]
     internal sealed partial class Persistant : global::System.Configuration.ApplicationSettingsBase {
         
         private static Persistant defaultInstance = ((Persistant)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Persistant())));
@@ -32,6 +32,23 @@ namespace PictureMoverGui.Properties {
             }
             set {
                 this["LastMobilePull"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <string>hello\nworld</string>
+  <string>2020-03-04T12:13:14</string>
+  <string>2020-03-05T12:13:14</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection FancyListy {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["FancyListy"]));
+            }
+            set {
+                this["FancyListy"] = value;
             }
         }
     }

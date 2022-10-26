@@ -5,5 +5,13 @@
     <Setting Name="LastMobilePull" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2022-03-01</Value>
     </Setting>
+    <Setting Name="FancyListy" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;string&gt;hello\nworld&lt;/string&gt;
+  &lt;string&gt;2020-03-04T12:13:14&lt;/string&gt;
+  &lt;string&gt;2020-03-05T12:13:14&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -18,7 +18,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="2.25*"></RowDefinition>
         </Grid.RowDefinitions>
-        <components:DirectorySelectorView></components:DirectorySelectorView>
+        <components:DirectorySelectorView DataContext="{Binding DirectorySelector}"></components:DirectorySelectorView>
         <!--<Button Grid.Row="1" FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Click="btnSwapSourceDestination_Click" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwapOperation}" />
         <GroupBox Grid.Row="2" Padding="10 0">
             <GroupBox.Header>

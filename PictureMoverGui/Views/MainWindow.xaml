@@ -15,7 +15,7 @@
     </Window.Resources>
     <TabControl SelectedIndex="{Binding SelectedIndex}">
         <TabItem Header="Tab1" Name="tab1">
-            <local:SorterView></local:SorterView>
+            <local:SorterView DataContext="{Binding Sorter}"></local:SorterView>
             <!--<StackPanel>
                 <TextBlock Text="{Binding Name}"></TextBlock>
                 <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>

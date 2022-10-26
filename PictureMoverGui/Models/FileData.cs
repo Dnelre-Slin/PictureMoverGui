@@ -8,7 +8,7 @@ namespace PictureMoverGui.Models
     {
         public string Name { get; }
         public int Count { get; }
-        public bool Active { get; private set; }
+        public bool Active { get; }
 
         public FileData(string name, int count, bool active)
         {
@@ -17,9 +17,9 @@ namespace PictureMoverGui.Models
             Active = active;
         }
 
-        public void SetActive(bool active)
-        {
-            Active = active;
-        }
+        //public void SetActive(bool active)
+        //{
+        //    Active = active;
+        //}
     }
 }

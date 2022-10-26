@@ -11,11 +11,11 @@
             <GroupBox.Header>
                 <WrapPanel>
                     <Label MinWidth="500" FontSize="20" Content="{DynamicResource SourceLabelContent}"/>
-                    <Button Padding="10 0" Margin="5 0" FontSize="20" x:Name="btnChooseSourceDir" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding AllowGatherInfoDir}"/>
-                    <Button Padding="10 -20" FontSize="20" x:Name="btnChooseSourceDirCancel" Content="{DynamicResource CancelContent}" Visibility="{Binding GatherDirInfoCancelButtonVisibility}"/>
+                    <Button Padding="10 0" Margin="5 0" FontSize="20" Command="{Binding OpenFolderBrowserDialog}" x:Name="btnChooseSourceDir" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding IsNotRunningGatherer}"/>
+                    <Button Padding="10 -20" FontSize="20" Command="{Binding CancelGatherer}" x:Name="btnChooseSourceDirCancel" Content="{DynamicResource CancelContent}" Visibility="{Binding CancelVisibility}"/>
                 </WrapPanel>
             </GroupBox.Header>
-            <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding labelSourceDirContent}"/>
+            <Label x:Name="SourceDirLabel" FontSize="20" Background="GhostWhite" Content="{Binding SourcePath}"/>
         </GroupBox>
     </Grid>
 </UserControl>

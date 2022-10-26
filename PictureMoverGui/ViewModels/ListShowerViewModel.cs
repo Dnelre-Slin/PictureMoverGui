@@ -53,7 +53,7 @@ namespace PictureMoverGui.ViewModels
         {
             _masterStore = masterStore;
 
-            _masterStore.FileData.FileDataChanged += FileDataStore_FileDataChanged;
+            _masterStore.FileDataStore.FileDataChanged += FileDataStore_FileDataChanged;
 
             FalsifyList = new CallbackCommand(OnFalsifyList);
             ActiveChanged = new CallbackCommand(OnActiveChanged);
@@ -71,7 +71,7 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
 
-            _masterStore.FileData.FileDataChanged -= FileDataStore_FileDataChanged;
+            _masterStore.FileDataStore.FileDataChanged -= FileDataStore_FileDataChanged;
         }
 
         protected void FileDataStore_FileDataChanged()
@@ -90,9 +90,10 @@ namespace PictureMoverGui.ViewModels
             }
             _fileDatas.Clear();
 
-            foreach (var fileData in _masterStore.FileData.FileDatas)
+            //int index = 0;
+            foreach (var fileDataKey in _masterStore.FileDataStore.FileDataKV)
             {
-                _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileData));
+                _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileDataKey.Key));
             }
         }
 
