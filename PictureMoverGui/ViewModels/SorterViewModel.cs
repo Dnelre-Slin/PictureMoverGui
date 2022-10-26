@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Commands;
+using PictureMoverGui.Helpers;
 using PictureMoverGui.Store;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace PictureMoverGui.ViewModels
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
         public SorterInterfaceViewModel SorterInterface { get; }
 
-        public bool AllowSwap => true;
+        public bool AllowSwap => _masterStore.RunningStore.RunState == RunStates.Idle;
 
         public ICommand SwapSourceAndDestination { get; }
 
@@ -28,15 +29,24 @@ namespace PictureMoverGui.ViewModels
             SorterInterface = new SorterInterfaceViewModel(masterStore);
 
             SwapSourceAndDestination = new CallbackCommand(OnSwapSourceAndDestination);
+
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
         }
 
         public override void Dispose()
         {
             base.Dispose();
 
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
+
             SourceDirectorySelector.Dispose();
             DestinationDirectorySelector.Dispose();
             SorterInterface.Dispose();
+        }
+
+        protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
+        {
+            OnPropertyChanged(nameof(AllowSwap));
         }
 
         public void OnSwapSourceAndDestination(object parameter)

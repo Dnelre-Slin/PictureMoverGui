@@ -15,9 +15,9 @@
         </Grid.ColumnDefinitions>
         <Viewbox Height="80" Grid.Column="0">
             <WrapPanel Orientation="Vertical">
-                <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding DoCopy}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfigation}"/>
-                <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding DoStructured}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfigation}"/>
-                <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding DoRename}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfigation}"/>
+                <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding DoCopy}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfiguration}"/>
+                <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding DoStructured}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfiguration}"/>
+                <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding DoRename}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfiguration}"/>
             </WrapPanel>
         </Viewbox>
         <DockPanel Width="250" Grid.Column="1">

@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Commands;
+using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using System;
@@ -46,6 +47,8 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
+        public bool AllowEdit => _masterStore.RunningStore.RunState == RunStates.Idle;
+
         public ICommand FalsifyList { get; }
         public ICommand ActiveChanged { get; }
 
@@ -55,6 +58,7 @@ namespace PictureMoverGui.ViewModels
 
             _masterStore.FileExtensionStore.FileExtensionChanged += FileExtensionStore_FileExtensionChanged;
             _masterStore.FileExtensionStore.FileExtensionDictReset += FileExtensionStore_FileExtensionDictReset;
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
 
             FalsifyList = new CallbackCommand(OnFalsifyList);
             ActiveChanged = new CallbackCommand(OnActiveChanged);
@@ -71,6 +75,7 @@ namespace PictureMoverGui.ViewModels
 
             _masterStore.FileExtensionStore.FileExtensionChanged -= FileExtensionStore_FileExtensionChanged;
             _masterStore.FileExtensionStore.FileExtensionDictReset -= FileExtensionStore_FileExtensionDictReset;
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
             ClearFileExtensionList();
         }
 
@@ -99,6 +104,11 @@ namespace PictureMoverGui.ViewModels
         {
             Debug.WriteLine("FileExtensionStore_FileExtensionReset");
             ResetFileExtensionsFromStore();
+        }
+
+        protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
+        {
+            OnPropertyChanged(nameof(AllowEdit));
         }
 
         protected void ResetFileExtensionsFromStore()

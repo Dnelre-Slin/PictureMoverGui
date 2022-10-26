@@ -35,6 +35,7 @@ namespace PictureMoverGui.ViewModels
             _masterStore = masterStore;
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
 
             OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
         }
@@ -43,11 +44,17 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged -= SorterConfiguration_SorterConfigurationChanged;
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
         }
 
         protected void SorterConfiguration_SorterConfigurationChanged(SorterConfigurationModel sorterConfigurationModel)
         {
             OnPropertyChanged(nameof(DestinationPath));
+        }
+
+        protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
+        {
+            OnPropertyChanged(nameof(CanOpenDialog));
         }
 
         protected void OnOpenFolderBrowserDialog(object parameter)
