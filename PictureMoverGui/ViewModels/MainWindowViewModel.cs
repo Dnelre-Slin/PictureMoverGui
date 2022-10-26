@@ -14,8 +14,9 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        public ExtensionSelectorViewModel ExtensionSelector { get; }
         public SorterViewModel Sorter { get; }
+        public ExtensionSelectorViewModel ExtensionSelector { get; }
+        public AdvancedOptionsViewModel AdvancedOptions { get; }
 
         private int _selectedTabIndex;
         public int SelectedTabIndex
@@ -38,13 +39,18 @@ namespace PictureMoverGui.ViewModels
 
             _selectedTabIndex = 0;
 
-            ExtensionSelector = new ExtensionSelectorViewModel(masterStore);
             Sorter = new SorterViewModel(masterStore);
+            ExtensionSelector = new ExtensionSelectorViewModel(masterStore);
+            AdvancedOptions = new AdvancedOptionsViewModel(masterStore);
         }
 
         public override void Dispose()
         {
             base.Dispose();
+
+            Sorter.Dispose();
+            ExtensionSelector.Dispose();
+            AdvancedOptions.Dispose();
         }
 
         protected void OnSelectedIndexChanged()
