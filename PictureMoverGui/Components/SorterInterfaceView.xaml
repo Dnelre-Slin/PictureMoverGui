@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="PictureMoverGui.Components.SorterInterfaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+             xmlns:local="clr-namespace:PictureMoverGui.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="800">
+    <Grid Grid.Row="3" Margin="20,20,20,20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Viewbox Height="80" Grid.Column="0">
+            <WrapPanel Orientation="Vertical">
+                <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding DoCopy}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfigation}"/>
+                <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding DoStructured}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfigation}"/>
+                <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding DoRename}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfigation}"/>
+            </WrapPanel>
+        </Viewbox>
+        <DockPanel Width="250" Grid.Column="1">
+            <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart" Command="{Binding StartSorting}" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartSorting}" />
+            <Button Visibility="{Binding CancelVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Command="{Binding CancelSorting}" Content="{DynamicResource CancelContent}" />
+        </DockPanel>
+        <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessage}"/>
+            <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding StatusProgressDegrees}" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -13,6 +13,7 @@ namespace PictureMoverGui.ViewModels
 
         public DirectorySelectorViewModel SourceDirectorySelector { get; }
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
+        public SorterInterfaceViewModel SorterInterface { get; }
 
         public bool AllowSwap => true;
 
@@ -24,6 +25,7 @@ namespace PictureMoverGui.ViewModels
 
             SourceDirectorySelector = new DirectorySelectorViewModel(masterStore);
             DestinationDirectorySelector = new DirectorySelectorLiteViewModel(masterStore);
+            SorterInterface = new SorterInterfaceViewModel(masterStore);
 
             SwapSourceAndDestination = new CallbackCommand(OnSwapSourceAndDestination);
         }
@@ -34,6 +36,7 @@ namespace PictureMoverGui.ViewModels
 
             SourceDirectorySelector.Dispose();
             DestinationDirectorySelector.Dispose();
+            SorterInterface.Dispose();
         }
 
         public void OnSwapSourceAndDestination(object parameter)

@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Models;
+using PictureMoverGui.StoreHelpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,14 +26,26 @@ namespace PictureMoverGui.Store
 
         public SorterConfigurationStore()
         {
-            _sorterConfiguration = new SorterConfigurationModel("FirstFolder", "destPath");
+            InitSorterConfiguration();
+        }
+
+        protected void InitSorterConfiguration()
+        {
+            _sorterConfiguration = new SorterConfigurationModel(
+                "FirstFolder", 
+                "destPath", 
+                true, 
+                true, 
+                true);
         }
 
         public void SetSourcePath(string newSourcePath)
         {
             if (newSourcePath != SorterConfiguration.SourcePath)
             {
-                SorterConfiguration = new SorterConfigurationModel(newSourcePath, SorterConfiguration.DestinationPath);
+                SorterConfigurationEditor editor = new SorterConfigurationEditor(SorterConfiguration);
+                editor.SourcePath = newSourcePath;
+                SorterConfiguration = new SorterConfigurationModel(editor);
             }
         }
 
@@ -40,7 +53,39 @@ namespace PictureMoverGui.Store
         {
             if (newDestinationPath != SorterConfiguration.DestinationPath)
             {
-                SorterConfiguration = new SorterConfigurationModel(SorterConfiguration.SourcePath, newDestinationPath);
+                SorterConfigurationEditor editor = new SorterConfigurationEditor(SorterConfiguration);
+                editor.DestinationPath = newDestinationPath;
+                SorterConfiguration = new SorterConfigurationModel(editor);
+            }
+        }
+
+        public void SetDoCopy(bool newDoCopy)
+        {
+            if (newDoCopy != SorterConfiguration.DoCopy)
+            {
+                SorterConfigurationEditor editor = new SorterConfigurationEditor(SorterConfiguration);
+                editor.DoCopy = newDoCopy;
+                SorterConfiguration = new SorterConfigurationModel(editor);
+            }
+        }
+
+        public void SetDoStructured(bool newDoStructured)
+        {
+            if (newDoStructured != SorterConfiguration.DoStructured)
+            {
+                SorterConfigurationEditor editor = new SorterConfigurationEditor(SorterConfiguration);
+                editor.DoStructured = newDoStructured;
+                SorterConfiguration = new SorterConfigurationModel(editor);
+            }
+        }
+
+        public void SetDoRename(bool newDoRename)
+        {
+            if (newDoRename != SorterConfiguration.DoRename)
+            {
+                SorterConfigurationEditor editor = new SorterConfigurationEditor(SorterConfiguration);
+                editor.DoRename = newDoRename;
+                SorterConfiguration = new SorterConfigurationModel(editor);
             }
         }
     }
