@@ -13,8 +13,9 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView 
-                Name="ListCustomer"
-                ItemsSource="{Binding extensionInfoList}">
+                Name="ListExtensions"
+                ItemsSource="{Binding FileExtensionList}"
+                IsEnabled="{Binding AllowEdit}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Viewbox Height="25">
@@ -26,9 +27,9 @@
         </ScrollViewer>
         <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="30 0">
             <TextBlock Text="Number of files: " FontSize="20"></TextBlock>
-            <TextBlock Text="{Binding NrOfActiveFilesInCurrentDir}" FontSize="20"></TextBlock>
+            <TextBlock Text="{Binding ActiveFiles}" FontSize="20"></TextBlock>
             <TextBlock Text="/" FontSize="20"></TextBlock>
-            <TextBlock Text="{Binding TotalNrOfFilesInCurrentDir}" FontSize="20"></TextBlock>
+            <TextBlock Text="{Binding NumberOfFiles}" FontSize="20"></TextBlock>
         </WrapPanel>
     </Grid>
 </UserControl>

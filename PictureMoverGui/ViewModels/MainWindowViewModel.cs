@@ -14,6 +14,9 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
+        public ExtensionSelectorViewModel ExtensionSelector { get; }
+        public SorterViewModel Sorter { get; }
+
         public string Name => _masterStore.DummyStore.Name;
         public string Description => _masterStore.DummyStore.Description;
 
@@ -28,7 +31,6 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        //private bool _active;
         public bool Active 
         {
             get => _masterStore.DummyStore.Active;
@@ -57,8 +59,6 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        public ListShowerViewModel ListShowerVM { get; }
-        public SorterViewModel Sorter { get; }
 
         public ICommand ChangeName { get; }
         //public ICommand CheckBoxChange { get; }
@@ -70,7 +70,7 @@ namespace PictureMoverGui.ViewModels
 
             _selectedIndex = 0;
 
-            ListShowerVM = new ListShowerViewModel(masterStore);
+            ExtensionSelector = new ExtensionSelectorViewModel(masterStore);
             Sorter = new SorterViewModel(masterStore);
 
             ChangeName = new CallbackCommand(OnChangeName);

@@ -14,7 +14,7 @@
         <localmodels:PictureMoverModel x:Key="moverModel"></localmodels:PictureMoverModel>
     </Window.Resources>
     <TabControl SelectedIndex="{Binding SelectedIndex}">
-        <TabItem Header="Tab1" Name="tab1">
+        <TabItem Header="Sorter">
             <local:SorterView DataContext="{Binding Sorter}"></local:SorterView>
             <!--<StackPanel>
                 <TextBlock Text="{Binding Name}"></TextBlock>
@@ -23,9 +23,10 @@
                 <TextBlock Text="{Binding TypeText}"></TextBlock>
                 <CheckBox IsChecked="{Binding Active}" ></CheckBox>
             </StackPanel>-->
-        </TabItem>        
-        <TabItem Header="Tab2" Name="tab2">
-            <views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>
+        </TabItem>
+        <TabItem Header="Extensions">
+            <local:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></local:ExtensionSelectorView>
+            <!--<views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>-->
         </TabItem>
     </TabControl>
 

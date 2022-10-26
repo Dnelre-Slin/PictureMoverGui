@@ -12,12 +12,12 @@ using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels
 {
-    public class ListShowerViewModel : ViewModelBase
+    public class ExtensionSelectorViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
 
-        private ObservableCollection<ListShowerElementViewModel> _fileExtensionList;
-        public IEnumerable<ListShowerElementViewModel> FileExtensionList => _fileExtensionList;
+        private ObservableCollection<ExtensionSelectorElementViewModel> _fileExtensionList;
+        public IEnumerable<ExtensionSelectorElementViewModel> FileExtensionList => _fileExtensionList;
 
         public int NumberOfFiles
         {
@@ -52,7 +52,7 @@ namespace PictureMoverGui.ViewModels
         public ICommand FalsifyList { get; }
         public ICommand ActiveChanged { get; }
 
-        public ListShowerViewModel(MasterStore masterStore)
+        public ExtensionSelectorViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
 
@@ -63,7 +63,7 @@ namespace PictureMoverGui.ViewModels
             FalsifyList = new CallbackCommand(OnFalsifyList);
             ActiveChanged = new CallbackCommand(OnActiveChanged);
 
-            _fileExtensionList = new ObservableCollection<ListShowerElementViewModel>();
+            _fileExtensionList = new ObservableCollection<ExtensionSelectorElementViewModel>();
  
             ResetFileExtensionsFromStore();
 
@@ -116,7 +116,7 @@ namespace PictureMoverGui.ViewModels
             ClearFileExtensionList();
             foreach (var fileExtensionDict in _masterStore.FileExtensionStore.FileExtensionDict)
             {
-                _fileExtensionList.Add(new ListShowerElementViewModel(_masterStore, fileExtensionDict.Key));
+                _fileExtensionList.Add(new ExtensionSelectorElementViewModel(_masterStore, fileExtensionDict.Key));
             }
             OnPropertyChanged(nameof(FileExtensionList));
             OnPropertyChanged(nameof(NumberOfFiles));

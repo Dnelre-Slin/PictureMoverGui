@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels
 {
-    public class ListShowerElementViewModel : ViewModelBase
+    public class ExtensionSelectorElementViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
 
@@ -29,7 +29,7 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        public ListShowerElementViewModel(MasterStore masterStore, string key)
+        public ExtensionSelectorElementViewModel(MasterStore masterStore, string key)
         {
             _masterStore = masterStore;
             _key = key;
