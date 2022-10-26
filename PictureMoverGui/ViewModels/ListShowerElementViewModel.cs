@@ -11,10 +11,7 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        //private FileData _fileData;
-        //private int _index;
         private string _key;
-
         private FileExtension FileExtension => _masterStore.FileExtensionStore.GetFileExtension(_key);
 
         public string Name => FileExtension.Name;
@@ -28,7 +25,6 @@ namespace PictureMoverGui.ViewModels
                 if (FileExtension.Active != value)
                 {
                     _masterStore.FileExtensionStore.SetActive(_key, value);
-                    //OnPropertyChanged(nameof(Active));
                 }
             }
         }
@@ -36,8 +32,6 @@ namespace PictureMoverGui.ViewModels
         public ListShowerElementViewModel(MasterStore masterStore, string key)
         {
             _masterStore = masterStore;
-            //_fileData = fileData;
-            //_index = index;
             _key = key;
         }
 

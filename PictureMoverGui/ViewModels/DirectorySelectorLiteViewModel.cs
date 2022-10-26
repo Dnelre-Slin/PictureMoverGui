@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Commands;
+using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using System;
@@ -25,19 +26,7 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        private bool _canOpenDialog;
-        public bool CanOpenDialog
-        {
-            get { return _canOpenDialog; }
-            set
-            {
-                if (_canOpenDialog != value)
-                {
-                    _canOpenDialog = value;
-                    OnPropertyChanged(nameof(CanOpenDialog));
-                }
-            }
-        }
+        public bool CanOpenDialog => _masterStore.RunningStore.RunState != RunStates.RunningSorter;
 
         public ICommand OpenFolderBrowserDialog { get; }
 
@@ -46,8 +35,6 @@ namespace PictureMoverGui.ViewModels
             _masterStore = masterStore;
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
-
-            _canOpenDialog = true;
 
             OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
         }

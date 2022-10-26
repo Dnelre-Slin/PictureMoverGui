@@ -60,10 +60,7 @@ namespace PictureMoverGui.ViewModels
             ActiveChanged = new CallbackCommand(OnActiveChanged);
 
             _fileExtensionList = new ObservableCollection<ListShowerElementViewModel>();
-            //foreach (var fileData in _masterStore.FileData.FileDatas)
-            //{
-            //    _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileData));
-            //}
+ 
             ResetFileExtensionsFromStore();
 
         }
