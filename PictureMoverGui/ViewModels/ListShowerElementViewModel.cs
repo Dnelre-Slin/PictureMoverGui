@@ -15,20 +15,20 @@ namespace PictureMoverGui.ViewModels
         //private int _index;
         private string _key;
 
-        private FileData FileData => _masterStore.FileDataStore.GetFileData(_key);
+        private FileExtension FileExtension => _masterStore.FileExtensionStore.GetFileExtension(_key);
 
-        public string Name => FileData.Name;
-        public int Count => FileData.Count;
+        public string Name => FileExtension.Name;
+        public int Count => FileExtension.Count;
 
         public bool Active
         {
-            get { return FileData.Active; }
+            get { return FileExtension.Active; }
             set
             {
-                if (FileData.Active != value)
+                if (FileExtension.Active != value)
                 {
-                    _masterStore.FileDataStore.SetActive(_key, value);
-                    OnPropertyChanged(nameof(Active));
+                    _masterStore.FileExtensionStore.SetActive(_key, value);
+                    //OnPropertyChanged(nameof(Active));
                 }
             }
         }
@@ -39,6 +39,11 @@ namespace PictureMoverGui.ViewModels
             //_fileData = fileData;
             //_index = index;
             _key = key;
+        }
+
+        public void RefreshActive()
+        {
+            OnPropertyChanged(nameof(Active));
         }
     }
 }

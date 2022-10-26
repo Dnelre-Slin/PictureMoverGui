@@ -15,17 +15,17 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        private ObservableCollection<ListShowerElementViewModel> _fileDatas;
-        public IEnumerable<ListShowerElementViewModel> FileDatas => _fileDatas;
+        private ObservableCollection<ListShowerElementViewModel> _fileExtensionList;
+        public IEnumerable<ListShowerElementViewModel> FileExtensionList => _fileExtensionList;
 
         public int NumberOfFiles
         {
             get
             {
                 int count = 0;
-                foreach (var fileData in FileDatas)
+                foreach (var fileExtension in FileExtensionList)
                 {
-                    count += fileData.Count;
+                    count += fileExtension.Count;
                 }
                 return count;
             }
@@ -35,11 +35,11 @@ namespace PictureMoverGui.ViewModels
             get
             {
                 int count = 0;
-                foreach (var fileData in FileDatas)
+                foreach (var fileExtension in FileExtensionList)
                 {
-                    if (fileData.Active)
+                    if (fileExtension.Active)
                     {
-                        count += fileData.Count;
+                        count += fileExtension.Count;
                     }
                 }
                 return count;
@@ -53,17 +53,18 @@ namespace PictureMoverGui.ViewModels
         {
             _masterStore = masterStore;
 
-            _masterStore.FileDataStore.FileDataChanged += FileDataStore_FileDataChanged;
+            _masterStore.FileExtensionStore.FileExtensionChanged += FileExtensionStore_FileExtensionChanged;
+            _masterStore.FileExtensionStore.FileExtensionDictReset += FileExtensionStore_FileExtensionDictReset;
 
             FalsifyList = new CallbackCommand(OnFalsifyList);
             ActiveChanged = new CallbackCommand(OnActiveChanged);
 
-            _fileDatas = new ObservableCollection<ListShowerElementViewModel>();
+            _fileExtensionList = new ObservableCollection<ListShowerElementViewModel>();
             //foreach (var fileData in _masterStore.FileData.FileDatas)
             //{
             //    _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileData));
             //}
-            GetFileDatasFromStore();
+            ResetFileExtensionsFromStore();
 
         }
 
@@ -71,37 +72,55 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
 
-            _masterStore.FileDataStore.FileDataChanged -= FileDataStore_FileDataChanged;
+            _masterStore.FileExtensionStore.FileExtensionChanged -= FileExtensionStore_FileExtensionChanged;
+            _masterStore.FileExtensionStore.FileExtensionDictReset -= FileExtensionStore_FileExtensionDictReset;
+            ClearFileExtensionList();
         }
 
-        protected void FileDataStore_FileDataChanged()
+        protected void ClearFileExtensionList()
         {
-            Debug.WriteLine("FileDataStore_FileDataChanged");
-            OnPropertyChanged(nameof(FileDatas));
+            foreach (var fileExtension in FileExtensionList)
+            {
+                fileExtension?.Dispose();
+            }
+            _fileExtensionList.Clear();
+        }
+
+        protected void FileExtensionStore_FileExtensionChanged(FileExtension fileExtensionModel)
+        {
+            Debug.WriteLine("FileExtensionStore_FileExtensionChanged");
+            foreach (var fileExtension in FileExtensionList)
+            {
+                fileExtension?.RefreshActive();
+            }
+            OnPropertyChanged(nameof(FileExtensionList));
             OnPropertyChanged(nameof(NumberOfFiles));
             OnPropertyChanged(nameof(ActiveFiles));
         }
-
-        protected void GetFileDatasFromStore()
+        
+        protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<KeyValuePair<string, FileExtension>> fileExtensionDict)
         {
-            foreach (var fileDataVM in FileDatas)
-            {
-                fileDataVM?.Dispose();
-            }
-            _fileDatas.Clear();
+            Debug.WriteLine("FileExtensionStore_FileExtensionReset");
+            ResetFileExtensionsFromStore();
+        }
 
-            //int index = 0;
-            foreach (var fileDataKey in _masterStore.FileDataStore.FileDataKV)
+        protected void ResetFileExtensionsFromStore()
+        {
+            ClearFileExtensionList();
+            foreach (var fileExtensionDict in _masterStore.FileExtensionStore.FileExtensionDict)
             {
-                _fileDatas.Add(new ListShowerElementViewModel(_masterStore, fileDataKey.Key));
+                _fileExtensionList.Add(new ListShowerElementViewModel(_masterStore, fileExtensionDict.Key));
             }
+            OnPropertyChanged(nameof(FileExtensionList));
+            OnPropertyChanged(nameof(NumberOfFiles));
+            OnPropertyChanged(nameof(ActiveFiles));
         }
 
         protected void OnFalsifyList(object parameter)
         {
             Debug.WriteLine("OnFalsifyList");
 
-            foreach (var item in FileDatas)
+            foreach (var item in FileExtensionList)
             {
                 item.Active = false;
             }

@@ -4,13 +4,13 @@ using System.Text;
 
 namespace PictureMoverGui.Models
 {
-    public class FileData
+    public class FileExtension
     {
         public string Name { get; }
         public int Count { get; }
         public bool Active { get; }
 
-        public FileData(string name, int count, bool active)
+        public FileExtension(string name, int count, bool active)
         {
             Name = name;
             Count = count;

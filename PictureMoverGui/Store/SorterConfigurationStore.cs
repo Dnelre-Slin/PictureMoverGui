@@ -25,14 +25,22 @@ namespace PictureMoverGui.Store
 
         public SorterConfigurationStore()
         {
-            _sorterConfiguration = new SorterConfigurationModel("FirstFolder");
+            _sorterConfiguration = new SorterConfigurationModel("FirstFolder", "destPath");
         }
 
         public void SetSourcePath(string newSourcePath)
         {
             if (newSourcePath != SorterConfiguration.SourcePath)
             {
-                SorterConfiguration = new SorterConfigurationModel(newSourcePath);
+                SorterConfiguration = new SorterConfigurationModel(newSourcePath, SorterConfiguration.DestinationPath);
+            }
+        }
+
+        public void SetDestinationPath(string newDestinationPath)
+        {
+            if (newDestinationPath != SorterConfiguration.DestinationPath)
+            {
+                SorterConfiguration = new SorterConfigurationModel(SorterConfiguration.SourcePath, newDestinationPath);
             }
         }
     }

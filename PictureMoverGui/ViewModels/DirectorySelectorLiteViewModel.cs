@@ -1,0 +1,77 @@
+﻿using PictureMoverGui.Commands;
+using PictureMoverGui.Models;
+using PictureMoverGui.Store;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Input;
+
+namespace PictureMoverGui.ViewModels
+{
+    public class DirectorySelectorLiteViewModel : ViewModelBase
+    {
+        private MasterStore _masterStore;
+        private SorterConfigurationModel SorterConfig => _masterStore.SorterConfigurationStore.SorterConfiguration;
+
+        public string DestinationPath
+        {
+            get { return SorterConfig.DestinationPath; }
+            set
+            {
+                if (value != SorterConfig.DestinationPath)
+                {
+                    _masterStore.SorterConfigurationStore.SetDestinationPath(value);
+                }
+            }
+        }
+
+        private bool _canOpenDialog;
+        public bool CanOpenDialog
+        {
+            get { return _canOpenDialog; }
+            set
+            {
+                if (_canOpenDialog != value)
+                {
+                    _canOpenDialog = value;
+                    OnPropertyChanged(nameof(CanOpenDialog));
+                }
+            }
+        }
+
+        public ICommand OpenFolderBrowserDialog { get; }
+
+        public DirectorySelectorLiteViewModel(MasterStore masterStore)
+        {
+            _masterStore = masterStore;
+
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
+
+            _canOpenDialog = true;
+
+            OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged -= SorterConfiguration_SorterConfigurationChanged;
+        }
+
+        protected void SorterConfiguration_SorterConfigurationChanged(SorterConfigurationModel sorterConfigurationModel)
+        {
+            OnPropertyChanged(nameof(DestinationPath));
+        }
+
+        protected void OnOpenFolderBrowserDialog(object parameter)
+        {
+            System.Windows.Forms.FolderBrowserDialog openFileDlg = new System.Windows.Forms.FolderBrowserDialog();
+            var result = openFileDlg.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDlg.SelectedPath))
+            {
+                System.Diagnostics.Debug.WriteLine(openFileDlg.SelectedPath);
+                DestinationPath = openFileDlg.SelectedPath;
+            }
+        }
+    }
+}

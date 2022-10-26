@@ -11,7 +11,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding FileDatas}">
+        <ListView Grid.Row="0" ItemsSource="{Binding FileExtensionList}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

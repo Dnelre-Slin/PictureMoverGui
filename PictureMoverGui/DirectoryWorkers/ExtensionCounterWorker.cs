@@ -16,24 +16,40 @@ namespace PictureMoverGui.DirectoryWorkers
         private Action<RunStates> _updateRunState;
         private Action<Dictionary<string, int>> _workDone;
 
-        public ExtensionCounterWorker(MediaTypeEnum mediaType, string source, DateTime newerThan, Action<RunStates> updateRunState, Action<Dictionary<string, int>> workDone)
+        public ExtensionCounterWorker()
         {
-            _mediaType = mediaType;
-            _source = source;
-            _newerThan = newerThan;
-            _updateRunState = updateRunState;
-            _workDone = workDone;
+            _worker = null;
+        }
 
-            if (_updateRunState != null)
+        public void StartWorker(MediaTypeEnum mediaType, string source, DateTime newerThan, Action<RunStates> updateRunState, Action<Dictionary<string, int>> workDone)
+        {
+            if (_worker == null) // Make sure it is not already running
             {
-                _updateRunState(RunStates.DirectoryGathering);
-            }
+                _mediaType = mediaType;
+                _source = source;
+                _newerThan = newerThan;
+                _updateRunState = updateRunState;
+                _workDone = workDone;
 
-            _worker = new BackgroundWorker();
-            _worker.WorkerSupportsCancellation = true;
-            _worker.DoWork += worker_DoWork;
-            _worker.RunWorkerCompleted += worker_WorkDone;
-            _worker.RunWorkerAsync();
+                if (_updateRunState != null)
+                {
+                    _updateRunState(RunStates.DirectoryGathering);
+                }
+
+                _worker = new BackgroundWorker();
+                _worker.WorkerSupportsCancellation = true;
+                _worker.DoWork += worker_DoWork;
+                _worker.RunWorkerCompleted += worker_WorkDone;
+                _worker.RunWorkerAsync();
+            }
+        }
+
+        public void CancelWorker()
+        {
+            if (_worker != null) // Make sure it is running
+            {
+                _worker.CancelAsync();
+            }
         }
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
