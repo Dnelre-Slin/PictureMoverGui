@@ -8,16 +8,21 @@ namespace PictureMoverGui.Store
     public class RunningStore
     {
         public event Action<RunningStore> RunningStoreChanged;
+        public event Action<string> StatusMessageLogAdded;
 
         public RunStates RunState { get; private set; }
         public double StatusPercentage { get; private set; }
         public string StatusMessage { get; private set; }
+
+        private List<string> _statusMessageLogList;
+        public IEnumerable<string> StatusMessageLogList => _statusMessageLogList;
 
         public RunningStore()
         {
             RunState = RunStates.Idle;
             StatusPercentage = 0.0;
             StatusMessage = "";
+            _statusMessageLogList = new List<string>();
         }
 
         public void SetRunState(RunStates runState)
@@ -32,6 +37,12 @@ namespace PictureMoverGui.Store
             StatusPercentage = statusPercentage;
             SetStatusMessage();
             RunningStoreChanged?.Invoke(this);
+        }
+
+        public void AddStatusLog(string statusLog)
+        {
+            _statusMessageLogList.Add(statusLog);
+            StatusMessageLogAdded?.Invoke(statusLog);
         }
 
         protected void SetStatusMessage()

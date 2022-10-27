@@ -23,6 +23,9 @@
         <TabItem Header="{DynamicResource TabAdvancedView}">
             <local:AdvancedOptionsView DataContext="{Binding AdvancedOptions}"></local:AdvancedOptionsView>
         </TabItem>
+        <TabItem Header="{DynamicResource TabStatusView}">
+            <local:StatusInfoView DataContext="{Binding StatusInfo}"></local:StatusInfoView>
+        </TabItem>
     </TabControl>
 
 </Window>

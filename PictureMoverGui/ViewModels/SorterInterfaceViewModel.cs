@@ -123,7 +123,7 @@ namespace PictureMoverGui.ViewModels
                     DateTime.MinValue,
                     _masterStore.RunningStore.SetRunState,
                     _masterStore.RunningStore.SetStatusPercentage,
-                    null,
+                    _masterStore.RunningStore.AddStatusLog,
                     OnPictureMoverWorkerDone
                 ));
                 //_masterStore.RunningStore.SetRunState(RunStates.RunningSorter);
