@@ -51,9 +51,12 @@ namespace PictureMoverGui.ViewModels
 
         public void OnSwapSourceAndDestination(object parameter)
         {
-            string newSourcePath = DestinationDirectorySelector.DestinationPath;
-            DestinationDirectorySelector.DestinationPath = SourceDirectorySelector.SourcePath;
-            SourceDirectorySelector.SourcePath = newSourcePath;
+            if (AllowSwap)
+            {
+                string newSourcePath = DestinationDirectorySelector.DestinationPath;
+                DestinationDirectorySelector.DestinationPath = SourceDirectorySelector.SourcePath;
+                SourceDirectorySelector.SourcePath = newSourcePath;
+            }
         }
     }
 }

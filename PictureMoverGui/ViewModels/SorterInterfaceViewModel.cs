@@ -100,8 +100,11 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnStartSorting(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnStartSorting");
-            _masterStore.RunningStore.SetRunState(RunStates.RunningSorter);
+            if (AllowStartSorting)
+            {
+                System.Diagnostics.Debug.WriteLine("OnStartSorting");
+                _masterStore.RunningStore.SetRunState(RunStates.RunningSorter);
+            }
         }
 
         protected void OnCancelSorting(object parameter)

@@ -82,7 +82,10 @@ namespace PictureMoverGui.ViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            _extensionCounterWorker.StartWorker(Helpers.MediaTypeEnum.NormalDirectory, SourcePath, DateTime.MinValue, _masterStore.RunningStore.SetRunState, OnExtensionCounterWorkerDone);
+            if (CanOpenDialog)
+            {
+                _extensionCounterWorker.StartWorker(Helpers.MediaTypeEnum.NormalDirectory, SourcePath, DateTime.MinValue, _masterStore.RunningStore.SetRunState, OnExtensionCounterWorkerDone);
+            }
         }
 
         protected void OnExtensionCounterWorkerDone(Dictionary<string, int> extensionInfo)

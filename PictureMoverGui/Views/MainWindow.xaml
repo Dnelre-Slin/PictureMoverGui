@@ -16,21 +16,12 @@
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="{DynamicResource TabNormalView}">
             <local:SorterView DataContext="{Binding Sorter}"></local:SorterView>
-            <!--<StackPanel>
-                <TextBlock Text="{Binding Name}"></TextBlock>
-                <Button Command="{Binding ChangeName}" Content="{Binding Description}"></Button>
-                <TextBox Text="{Binding TypeText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                <TextBlock Text="{Binding TypeText}"></TextBlock>
-                <CheckBox IsChecked="{Binding Active}" ></CheckBox>
-            </StackPanel>-->
-        </TabItem>
-        <TabItem Header="{DynamicResource TabAdvancedView}">
-            <local:AdvancedOptionsView DataContext="{Binding AdvancedOptions}"></local:AdvancedOptionsView>
-            <!--<views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>-->
         </TabItem>
         <TabItem Header="{DynamicResource TabExtensionView}">
             <local:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></local:ExtensionSelectorView>
-            <!--<views:ListShower DataContext="{Binding ListShowerVM}"></views:ListShower>-->
+        </TabItem>
+        <TabItem Header="{DynamicResource TabAdvancedView}">
+            <local:AdvancedOptionsView DataContext="{Binding AdvancedOptions}"></local:AdvancedOptionsView>
         </TabItem>
     </TabControl>
 
