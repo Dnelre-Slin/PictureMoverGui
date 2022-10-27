@@ -49,8 +49,8 @@ namespace PictureMoverGui.Models
 
         public void UpdateEventListInSettings()
         {
-            Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.eventDataList);
-            Properties.Datastore.Default.Save();
+            //Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.eventDataList);
+            //Properties.Datastore.Default.Save();
             //Properties.Persistant.Default.LastMobilePull
         }
 
@@ -112,7 +112,7 @@ namespace PictureMoverGui.Models
 
             SettingsRefresh();
 
-            _eventDataList = Simplifiers.SimpleListToEventList(Properties.Datastore.Default.EventList);
+            //_eventDataList = Simplifiers.SimpleListToEventList(Properties.Datastore.Default.EventList);
             //_eventDataList = new ObservableCollection<EventData>();
         }
 
