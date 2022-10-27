@@ -1,10 +1,11 @@
-﻿<Window x:Class="PictureMoverGui.MainWindow"
+﻿<Window x:Class="PictureMoverGui.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:PictureMoverGui.Properties"
         xmlns:local="clr-namespace:PictureMoverGui"
+        xmlns:localviews="clr-namespace:PictureMoverGui.Views"
         xmlns:localmodels="clr-namespace:PictureMoverGui.Models"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:views="clr-namespace:PictureMoverGui.Views"
@@ -15,16 +16,16 @@
     </Window.Resources>
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="{DynamicResource TabNormalView}">
-            <local:SorterView DataContext="{Binding Sorter}"></local:SorterView>
+            <localviews:SorterView DataContext="{Binding Sorter}"></localviews:SorterView>
         </TabItem>
         <TabItem Header="{DynamicResource TabExtensionView}">
-            <local:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></local:ExtensionSelectorView>
+            <localviews:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></localviews:ExtensionSelectorView>
         </TabItem>
         <TabItem Header="{DynamicResource TabAdvancedView}">
-            <local:AdvancedOptionsView DataContext="{Binding AdvancedOptions}"></local:AdvancedOptionsView>
+            <localviews:AdvancedOptionsView DataContext="{Binding AdvancedOptions}"></localviews:AdvancedOptionsView>
         </TabItem>
         <TabItem Header="{DynamicResource TabStatusView}">
-            <local:StatusInfoView DataContext="{Binding StatusInfo}"></local:StatusInfoView>
+            <localviews:StatusInfoView DataContext="{Binding StatusInfo}"></localviews:StatusInfoView>
         </TabItem>
     </TabControl>
 

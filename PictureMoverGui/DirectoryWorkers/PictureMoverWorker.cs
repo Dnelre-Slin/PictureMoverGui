@@ -100,7 +100,7 @@ namespace PictureMoverGui.DirectoryWorkers
 
         private void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            int nrOfErrors = (int)e.Result;
+            int nrOfErrors = e.Result != null ? (int)e.Result : -1;
 
             //if (_workStatus == WorkStatus.Invalid)
             //{

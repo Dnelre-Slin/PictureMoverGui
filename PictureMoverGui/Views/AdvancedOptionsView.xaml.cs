@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PictureMoverGui.Models;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Views
 {
     /// <summary>
     /// Interaction logic for AdvancedOptionsView.xaml

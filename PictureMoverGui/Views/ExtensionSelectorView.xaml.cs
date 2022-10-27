@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Views
 {
     /// <summary>
     /// Interaction logic for ExtensionSelectorView.xaml

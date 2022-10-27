@@ -1,9 +1,11 @@
 ﻿using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
+using PictureMoverGui.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +20,9 @@ namespace PictureMoverGui
         private MasterStore _masterStore;
         public App()
         {
+            Trace.Listeners.Add(new TextWriterTraceListener("Error.log"));
+            Trace.AutoFlush = true;
+
             _masterStore = new MasterStore();
         }
 

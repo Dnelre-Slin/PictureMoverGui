@@ -19,7 +19,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -30,9 +30,6 @@ namespace PictureMoverGui
 
         public MainWindow()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener("Error.log"));
-            Trace.AutoFlush = true;
-
             InitializeComponent();
 
             //this.moverModel = this.Resources["moverModel"] as PictureMoverModel;
