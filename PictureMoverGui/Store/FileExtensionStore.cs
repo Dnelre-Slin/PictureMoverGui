@@ -8,13 +8,13 @@ namespace PictureMoverGui.Store
 {
     public class FileExtensionStore
     {
+        public event Action<FileExtension> FileExtensionChanged;
+        public event Action<IEnumerable<KeyValuePair<string, FileExtension>>> FileExtensionDictReset;
+
         private Dictionary<string, FileExtension> _fileExtensionDict;
         public IEnumerable<string> FileExtensionKeys => _fileExtensionDict.Keys;
         public IEnumerable<FileExtension> FileExtensionValues => _fileExtensionDict.Values;
         public IEnumerable<KeyValuePair<string, FileExtension>> FileExtensionDict => _fileExtensionDict;
-
-        public event Action<FileExtension> FileExtensionChanged;
-        public event Action<IEnumerable<KeyValuePair<string, FileExtension>>> FileExtensionDictReset;
 
         public FileExtensionStore()
         {
