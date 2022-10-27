@@ -2,6 +2,7 @@
 using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PictureMoverGui.Store
@@ -9,16 +10,15 @@ namespace PictureMoverGui.Store
     public class FileExtensionStore
     {
         public event Action<FileExtension> FileExtensionChanged;
-        public event Action<IEnumerable<KeyValuePair<string, FileExtension>>> FileExtensionDictReset;
+        public event Action<IEnumerable<FileExtension>> FileExtensionDictReset;
 
-        private Dictionary<string, FileExtension> _fileExtensionDict;
-        public IEnumerable<string> FileExtensionKeys => _fileExtensionDict.Keys;
-        public IEnumerable<FileExtension> FileExtensionValues => _fileExtensionDict.Values;
-        public IEnumerable<KeyValuePair<string, FileExtension>> FileExtensionDict => _fileExtensionDict;
+        private List<FileExtension> _fileExtensionList;
+        public IEnumerable<int> FileExtensionKeys => Enumerable.Range(0, _fileExtensionList.Count);
+        public IEnumerable<FileExtension> FileExtensionValues => _fileExtensionList;
 
         public FileExtensionStore()
         {
-            _fileExtensionDict = new Dictionary<string, FileExtension>();
+            _fileExtensionList = new List<FileExtension>();
             //_fileExtensionDict["jpeg"] = new FileExtension("jpeg", 14, true);
             //_fileExtensionDict["png"] = new FileExtension("png", 25, true);
             //_fileExtensionDict["db"] = new FileExtension("db", 4, false);
@@ -28,38 +28,49 @@ namespace PictureMoverGui.Store
             // TODO: Read extension on startup, based on presat source dir
         }
 
-        public void SetActive(string key, bool state)
+        public void SetActive(int key, bool state)
         {
-            FileExtension old = _fileExtensionDict[key];
-            _fileExtensionDict[key] = new FileExtension(old.Name, old.Count, state);
-            FileExtensionChanged?.Invoke(_fileExtensionDict[key]);
+            FileExtension old = _fileExtensionList[key];
+            _fileExtensionList[key] = new FileExtension(old.Name, old.Count, state);
+            FileExtensionChanged?.Invoke(_fileExtensionList[key]);
         }
 
-        public FileExtension GetFileExtension(string key)
+        public FileExtension GetFileExtension(int key)
         {
-            return _fileExtensionDict[key];
+            return _fileExtensionList[key];
         }
 
-        public void Set(Dictionary<string, FileExtension> newFileExtensionDict)
+        public void Set(List<FileExtension> newFileExtensionDict)
         {
-            _fileExtensionDict = newFileExtensionDict;
-            FileExtensionDictReset?.Invoke(_fileExtensionDict);
+            _fileExtensionList = newFileExtensionDict;
+            FileExtensionDictReset?.Invoke(_fileExtensionList);
         }
 
         public void Set(Dictionary<string, int> extensionCount)
         {
-            _fileExtensionDict.Clear();
+            _fileExtensionList.Clear();
             foreach (var extCount in extensionCount)
             {
-                _fileExtensionDict[extCount.Key] = new FileExtension(extCount.Key, extCount.Value, ExtensionLookup.imageAndVideoExtensions.Contains(extCount.Key));
+                _fileExtensionList.Add(new FileExtension(extCount.Key, extCount.Value, ExtensionLookup.imageAndVideoExtensions.Contains(extCount.Key)));
             }
-            FileExtensionDictReset?.Invoke(_fileExtensionDict);
+            _fileExtensionList.Sort((a, b) =>
+            {
+                if (a.Active == b.Active)
+                {
+                    return a.Name.CompareTo(b.Name); // Sort alfabetically if both have the same active state
+                }
+                else // One will have active true, and the other will have active false
+                {
+                    return a.Active ? -1 : 1; // Sort all active true before active false
+                }
+            });
+            FileExtensionDictReset?.Invoke(_fileExtensionList);
         }
 
         public List<string> GetListOfValidExtension()
         {
             List<string> list = new List<string>();
-            foreach (var ext in _fileExtensionDict.Values)
+            foreach (var ext in _fileExtensionList)
             {
                 if (ext.Active)
                 {

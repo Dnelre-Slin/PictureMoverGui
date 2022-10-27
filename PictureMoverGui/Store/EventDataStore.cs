@@ -1,48 +1,51 @@
 ﻿using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PictureMoverGui.Store
 {
     public class EventDataStore
     {
-        public event Action<EventDataModel> EventDataChanged;
+        public event Action<EventDataStore> EventDataChanged;
 
-        private Dictionary<string, EventDataModel> _eventDataDict;
-        public IEnumerable<string> EventDataKeys => _eventDataDict.Keys;
-        public IEnumerable<EventDataModel> EventDataValues => _eventDataDict.Values;
-        public IEnumerable<KeyValuePair<string, EventDataModel>> EventDataDict => _eventDataDict;
+        private List<EventDataModel> _eventDataList;
+        public IEnumerable<int> EventDataKeys => Enumerable.Range(0, _eventDataList.Count);
+        public IEnumerable<EventDataModel> EventDataValues => _eventDataList;
 
         public EventDataStore()
         {
-            _eventDataDict = new Dictionary<string, EventDataModel>();
+            _eventDataList = new List<EventDataModel>();
             // Todo : Read from datastore
         }
 
-        public void CreateEventData(string key, EventDataModel eventData)
+        public void CreateEventData(EventDataModel eventData)
         {
-            _eventDataDict.Add(key, eventData);
+            _eventDataList.Add(eventData);
+            EventDataChanged?.Invoke(this);
         }
 
-        public EventDataModel ReadEventData(string key)
+        public EventDataModel ReadEventData(int key)
         {
-            return _eventDataDict[key];
+            return _eventDataList[key];
         }
 
-        public void UpdateEventData(string key, EventDataModel eventData)
+        public void UpdateEventData(int key, EventDataModel eventData)
         {
-            if (_eventDataDict.ContainsKey(key))
+            if (key >= 0 && key < _eventDataList.Count)
             {
-                _eventDataDict[key] = eventData;
+                _eventDataList[key] = eventData;
+                EventDataChanged?.Invoke(this);
             }
         }
 
-        public void DeleteEventData(string key)
+        public void DeleteEventData(int key)
         {
-            if (_eventDataDict.ContainsKey(key))
+            if (key >= 0 && key < _eventDataList.Count)
             {
-                _eventDataDict.Remove(key);
+                _eventDataList.RemoveAt(key);
+                EventDataChanged?.Invoke(this);
             }
         }
     }

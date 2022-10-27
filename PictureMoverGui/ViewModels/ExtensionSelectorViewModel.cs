@@ -100,7 +100,7 @@ namespace PictureMoverGui.ViewModels
             OnPropertyChanged(nameof(ActiveFiles));
         }
         
-        protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<KeyValuePair<string, FileExtension>> fileExtensionDict)
+        protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<FileExtension> fileExtensionDict)
         {
             Debug.WriteLine("FileExtensionStore_FileExtensionReset");
             ResetFileExtensionsFromStore();
@@ -114,9 +114,9 @@ namespace PictureMoverGui.ViewModels
         protected void ResetFileExtensionsFromStore()
         {
             ClearFileExtensionList();
-            foreach (var fileExtensionDict in _masterStore.FileExtensionStore.FileExtensionDict)
+            foreach (var fileExtensionKey in _masterStore.FileExtensionStore.FileExtensionKeys)
             {
-                _fileExtensionList.Add(new ExtensionSelectorElementViewModel(_masterStore, fileExtensionDict.Key));
+                _fileExtensionList.Add(new ExtensionSelectorElementViewModel(_masterStore, fileExtensionKey));
             }
             OnPropertyChanged(nameof(FileExtensionList));
             OnPropertyChanged(nameof(NumberOfFiles));

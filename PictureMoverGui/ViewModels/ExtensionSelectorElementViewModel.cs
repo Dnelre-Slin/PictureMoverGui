@@ -11,7 +11,7 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
 
-        private string _key;
+        private int _key;
         private FileExtension FileExtension => _masterStore.FileExtensionStore.GetFileExtension(_key);
 
         public string Name => FileExtension.Name;
@@ -29,7 +29,7 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
-        public ExtensionSelectorElementViewModel(MasterStore masterStore, string key)
+        public ExtensionSelectorElementViewModel(MasterStore masterStore, int key)
         {
             _masterStore = masterStore;
             _key = key;
