@@ -33,7 +33,7 @@
                         </WrapPanel>
                     </Viewbox>
                 </GroupBox>
-                <GroupBox Padding="10" Margin="10" IsEnabled="{Binding CompareFilesOptionsEditable}">
+                <GroupBox Padding="10" Margin="10" IsEnabled="{Binding AllowEditCompareFiles}">
                     <GroupBox.Header>
                         <TextBlock Text="{DynamicResource FileCompareGroupbox}" FontSize="15"></TextBlock>
                     </GroupBox.Header>
@@ -45,7 +45,7 @@
                         </WrapPanel>
                     </Viewbox>
                 </GroupBox>
-                <GroupBox Padding="10" Margin="10" IsEnabled="{Binding HashTypeOptionsEditable}">
+                <GroupBox Padding="10" Margin="10" IsEnabled="{Binding AllowEditHashType}">
                     <GroupBox.Header>
                         <TextBlock Text="{DynamicResource HashTypeGroupbox}" FontSize="15"></TextBlock>
                     </GroupBox.Header>
