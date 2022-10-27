@@ -1,6 +1,7 @@
 ﻿using PictureMoverGui.Commands;
 using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
+using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using System;
@@ -84,13 +85,21 @@ namespace PictureMoverGui.ViewModels
         {
             if (CanOpenDialog)
             {
-                _extensionCounterWorker.StartWorker(Helpers.MediaTypeEnum.NormalDirectory, SourcePath, DateTime.MinValue, _masterStore.RunningStore.SetRunState, OnExtensionCounterWorkerDone);
+                _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
+                    _masterStore.RunningStore.RunState,
+                    MediaTypeEnum.NormalDirectory, 
+                    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath, 
+                    DateTime.MinValue, 
+                    _masterStore.RunningStore.SetRunState, 
+                    OnExtensionCounterWorkerDone
+                ));
             }
         }
 
-        protected void OnExtensionCounterWorkerDone(Dictionary<string, int> extensionInfo)
+        protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)
         {
             System.Diagnostics.Debug.WriteLine("Worker done!");
+            System.Diagnostics.Debug.WriteLine(workStatus);
             _masterStore.FileExtensionStore.Set(extensionInfo);
         }
 

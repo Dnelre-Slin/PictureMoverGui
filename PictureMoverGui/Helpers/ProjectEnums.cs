@@ -37,4 +37,12 @@ namespace PictureMoverGui.Helpers
         NormalDirectory,
         MediaDevice
     }
+
+    public enum WorkStatus
+    {
+        Unfinished,
+        Success,
+        Invalid,
+        Cancelled
+    }
 }

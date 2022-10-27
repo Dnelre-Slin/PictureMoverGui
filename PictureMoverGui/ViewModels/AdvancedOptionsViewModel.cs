@@ -17,6 +17,8 @@ namespace PictureMoverGui.ViewModels
         public HashTypeEnum HashTypeOption { get; set; }
         public MediaTypeEnum SorterMediaTypeOption { get; set; }
 
+        public bool AllowEdit => _masterStore.RunningStore.RunState == RunStates.Idle;
+
         public ICommand ResetSettings { get; }
         public ICommand TestButton { get; }
 
@@ -24,8 +26,22 @@ namespace PictureMoverGui.ViewModels
         {
             _masterStore = masterStore;
 
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
+
             ResetSettings = new CallbackCommand(OnResetSettings);
             TestButton = new CallbackCommand(OnTestButton);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
+        }
+
+        protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
+        {
+            OnPropertyChanged(nameof(AllowEdit));
         }
 
         protected void OnResetSettings(object parameter)

@@ -15,96 +15,83 @@ namespace PictureMoverGui.DirectoryUtils
 {
     public class PictureMover
     {
-        //private readonly PictureMoverModel moverModel;
-        private BackgroundWorker worker_sender;
-        private List<GenericFileInfo> fileInfoList;
+        private BackgroundWorker _workerSender;
+        private List<GenericFileInfo> _fileInfoList;
 
-        private string destinationPath;
-        //private List<string> validExtensions;
-        private int total_files;
-        //private bool doStructured;
-        //private bool doRename;
-        private NameCollisionActionEnum nameCollisionAction;
-        private CompareFilesActionEnum compareFilesAction;
-        private HashTypeEnum hashType;
-        private List<SimpleEventData> eventDataList;
+        private string _destinationPath;
+        private NameCollisionActionEnum _nameCollisionAction;
+        private CompareFilesActionEnum _compareFilesAction;
+        private HashTypeEnum _hashType;
+        private List<SimpleEventData> _eventDataList;
 
-        private int nrOfErrors;
-        private int current_progress;
+        private int _totalFiles;
 
-        private Action<GenericFileInfo, string, string> copyOrMoveTransferAction;
-        private Func<GenericFileInfo, DirectoryInfo> structuredOrDirectTransferAction;
-        private Func<GenericFileInfo, string> datePrependOrOriginalFilenameAction;
+        private int _nrOfErrors;
+        private int _currentProgress;
 
-        //private List<string> infoStatusMessages;
+        private Action<GenericFileInfo, string, string> _copyOrMoveTransferAction;
+        private Func<GenericFileInfo, DirectoryInfo> _structuredOrDirectTransferAction;
+        private Func<GenericFileInfo, string> _datePrependOrOriginalFilenameAction;
+
         private Action<string> _addRunStatusLog;
 
-        private bool cancel;
+        private bool _cancel;
 
-        public PictureMover(PictureMoverArguments pictureMoverArguments, List<GenericFileInfo> fileInfoList, BackgroundWorker worker_sender)
+        public PictureMover(PictureMoverArguments pictureMoverArguments, List<GenericFileInfo> fileInfoList, BackgroundWorker workerSender)
         {
-            //this.moverModel = moverModel;
-            this.worker_sender = worker_sender;
-            this.fileInfoList = fileInfoList;
+            _workerSender = workerSender;
+            _fileInfoList = fileInfoList;
 
-            this.destinationPath = pictureMoverArguments.DestinationPath;
-            //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
-            //this.validExtensions = moverModel.validExtensionsInCurrentDir;
-            //this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
-            //this.doStructured = moverModel.chkboxDoStructuredChecked;
-            //this.doRename = moverModel.chkboxDoRenameChecked;
-            this.nameCollisionAction = pictureMoverArguments.NameCollisionAction;
-            this.compareFilesAction = pictureMoverArguments.CompareFilesAction;
-            this.hashType = pictureMoverArguments.HashTypeAction;
-            //this.eventDataList = Simplifiers.EventListToSimpleListValidOnly(moverModel.eventDataList);
-            this.eventDataList = pictureMoverArguments.EventDataList;
-            //this.infoStatusMessages = new List<string>();
+            _destinationPath = pictureMoverArguments.DestinationPath;
+            _nameCollisionAction = pictureMoverArguments.NameCollisionAction;
+            _compareFilesAction = pictureMoverArguments.CompareFilesAction;
+            _hashType = pictureMoverArguments.HashTypeAction;
+            _eventDataList = pictureMoverArguments.EventDataList;
             _addRunStatusLog = pictureMoverArguments.AddRunStatusLog;
 
-            this.cancel = false;
+            _cancel = false;
 
-            this.nrOfErrors = 0;
-            this.current_progress = 0;
+            _nrOfErrors = 0;
+            _currentProgress = 0;
 
-            this.total_files = fileInfoList.Count;
-            this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
+            _totalFiles = fileInfoList.Count;
 
             if (pictureMoverArguments.DoCopy)
             {
-                this.copyOrMoveTransferAction = this.DoCopyFile;
+                _copyOrMoveTransferAction = this.DoCopyFile;
             }
             else
             {
-                this.copyOrMoveTransferAction = this.DoMoveFile;
+                _copyOrMoveTransferAction = this.DoMoveFile;
             }
             if (pictureMoverArguments.DoMakeStructured)
             {
-                this.structuredOrDirectTransferAction = GetDestinationDirectoryStructured;
+                _structuredOrDirectTransferAction = GetDestinationDirectoryStructured;
             }
             else
             {
-                this.structuredOrDirectTransferAction = GetDestinationDirectoryDirect;
+                _structuredOrDirectTransferAction = GetDestinationDirectoryDirect;
             }
             if (pictureMoverArguments.DoRename)
             {
-                this.datePrependOrOriginalFilenameAction = RenameFileDatePrepend;
+                _datePrependOrOriginalFilenameAction = RenameFileDatePrepend;
             }
             else
             {
-                this.datePrependOrOriginalFilenameAction = RenameFileOriginal;
+                _datePrependOrOriginalFilenameAction = RenameFileOriginal;
             }
         }
 
         public int Mover()
         {
-            Directory.CreateDirectory(this.destinationPath);
+            Directory.CreateDirectory(_destinationPath);
 
-            this.current_progress = 0;
+            _currentProgress = 0;
 
-            foreach (GenericFileInfo fileInfo in fileInfoList)
+            foreach (GenericFileInfo fileInfo in _fileInfoList)
             {
                 DoStructuredOrDirectTransferFile(fileInfo);
-                if (this.cancel)
+                if (_cancel)
                 {
                     _addRunStatusLog?.Invoke($"Cancelled during sorting");
                     break;
@@ -116,49 +103,50 @@ namespace PictureMoverGui.DirectoryUtils
 
         public int GetNrOfErrors()
         {
-            return this.nrOfErrors;
+            return _nrOfErrors;
         }
 
         private void DoStructuredOrDirectTransferFile(GenericFileInfo file)
         {
-            //DirectoryInfo destinationDir = this.structuredOrDirectTransferAction(file);
             DirectoryInfo destinationDir = GetDestinationDirectory(file);
-            string destinationFilename = this.datePrependOrOriginalFilenameAction(file);
-            FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(this.nameCollisionAction, this.compareFilesAction, this.hashType, destinationDir, file, destinationFilename);
-            //if (this.CheckAllowedFilename(destinationDir, destinationFilename, out destinationFilename)) // Only transfer file, if CheckAllowedFilename has allowed it
+            string destinationFilename = _datePrependOrOriginalFilenameAction(file);
+            FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(
+                _nameCollisionAction, 
+                _compareFilesAction, 
+                _hashType, 
+                destinationDir, 
+                file, 
+                destinationFilename);
+            
             if (filenameCollisionRenamer.IsValid()) // Only transfer file, if FilenameCollisionRenamer has allowed it
             {
                 string validFilename = filenameCollisionRenamer.GetValidFilename();
                 if (filenameCollisionRenamer.WasFileRenamed())
                 {
                     _addRunStatusLog?.Invoke($"Renamed {file.Name} to {validFilename}");
-                    //this.infoStatusMessages.Add($"Renamed {file.Name} to {validFilename}");
-                    //Trace.TraceInformation($"Renamed {file.Name} to {validFilename}");
                 }
                 DoTransferFile(file, destinationDir.FullName, validFilename);
             }
             else
             {
                 _addRunStatusLog?.Invoke($"File: \"{file.Name}\" was not transferred");
-                //this.infoStatusMessages.Add($"File: \"{file.Name}\" was not transferred");
-                //Trace.TraceInformation($"File: \"{file.Name}\" was not transferred");
             }
             UpdateWorker();
         }
 
         private void UpdateWorker()
         {
-            if (worker_sender.CancellationPending)
+            if (_workerSender.CancellationPending)
             {
                 //this.dirSearcher.cancel = true;
-                this.cancel = true;
+                _cancel = true;
                 return;
             }
 
-            this.current_progress++;
-            int progress_percent = (this.current_progress * 100) / this.total_files;
+            _currentProgress++;
+            int progressPercent = (_currentProgress * 100) / _totalFiles;
 
-            this.worker_sender.ReportProgress(progress_percent);
+            _workerSender.ReportProgress(progressPercent);
         }
 
         private string RenameFileOriginal(GenericFileInfo file)
@@ -168,13 +156,13 @@ namespace PictureMoverGui.DirectoryUtils
 
         private string RenameFileDatePrepend(GenericFileInfo file)
         {
-            string new_filename = file.Name;
-            string date_str = file.LastWriteTime.ToString("yyyyMMdd_HHmmss");
-            if (!file.Name.StartsWith(date_str)) // Do not rename, if it is already a date prepended filename
+            string newFilename = file.Name;
+            string dateStr = file.LastWriteTime.ToString("yyyyMMdd_HHmmss");
+            if (!file.Name.StartsWith(dateStr)) // Do not rename, if it is already a date prepended filename
             {
-                new_filename = date_str + "_" + new_filename;
+                newFilename = dateStr + "_" + newFilename;
             }
-            return new_filename;
+            return newFilename;
         }
 
         private DirectoryInfo GetDestinationDirectory(GenericFileInfo file)
@@ -182,12 +170,12 @@ namespace PictureMoverGui.DirectoryUtils
             string eventName = "";
             if (FileInEvent(file, out eventName))
             {
-                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{this.destinationPath}\\{eventName}");
+                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{_destinationPath}\\{eventName}");
                 return eventDirectory;
             }
             else
             {
-                return this.structuredOrDirectTransferAction(file);
+                return _structuredOrDirectTransferAction(file);
             }
         }
 
@@ -195,7 +183,7 @@ namespace PictureMoverGui.DirectoryUtils
         {
             eventName = "";
             long fileTick = file.LastWriteTime.Ticks;
-            foreach (var evnt in this.eventDataList)
+            foreach (var evnt in _eventDataList)
             {
                 if (fileTick >= evnt.StartTick && fileTick <= evnt.EndTick)
                 {
@@ -212,51 +200,45 @@ namespace PictureMoverGui.DirectoryUtils
 
             string monthName = char.ToUpper(dt.ToString("MMMM")[0]) + dt.ToString("MMMM").Substring(1);
             string monthNameAndDate = $"{dt.ToString("MM")} {monthName}";
-            string thisDirectory = $"{this.destinationPath}\\{dt.Year}\\{monthNameAndDate}";
+            string thisDirectory = $"{_destinationPath}\\{dt.Year}\\{monthNameAndDate}";
 
             DirectoryInfo destinationDir = Directory.CreateDirectory(thisDirectory);
             return destinationDir;
-
-            //string new_filename = this.GetNewFilename(file, destinationDir);
-            //this.DoCopyMoveFile(file, thisDirectory, new_filename);
         }
 
         private DirectoryInfo GetDestinationDirectoryDirect(GenericFileInfo _)
         {
-            //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
-            DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationPath);
+            DirectoryInfo destinationDir = Directory.CreateDirectory(_destinationPath);
             return destinationDir;
-            //string new_filename = this.GetNewFilename(file, destinationDir);
-            //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
         }
 
-        private void DoTransferFile(GenericFileInfo file, string path_to_dir, string new_filename)
+        private void DoTransferFile(GenericFileInfo file, string pathToDir, string newFilename)
         {
             try
             {
-                this.copyOrMoveTransferAction(file, path_to_dir, new_filename);
+                _copyOrMoveTransferAction(file, pathToDir, newFilename);
             }
             catch (System.IO.IOException e)
             {
                 //Skip copy / move
-                this.nrOfErrors++;
+                _nrOfErrors++;
                 Trace.TraceError($"Copy/Move error: \"{e.Message}\". File name: \"{file.Name}\"");
             }
             catch (Exception e)
             {
-                this.nrOfErrors++;
+                _nrOfErrors++;
                 Trace.TraceError(e.Message);
                 throw;
             }
         }
 
-        private void DoCopyFile(GenericFileInfo file, string path_to_dir, string new_filename)
+        private void DoCopyFile(GenericFileInfo file, string pathToDir, string newFilename)
         {
-            file.CopyTo($"{path_to_dir}\\{new_filename}", false);
+            file.CopyTo($"{pathToDir}\\{newFilename}", false);
         }
-        private void DoMoveFile(GenericFileInfo file, string path_to_dir, string new_filename)
+        private void DoMoveFile(GenericFileInfo file, string pathToDir, string newFilename)
         {
-            file.MoveTo($"{path_to_dir}\\{new_filename}", false);
+            file.MoveTo($"{pathToDir}\\{newFilename}", false);
         }
 
     }

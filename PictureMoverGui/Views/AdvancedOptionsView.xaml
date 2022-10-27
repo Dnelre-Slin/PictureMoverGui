@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <local:RadioButtonCheckedConverter x:Key="enumConverter"></local:RadioButtonCheckedConverter>
     </UserControl.Resources>
-    <Grid>
+    <Grid IsEnabled="{Binding AllowEdit}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

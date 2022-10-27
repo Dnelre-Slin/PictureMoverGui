@@ -13,14 +13,6 @@ namespace PictureMoverGui.DirectoryWorkers
 {
     public class PictureMoverWorker
     {
-        private enum WorkStatus
-        {
-            Unfinished,
-            Success,
-            Invalid,
-            Cancelled
-        }
-
         private BackgroundWorker _worker;
         private PictureMoverArguments _pictureMoverArguments;
         private WorkStatus _workStatus;
@@ -32,7 +24,7 @@ namespace PictureMoverGui.DirectoryWorkers
 
         public void StartWorker(PictureMoverArguments pictureMoverArguments)
         {
-            if (_worker == null) // Make sure it is not already running
+            if (_worker == null && pictureMoverArguments.RunState == RunStates.Idle) // Make sure it is not already running
             {
                 _pictureMoverArguments = pictureMoverArguments;
 
@@ -110,18 +102,19 @@ namespace PictureMoverGui.DirectoryWorkers
         {
             int nrOfErrors = (int)e.Result;
 
-            if (_workStatus == WorkStatus.Invalid)
-            {
-                MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
-                //this.moverModel.labelSourceDirContent = "";
-            }
+            //if (_workStatus == WorkStatus.Invalid)
+            //{
+            //    MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
+            //    //this.moverModel.labelSourceDirContent = "";
+            //}
 
             //this.moverModel.infoStatusMessagesLastRun = infoStatusMessages;
             //this.moverModel.statusPercentage = 0;
 
             _worker = null;
+            _pictureMoverArguments.UpdateRunPercentage(0);
             _pictureMoverArguments.UpdateRunState(RunStates.Idle);
-            _pictureMoverArguments.WorkDone(nrOfErrors);
+            _pictureMoverArguments.WorkDone(_workStatus, nrOfErrors);
         }
     }
 }

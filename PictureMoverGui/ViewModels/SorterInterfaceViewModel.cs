@@ -108,6 +108,7 @@ namespace PictureMoverGui.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine("OnStartSorting");
                 _pictureMoverWorker.StartWorker(new PictureMoverArguments(
+                    _masterStore.RunningStore.RunState,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
@@ -124,15 +125,15 @@ namespace PictureMoverGui.ViewModels
                     _masterStore.RunningStore.SetStatusPercentage,
                     null,
                     OnPictureMoverWorkerDone
-                    ));
+                ));
                 //_masterStore.RunningStore.SetRunState(RunStates.RunningSorter);
-
             }
         }
 
-        protected void OnPictureMoverWorkerDone(int nrOfErrors)
+        protected void OnPictureMoverWorkerDone(WorkStatus workStatus, int nrOfErrors)
         {
             System.Diagnostics.Debug.WriteLine("Worker done!");
+            System.Diagnostics.Debug.WriteLine(workStatus);
             System.Diagnostics.Debug.WriteLine($"Number of errors: {nrOfErrors}");
         }
 
