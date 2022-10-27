@@ -1,6 +1,7 @@
 ﻿using MediaDevices;
 using PictureMoverGui.DirectoryUtils;
 using PictureMoverGui.Helpers;
+using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace PictureMoverGui.DirectoryUtils
         private BackgroundWorker worker_sender;
         private List<GenericFileInfo> fileInfoList;
 
-        private string destinationDir;
+        private string destinationPath;
         //private List<string> validExtensions;
         private int total_files;
         //private bool doStructured;
@@ -35,27 +36,30 @@ namespace PictureMoverGui.DirectoryUtils
         private Func<GenericFileInfo, DirectoryInfo> structuredOrDirectTransferAction;
         private Func<GenericFileInfo, string> datePrependOrOriginalFilenameAction;
 
-        private List<string> infoStatusMessages;
+        //private List<string> infoStatusMessages;
+        private Action<string> _addRunStatusLog;
 
         private bool cancel;
 
-        public PictureMover(PictureMoverModel moverModel, List<GenericFileInfo> fileInfoList, BackgroundWorker worker_sender)
+        public PictureMover(PictureMoverArguments pictureMoverArguments, List<GenericFileInfo> fileInfoList, BackgroundWorker worker_sender)
         {
             //this.moverModel = moverModel;
             this.worker_sender = worker_sender;
             this.fileInfoList = fileInfoList;
 
-            this.destinationDir = moverModel.labelDestinationDirContent;
+            this.destinationPath = pictureMoverArguments.DestinationPath;
             //this.validExtensions = new List<string>(moverModel.validExtensionsInCurrentDir); // Get copy of list
             //this.validExtensions = moverModel.validExtensionsInCurrentDir;
             //this.total_files = moverModel.nrOfFilesInCurrentDir > 0 ? moverModel.nrOfFilesInCurrentDir : 1; // To avoid division by zero issues
             //this.doStructured = moverModel.chkboxDoStructuredChecked;
             //this.doRename = moverModel.chkboxDoRenameChecked;
-            this.nameCollisionAction = moverModel.nameCollisionAction;
-            this.compareFilesAction = moverModel.compareFilesAction;
-            this.hashType = moverModel.hashTypeAction;
-            this.eventDataList = Simplifiers.EventListToSimpleListValidOnly(moverModel.eventDataList);
-            this.infoStatusMessages = new List<string>();
+            this.nameCollisionAction = pictureMoverArguments.NameCollisionAction;
+            this.compareFilesAction = pictureMoverArguments.CompareFilesAction;
+            this.hashType = pictureMoverArguments.HashTypeAction;
+            //this.eventDataList = Simplifiers.EventListToSimpleListValidOnly(moverModel.eventDataList);
+            this.eventDataList = pictureMoverArguments.EventDataList;
+            //this.infoStatusMessages = new List<string>();
+            _addRunStatusLog = pictureMoverArguments.AddRunStatusLog;
 
             this.cancel = false;
 
@@ -65,7 +69,7 @@ namespace PictureMoverGui.DirectoryUtils
             this.total_files = fileInfoList.Count;
             this.total_files = total_files > 0 ? total_files : 1; // To avoid division by zero issues;
 
-            if (moverModel.chkboxDoCopyChecked)
+            if (pictureMoverArguments.DoCopy)
             {
                 this.copyOrMoveTransferAction = this.DoCopyFile;
             }
@@ -73,7 +77,7 @@ namespace PictureMoverGui.DirectoryUtils
             {
                 this.copyOrMoveTransferAction = this.DoMoveFile;
             }
-            if (moverModel.chkboxDoStructuredChecked)
+            if (pictureMoverArguments.DoMakeStructured)
             {
                 this.structuredOrDirectTransferAction = GetDestinationDirectoryStructured;
             }
@@ -81,7 +85,7 @@ namespace PictureMoverGui.DirectoryUtils
             {
                 this.structuredOrDirectTransferAction = GetDestinationDirectoryDirect;
             }
-            if (moverModel.chkboxDoRenameChecked)
+            if (pictureMoverArguments.DoRename)
             {
                 this.datePrependOrOriginalFilenameAction = RenameFileDatePrepend;
             }
@@ -91,9 +95,9 @@ namespace PictureMoverGui.DirectoryUtils
             }
         }
 
-        public List<string> Mover()
+        public int Mover()
         {
-            Directory.CreateDirectory(this.destinationDir);
+            Directory.CreateDirectory(this.destinationPath);
 
             this.current_progress = 0;
 
@@ -102,12 +106,12 @@ namespace PictureMoverGui.DirectoryUtils
                 DoStructuredOrDirectTransferFile(fileInfo);
                 if (this.cancel)
                 {
-                    this.infoStatusMessages.Add($"Cancelled during sorting");
+                    _addRunStatusLog?.Invoke($"Cancelled during sorting");
                     break;
                 }
             }
 
-            return this.infoStatusMessages;
+            return GetNrOfErrors();
         }
 
         public int GetNrOfErrors()
@@ -127,14 +131,16 @@ namespace PictureMoverGui.DirectoryUtils
                 string validFilename = filenameCollisionRenamer.GetValidFilename();
                 if (filenameCollisionRenamer.WasFileRenamed())
                 {
-                    this.infoStatusMessages.Add($"Renamed {file.Name} to {validFilename}");
+                    _addRunStatusLog?.Invoke($"Renamed {file.Name} to {validFilename}");
+                    //this.infoStatusMessages.Add($"Renamed {file.Name} to {validFilename}");
                     //Trace.TraceInformation($"Renamed {file.Name} to {validFilename}");
                 }
                 DoTransferFile(file, destinationDir.FullName, validFilename);
             }
             else
             {
-                this.infoStatusMessages.Add($"File: \"{file.Name}\" was not transferred");
+                _addRunStatusLog?.Invoke($"File: \"{file.Name}\" was not transferred");
+                //this.infoStatusMessages.Add($"File: \"{file.Name}\" was not transferred");
                 //Trace.TraceInformation($"File: \"{file.Name}\" was not transferred");
             }
             UpdateWorker();
@@ -176,7 +182,7 @@ namespace PictureMoverGui.DirectoryUtils
             string eventName = "";
             if (FileInEvent(file, out eventName))
             {
-                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{this.destinationDir}\\{eventName}");
+                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{this.destinationPath}\\{eventName}");
                 return eventDirectory;
             }
             else
@@ -206,7 +212,7 @@ namespace PictureMoverGui.DirectoryUtils
 
             string monthName = char.ToUpper(dt.ToString("MMMM")[0]) + dt.ToString("MMMM").Substring(1);
             string monthNameAndDate = $"{dt.ToString("MM")} {monthName}";
-            string thisDirectory = $"{this.destinationDir}\\{dt.Year}\\{monthNameAndDate}";
+            string thisDirectory = $"{this.destinationPath}\\{dt.Year}\\{monthNameAndDate}";
 
             DirectoryInfo destinationDir = Directory.CreateDirectory(thisDirectory);
             return destinationDir;
@@ -218,7 +224,7 @@ namespace PictureMoverGui.DirectoryUtils
         private DirectoryInfo GetDestinationDirectoryDirect(GenericFileInfo _)
         {
             //DirectoryInfo destinationDir = new DirectoryInfo(this.destinationDir);
-            DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationDir);
+            DirectoryInfo destinationDir = Directory.CreateDirectory(this.destinationPath);
             return destinationDir;
             //string new_filename = this.GetNewFilename(file, destinationDir);
             //this.DoCopyMoveFile(file, this.destinationDir, new_filename);
