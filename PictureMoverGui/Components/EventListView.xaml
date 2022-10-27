@@ -5,13 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PictureMoverGui"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="400" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-        </Grid.RowDefinitions>
-        <ScrollViewer FontSize="15" Grid.Row="0" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <ScrollViewer FontSize="15" Margin="30" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView 
                 Name="EventList"
                 ItemsSource="{Binding EventDataList}">
@@ -21,7 +17,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                        <TextBlock Text="{Binding EventName}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -30,7 +26,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Text="{Binding StartDateTime.DateTimePrettyString}"></TextBlock>
+                                        <TextBlock Text="{Binding EventStartTime}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -39,7 +35,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
-                                        <TextBlock Text="{Binding EndDateTime.DateTimePrettyString}"></TextBlock>
+                                        <TextBlock Text="{Binding EventEndTime}"></TextBlock>
                                     </WrapPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -68,8 +64,5 @@
                 </ListView.View>
             </ListView>
         </ScrollViewer>
-        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
-            <Button Margin="30 0" Padding="10" FontSize="15" MinWidth="80" Content="{DynamicResource EventListAddEvent}" Command="{Binding CreateEvent}"></Button>
-        </WrapPanel>
     </Grid>
 </UserControl>

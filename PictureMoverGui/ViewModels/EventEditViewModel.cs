@@ -29,6 +29,7 @@ namespace PictureMoverGui.ViewModels
         }
 
         private DateTime _startDateTime;
+        public DateTime StartDateTime => _startDateTime;
         public string EventStartDateTime => _startDateTime.ToString();
         public string EventStartDate
         {
@@ -113,6 +114,7 @@ namespace PictureMoverGui.ViewModels
         }
 
         private DateTime _endDateTime;
+        public DateTime EndDateTime => _endDateTime;
         public string EventEndDateTime => _endDateTime.ToString();
         public string EventEndDate
         {
@@ -203,46 +205,57 @@ namespace PictureMoverGui.ViewModels
 
         public ICommand SelectStartDate { get; }
         public ICommand SelectEndDate { get; }
-        public ICommand EditDone { get; }
 
-        public EventEditViewModel(MasterStore masterStore, EventDataModel eventData)
+        public EventEditViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
 
             SelectStartDate = new CallbackCommand(OnSelectStartDate);
             SelectEndDate = new CallbackCommand(OnSelectEndDate);
-            EditDone = new CallbackCommand(OnEditDone);
 
             _eventName = "";
             _startDateTime = DateTime.Now;
             _endDateTime = DateTime.Now;
+        }
 
-            //EventName = eventData.Name;
-
-            //EventStartDateTime = eventData.StartTime.ToString();
-            //EventStartDate = eventData.StartTime.Date.ToString();
-            //EventStartHour = eventData.StartTime.Hour.ToString();
-            //EventStartMinute = eventData.StartTime.Minute.ToString();
-            //EventStartSecond = eventData.StartTime.Second.ToString();
-
-            //EventEndDateTime = eventData.EndTime.ToString();
-            //EventEndDate = eventData.EndTime.Date.ToString();
-            //EventEndHour = eventData.EndTime.Hour.ToString();
-            //EventEndMinute = eventData.EndTime.Minute.ToString();
-            //EventEndSecond = eventData.EndTime.Second.ToString();
+        public void SetEventData(string name, DateTime startTime, DateTime endTime)
+        {
+            _eventName = name;
+            _startDateTime = startTime;
+            _endDateTime = endTime;
+            OnPropertyChanged(nameof(EventName));
+            OnPropertyChanged(nameof(EventStartDate));
+            OnPropertyChanged(nameof(EventStartDateTime));
+            OnPropertyChanged(nameof(EventStartHour));
+            OnPropertyChanged(nameof(EventStartMinute));
+            OnPropertyChanged(nameof(EventStartSecond));
+            OnPropertyChanged(nameof(EventEndDate));
+            OnPropertyChanged(nameof(EventEndDateTime));
+            OnPropertyChanged(nameof(EventEndHour));
+            OnPropertyChanged(nameof(EventEndMinute));
+            OnPropertyChanged(nameof(EventEndSecond));
+            OnPropertyChanged(nameof(ErrorVisibility));
         }
 
         protected void OnSelectStartDate(object parameter)
         {
-            //
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            var result = openFileDialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(openFileDialog.FileName);
+                SetEventData(EventName, fileInfo.LastWriteTime, EndDateTime);
+            }
         }
         protected void OnSelectEndDate(object parameter)
         {
-            //
-        }
-        protected void OnEditDone(object parameter)
-        {
-            //
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            var result = openFileDialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(openFileDialog.FileName);
+                SetEventData(EventName, StartDateTime, fileInfo.LastWriteTime);
+            }
         }
     }
 }
