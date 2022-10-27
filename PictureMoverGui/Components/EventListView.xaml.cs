@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PictureMoverGui
+namespace PictureMoverGui.Components
 {
     /// <summary>
     /// Interaction logic for EventListView.xaml

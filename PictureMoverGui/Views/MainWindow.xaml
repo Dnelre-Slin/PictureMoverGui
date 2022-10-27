@@ -17,6 +17,9 @@
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="{DynamicResource TabNormalView}">
             <localviews:SorterView DataContext="{Binding Sorter}"></localviews:SorterView>
+        </TabItem>        
+        <TabItem Header="{DynamicResource TabEventView}">
+            <localviews:EventsView DataContext="{Binding Events}"></localviews:EventsView>
         </TabItem>
         <TabItem Header="{DynamicResource TabExtensionView}">
             <localviews:ExtensionSelectorView DataContext="{Binding ExtensionSelector}"></localviews:ExtensionSelectorView>

@@ -14,40 +14,40 @@
         <StackPanel Grid.Row="0" Margin="10">
             <GroupBox Margin="10" Header="{DynamicResource EventEditName}" FontSize="15">
                 <WrapPanel Margin="10">
-                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.Name}"></TextBlock>
-                    <TextBox MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding EventName}"></TextBlock>
+                    <TextBox MinWidth="100" Margin="10 0" Text="{Binding EventName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </WrapPanel>
             </GroupBox>
             <GroupBox Margin="10" Header="{DynamicResource EventEditStart}" FontSize="15">
                 <WrapPanel Margin="10">
-                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.StartDateTime.DateTimePrettyString}"></TextBlock>
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding EventStartDateTime}"></TextBlock>
                     <DockPanel Margin="0 0 10 0">
-                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding eventDataEdit.StartDateTime.Date, Mode=TwoWay}"></DatePicker>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.StartDateTime.Hour}"></ComboBox>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Minute}"></ComboBox>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.StartDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.StartDateTime.Second}"></ComboBox>
+                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding EventStartDate, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding ValidHours}" SelectedItem="{Binding EventStartHour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding ValidMinutesAndSeconds}" SelectedItem="{Binding EventStartMinute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding ValidMinutesAndSeconds}" SelectedItem="{Binding EventStartSecond}"></ComboBox>
                     </DockPanel>
-                    <Button Margin="10 0" Padding="2" Content="{DynamicResource EventEditSelectDateButtonText}" Click="btnOpenStartDateFile_Click"></Button>
+                    <Button Margin="10 0" Padding="2" Content="{DynamicResource EventEditSelectDateButtonText}" Command="{Binding SelectStartDate}"></Button>
                 </WrapPanel>
             </GroupBox>
             <GroupBox Margin="10" Header="{DynamicResource EventEditEnd}" FontSize="15">
                 <WrapPanel Margin="10">
-                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding eventDataEdit.EndDateTime.DateTimePrettyString}"></TextBlock>
+                    <TextBlock MinWidth="100" Margin="10 0" Text="{Binding EventEndDateTime}"></TextBlock>
                     <DockPanel Margin="0 0 10 0">
-                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding eventDataEdit.EndDateTime.Date, Mode=TwoWay}"></DatePicker>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidHours}" SelectedItem="{Binding eventDataEdit.EndDateTime.Hour}"></ComboBox>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Minute}"></ComboBox>
-                        <ComboBox ItemsSource="{Binding eventDataEdit.EndDateTime.ListOfValidMinutesAndSeconds}" SelectedItem="{Binding eventDataEdit.EndDateTime.Second}"></ComboBox>
+                        <DatePicker Margin="10 0" SelectedDateFormat="Short" Text="{Binding EventEndDate, Mode=TwoWay}"></DatePicker>
+                        <ComboBox ItemsSource="{Binding ValidHours}" SelectedItem="{Binding EventEndHour}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding ValidMinutesAndSeconds}" SelectedItem="{Binding EventEndMinute}"></ComboBox>
+                        <ComboBox ItemsSource="{Binding ValidMinutesAndSeconds}" SelectedItem="{Binding EventEndSecond}"></ComboBox>
                     </DockPanel>
-                    <Button Margin="10 0" Padding="2" Content="{DynamicResource EventEditSelectDateButtonText}" Click="btnOpenEndDateFile_Click"></Button>
+                    <Button Margin="10 0" Padding="2" Content="{DynamicResource EventEditSelectDateButtonText}" Command="{Binding SelectEndDate}"></Button>
                 </WrapPanel>
             </GroupBox>
             <WrapPanel Margin="10">
-                <TextBlock Foreground="Red" FontSize="15" Text="{DynamicResource EventEditShowErrorText}" Visibility="{Binding eventDataEdit.ShowErrorText}"></TextBlock>
+                <TextBlock Foreground="Red" FontSize="15" Text="{DynamicResource EventEditShowErrorText}" Visibility="{Binding ErrorVisibility}"></TextBlock>
             </WrapPanel>
         </StackPanel>
         <WrapPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Button MinWidth="50" Margin="10 0 10 0" Padding="5 2" FontSize="15" Content="{DynamicResource EventEditBackButtonText}" Click="btnBack_Click"></Button>
+            <Button MinWidth="50" Margin="10 0 10 0" Padding="5 2" FontSize="15" Content="{DynamicResource EventEditBackButtonText}" Command="{Binding EditDone}"></Button>
         </WrapPanel>
     </Grid>
 </UserControl>
