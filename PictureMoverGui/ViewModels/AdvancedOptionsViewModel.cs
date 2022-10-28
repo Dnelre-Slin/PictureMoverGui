@@ -5,6 +5,7 @@ using PictureMoverGui.Store;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels
@@ -96,10 +97,10 @@ namespace PictureMoverGui.ViewModels
 
         protected void SorterConfigurationStore_SorterConfigurationChanged(SorterConfigurationModel sorterConfigurationModel)
         {
-            OnPropertyChanged(nameof(NameCollisionActionEnum));
-            OnPropertyChanged(nameof(CompareFilesActionEnum));
-            OnPropertyChanged(nameof(HashTypeEnum));
-            OnPropertyChanged(nameof(MediaTypeEnum));
+            OnPropertyChanged(nameof(NameCollisionOption));
+            OnPropertyChanged(nameof(CompareFilesOption));
+            OnPropertyChanged(nameof(HashTypeOption));
+            OnPropertyChanged(nameof(SorterMediaTypeOption));
             OnPropertyChanged(nameof(AllowEditCompareFiles));
             OnPropertyChanged(nameof(AllowEditHashType));
         }
@@ -112,11 +113,24 @@ namespace PictureMoverGui.ViewModels
         protected void OnResetSettings(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnResetSettings");
+            MessageBoxResult result = MessageBox.Show($"{App.Current.FindResource("MessageBoxResetSettingsText")}", $"{App.Current.FindResource("MessageBoxResetSettingsTitle")}", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                _masterStore.SorterConfigurationStore.ResetToDefaultSettings();
+                //Properties.Settings.Default.Reset();
+                //this.moverModel.SettingsRefresh();
+                //Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
+                //Properties.Settings.Default.Save();
+            }
         }
 
         protected void OnTestButton(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnTestButton");
+            foreach (var ext in _masterStore.FileExtensionStore.FileExtensionValues)
+            {
+                System.Diagnostics.Debug.WriteLine(ext.Name + " : " + ext.Active);
+            }
         }
     }
 }

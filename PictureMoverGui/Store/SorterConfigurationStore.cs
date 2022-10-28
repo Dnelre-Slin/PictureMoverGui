@@ -47,6 +47,13 @@ namespace PictureMoverGui.Store
         //    // Todo: Load from settings
         //}
 
+        public void ResetToDefaultSettings()
+        {
+            Properties.Settings.Default.Reset();
+            LoadFromFile();
+            SorterConfigurationChanged?.Invoke(_sorterConfiguration);
+        }
+
         public void SetSourcePath(string sourcePath)
         {
             if (sourcePath != SorterConfiguration.SourcePath)
