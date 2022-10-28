@@ -117,7 +117,7 @@ namespace PictureMoverGui.ViewModels
                     _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
                     _masterStore.FileExtensionStore.GetListOfValidExtension(),
-                    new List<SimpleEventData>(),
+                    new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
                     _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
                     DateTime.MinValue,

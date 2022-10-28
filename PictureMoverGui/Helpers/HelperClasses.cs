@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PictureMoverGui.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public CompareFilesActionEnum CompareFilesAction { get; }
         public HashTypeEnum HashTypeAction { get; }
         public List<string> ValidExtensions { get; }
-        public List<SimpleEventData> EventDataList { get; }
+        public List<EventDataModel> EventDataList { get; }
         public MediaTypeEnum SorterMediaType { get; }
         public string PictureRetrieverSource { get; }
         public DateTime PictureRetrieverNewerThan { get; }
@@ -35,7 +36,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             CompareFilesActionEnum compareFilesAction, 
             HashTypeEnum hashTypeAction, 
             List<string> validExtensions, 
-            List<SimpleEventData> eventDataList, 
+            List<EventDataModel> eventDataList, 
             MediaTypeEnum sorterMediaType, 
             string pictureRetrieverSource, 
             DateTime pictureRetrieverNewerThan, 

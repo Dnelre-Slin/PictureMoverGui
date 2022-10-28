@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PictureMoverGui.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
@@ -47,5 +47,5 @@
                 <TextBlock Text="{Binding NumberOfFiles}" FontSize="20"></TextBlock>
             </WrapPanel>
         </Grid>
-    </Grid>
+    </Grid>-->
 </UserControl>

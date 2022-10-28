@@ -16,10 +16,5 @@ namespace PictureMoverGui.Models
             Count = count;
             Active = active;
         }
-
-        //public void SetActive(bool active)
-        //{
-        //    Active = active;
-        //}
     }
 }

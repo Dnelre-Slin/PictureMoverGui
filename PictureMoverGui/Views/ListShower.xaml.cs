@@ -16,11 +16,11 @@ namespace PictureMoverGui.Views
     /// <summary>
     /// Interaction logic for ListShower.xaml
     /// </summary>
-    public partial class ListShower : UserControl
-    {
-        public ListShower()
-        {
-            InitializeComponent();
-        }
-    }
+    //public partial class ListShower : UserControl
+    //{
+    //    public ListShower()
+    //    {
+    //        InitializeComponent();
+    //    }
+    //}
 }

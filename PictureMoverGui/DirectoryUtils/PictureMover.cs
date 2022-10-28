@@ -22,7 +22,7 @@ namespace PictureMoverGui.DirectoryUtils
         private NameCollisionActionEnum _nameCollisionAction;
         private CompareFilesActionEnum _compareFilesAction;
         private HashTypeEnum _hashType;
-        private List<SimpleEventData> _eventDataList;
+        private List<EventDataModel> _eventDataList;
 
         private int _totalFiles;
 
@@ -185,7 +185,7 @@ namespace PictureMoverGui.DirectoryUtils
             long fileTick = file.LastWriteTime.Ticks;
             foreach (var evnt in _eventDataList)
             {
-                if (fileTick >= evnt.StartTick && fileTick <= evnt.EndTick)
+                if (fileTick >= evnt.StartTime.Ticks && fileTick <= evnt.EndTime.Ticks)
                 {
                     eventName = evnt.Name;
                     return true;
