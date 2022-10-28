@@ -135,6 +135,23 @@ namespace PictureMoverGui.ViewModels
             System.Diagnostics.Debug.WriteLine("Worker done!");
             System.Diagnostics.Debug.WriteLine(workStatus);
             System.Diagnostics.Debug.WriteLine($"Number of errors: {nrOfErrors}");
+            switch (workStatus)
+            {
+                case WorkStatus.Unfinished:
+                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
+                    break;
+                case WorkStatus.Success:
+                    break;
+                case WorkStatus.Invalid:
+                    _masterStore.RunningStore.AddStatusLog("Source dir no longer exists");
+                    _masterStore.SorterConfigurationStore.SetSourcePath("");
+                    MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
+                    break;
+                case WorkStatus.Cancelled:
+                    break;
+                default:
+                    throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
+            }
         }
 
         protected void OnCancelSorting(object parameter)

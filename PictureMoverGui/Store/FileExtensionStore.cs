@@ -67,6 +67,12 @@ namespace PictureMoverGui.Store
             FileExtensionDictReset?.Invoke(_fileExtensionList);
         }
 
+        public void Clear()
+        {
+            _fileExtensionList.Clear();
+            FileExtensionDictReset?.Invoke(_fileExtensionList);
+        }
+
         public List<string> GetListOfValidExtension()
         {
             List<string> list = new List<string>();

@@ -50,6 +50,8 @@ namespace PictureMoverGui.ViewModels
 
             OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
             CancelGatherer = new CallbackCommand(OnCancelGatherer);
+
+            StartExtensionCountnerWorker(); // Makes sure extension are loaded on startup
         }
 
         public override void Dispose()
@@ -85,6 +87,7 @@ namespace PictureMoverGui.ViewModels
         {
             if (CanOpenDialog)
             {
+                _masterStore.FileExtensionStore.Clear(); // Clear old extensions
                 _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
                     _masterStore.RunningStore.RunState,
                     MediaTypeEnum.NormalDirectory, 
@@ -100,7 +103,28 @@ namespace PictureMoverGui.ViewModels
         {
             System.Diagnostics.Debug.WriteLine("Worker done!");
             System.Diagnostics.Debug.WriteLine(workStatus);
-            _masterStore.FileExtensionStore.Set(extensionInfo);
+            switch (workStatus)
+            {
+                case WorkStatus.Unfinished:
+                    _masterStore.FileExtensionStore.Clear();
+                    _masterStore.SorterConfigurationStore.SetSourcePath("");
+                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
+                    break;
+                case WorkStatus.Success:
+                    _masterStore.FileExtensionStore.Set(extensionInfo);
+                    break;
+                case WorkStatus.Invalid:
+                    _masterStore.FileExtensionStore.Clear();
+                    _masterStore.SorterConfigurationStore.SetSourcePath("");
+                    System.Diagnostics.Debug.WriteLine("The source was invald");
+                    break;
+                case WorkStatus.Cancelled:
+                    _masterStore.FileExtensionStore.Clear();
+                    _masterStore.SorterConfigurationStore.SetSourcePath("");
+                    break;
+                default:
+                    throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
+            }
         }
 
         protected void OnCancelGatherer(object parameter)

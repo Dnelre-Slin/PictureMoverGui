@@ -18,6 +18,11 @@ namespace PictureMoverGui.DirectoryUtils
         {
             if (mediaType == MediaTypeEnum.NormalDirectory)
             {
+                if (string.IsNullOrEmpty(source))
+                {
+                    IsValid = false;
+                    return;
+                }
                 DirectoryInfo d = new DirectoryInfo(source);
                 if (d.Exists)
                 {

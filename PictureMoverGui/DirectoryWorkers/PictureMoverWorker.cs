@@ -75,8 +75,6 @@ namespace PictureMoverGui.DirectoryWorkers
                         .CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions)
                         .ToList();
 
-                    _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.RunningSorter);
-
                     if (_worker.CancellationPending)
                     {
                         _pictureMoverArguments.AddRunStatusLog?.Invoke("Cancelled during preparation");
@@ -84,10 +82,20 @@ namespace PictureMoverGui.DirectoryWorkers
                         return;
                     }
 
+                    _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.RunningSorter);
+
                     PictureMover pictureMover = new PictureMover(_pictureMoverArguments, fileInfoList, sender as BackgroundWorker);
                     //List<string> infoStatusMessages = pictureMover.Mover();
                     //e.Result = infoStatusMessages;
                     int nrOfErrors = pictureMover.Mover();
+
+                    if (_worker.CancellationPending)
+                    {
+                        _pictureMoverArguments.AddRunStatusLog?.Invoke("Cancelled during running");
+                        _workStatus = WorkStatus.Cancelled;
+                        return;
+                    }
+
                     _workStatus = WorkStatus.Success;
                     e.Result = nrOfErrors;
                 }

@@ -100,6 +100,7 @@ namespace PictureMoverGui.DirectoryWorkers
             //{
             //    _workDone(extensionInfo);
             //}
+            _worker = null;
             _extensionCounterArguments.UpdateRunState?.Invoke(RunStates.Idle);
             _extensionCounterArguments.WorkDone?.Invoke(_workStatus, extensionInfo);
         }

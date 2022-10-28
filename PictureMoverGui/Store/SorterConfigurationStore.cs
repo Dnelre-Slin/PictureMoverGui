@@ -20,6 +20,7 @@ namespace PictureMoverGui.Store
                 if (_sorterConfiguration != value)
                 {
                     _sorterConfiguration = value;
+                    SaveToFile();
                     SorterConfigurationChanged?.Invoke(_sorterConfiguration);
                 }
             }
@@ -27,23 +28,24 @@ namespace PictureMoverGui.Store
 
         public SorterConfigurationStore()
         {
-            InitSorterConfiguration();
+            //InitSorterConfiguration();
+            LoadFromFile();
         }
 
-        protected void InitSorterConfiguration()
-        {
-            _sorterConfiguration = new SorterConfigurationModel(
-                "FirstFolder", 
-                "destPath", 
-                true, 
-                true, 
-                true,
-                NameCollisionActionEnum.CompareFiles,
-                CompareFilesActionEnum.NameAndDateOnly,
-                HashTypeEnum.MD5,
-                MediaTypeEnum.NormalDirectory);
-            // Todo: Load from settings
-        }
+        //protected void InitSorterConfiguration()
+        //{
+        //    _sorterConfiguration = new SorterConfigurationModel(
+        //        "FirstFolder", 
+        //        "destPath", 
+        //        true, 
+        //        true, 
+        //        true,
+        //        NameCollisionActionEnum.CompareFiles,
+        //        CompareFilesActionEnum.NameAndDateOnly,
+        //        HashTypeEnum.MD5,
+        //        MediaTypeEnum.NormalDirectory);
+        //    // Todo: Load from settings
+        //}
 
         public void SetSourcePath(string sourcePath)
         {
@@ -133,6 +135,66 @@ namespace PictureMoverGui.Store
                 editor.MediaType = mediaType;
                 SorterConfiguration = new SorterConfigurationModel(editor);
             }
+        }
+
+        protected void SaveToFile()
+        {
+            if (Properties.Settings.Default.SourceDir != SorterConfiguration.SourcePath)
+            {
+                Properties.Settings.Default.SourceDir = SorterConfiguration.SourcePath;
+            }
+            if (Properties.Settings.Default.DestinationDir != SorterConfiguration.DestinationPath)
+            {
+                Properties.Settings.Default.DestinationDir = SorterConfiguration.DestinationPath;
+            }
+            if (Properties.Settings.Default.DoCopy != SorterConfiguration.DoCopy)
+            {
+                Properties.Settings.Default.DoCopy = SorterConfiguration.DoCopy;
+            }
+            if (Properties.Settings.Default.DoStructured != SorterConfiguration.DoStructured)
+            {
+                Properties.Settings.Default.DoStructured = SorterConfiguration.DoStructured;
+            }
+            if (Properties.Settings.Default.DoDateName != SorterConfiguration.DoRename)
+            {
+                Properties.Settings.Default.DoDateName = SorterConfiguration.DoRename;
+            }
+            if (Properties.Settings.Default.NameCollisionAction != (int)SorterConfiguration.NameCollisionAction)
+            {
+                Properties.Settings.Default.NameCollisionAction = (int)SorterConfiguration.NameCollisionAction;
+            }            
+            if (Properties.Settings.Default.CompareFilesAction != (int)SorterConfiguration.CompareFilesAction)
+            {
+                Properties.Settings.Default.CompareFilesAction = (int)SorterConfiguration.CompareFilesAction;
+            }            
+            if (Properties.Settings.Default.HashTypeAction != (int)SorterConfiguration.HashType)
+            {
+                Properties.Settings.Default.HashTypeAction = (int)SorterConfiguration.HashType;
+            }            
+            if (Properties.Settings.Default.MediaTypeAction != (int)SorterConfiguration.MediaType)
+            {
+                Properties.Settings.Default.MediaTypeAction = (int)SorterConfiguration.MediaType;
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        protected void LoadFromFile()
+        {
+            string sourcePath = Properties.Settings.Default.SourceDir;
+            // Check if source path is valid and exists. No need to do this for destination, as destination is allowed to not exist
+            sourcePath = !string.IsNullOrEmpty(sourcePath) && new System.IO.DirectoryInfo(sourcePath).Exists ? sourcePath : "";
+            SorterConfigurationModel sorterConfigurationModel = new SorterConfigurationModel(
+                sourcePath,
+                Properties.Settings.Default.DestinationDir,
+                Properties.Settings.Default.DoCopy,
+                Properties.Settings.Default.DoStructured,
+                Properties.Settings.Default.DoDateName,
+                (NameCollisionActionEnum)Properties.Settings.Default.NameCollisionAction,
+                (CompareFilesActionEnum)Properties.Settings.Default.CompareFilesAction,
+                (HashTypeEnum)Properties.Settings.Default.HashTypeAction,
+                (MediaTypeEnum)Properties.Settings.Default.MediaTypeAction
+                );
+            _sorterConfiguration = sorterConfigurationModel;
         }
     }
 }
