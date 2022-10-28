@@ -4,13 +4,14 @@ using PictureMoverGui.Helpers;
 using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
+using PictureMoverGui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PictureMoverGui.ViewModels
+namespace PictureMoverGui.SubViewModels
 {
     public class SorterInterfaceViewModel : ViewModelBase
     {

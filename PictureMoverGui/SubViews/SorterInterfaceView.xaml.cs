@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PictureMoverGui.Components
+namespace PictureMoverGui.SubViews
 {
     /// <summary>
     /// Interaction logic for SorterInterfaceView.xaml

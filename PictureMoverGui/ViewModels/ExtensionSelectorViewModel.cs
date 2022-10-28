@@ -2,6 +2,7 @@
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
+using PictureMoverGui.SubViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
