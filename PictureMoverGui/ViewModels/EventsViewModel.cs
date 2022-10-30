@@ -3,8 +3,6 @@ using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using PictureMoverGui.SubViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -45,6 +43,14 @@ namespace PictureMoverGui.ViewModels
 
             _eventState = EventState.Viewing;
             _editKey = Guid.Empty;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            EventList.Dispose();
+            EventEdit.Dispose();
         }
 
         protected void OnCreateEvent(object parameter)

@@ -1,10 +1,6 @@
-﻿using PictureMoverGui.Helpers;
-using PictureMoverGui.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PictureMoverGui.Models;
 
-namespace PictureMoverGui.StoreHelpers
+namespace PictureMoverGui.Helpers.StoreHelpers
 {
     public class SorterConfigurationEditor
     {

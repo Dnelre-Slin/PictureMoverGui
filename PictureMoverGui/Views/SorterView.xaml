@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
-             xmlns:local="clr-namespace:PictureMoverGui" 
              xmlns:subviews="clr-namespace:PictureMoverGui.SubViews"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -22,27 +20,5 @@
         <Button Grid.Row="1" FontSize="40" Padding="-40" Width="40" Height="40" x:Name="btnSwapSourceDestination" Command="{Binding SwapSourceAndDestination}" Content="{DynamicResource SwapSourceDestinationContent}" IsEnabled="{Binding AllowSwap}" />
         <subviews:DirectorySelectorLiteView Grid.Row="2" DataContext="{Binding DestinationDirectorySelector}"></subviews:DirectorySelectorLiteView>
         <subviews:SorterInterfaceView Grid.Row="3" DataContext="{Binding SorterInterface}"></subviews:SorterInterfaceView>
-        <!--<Grid Grid.Row="3" Margin="20,20,20,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Viewbox Height="80" Grid.Column="0">
-                <WrapPanel Orientation="Vertical">
-                    <CheckBox x:Name="chkboxDoCopy" IsChecked="{Binding chkboxDoCopyChecked}" Content="{DynamicResource chkboxDoCopy}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                    <CheckBox x:Name="chkboxDoStructured" IsChecked="{Binding chkboxDoStructuredChecked}"  Content="{DynamicResource chkboxDoStructured}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                    <CheckBox x:Name="chkboxDoRename" IsChecked="{Binding chkboxDoRenameChecked}" Content="{DynamicResource chkboxDoRename}" IsEnabled="{Binding AllowConfigationButtons}"/>
-                </WrapPanel>
-            </Viewbox>
-            <DockPanel Width="250" Grid.Column="1">
-                <Button Margin="50 0 0 0" Width="150" Height="40" FontSize="20" x:Name="btnStart"  Click="btnStart_Click" Content="{DynamicResource StartButtonContent}" IsEnabled="{Binding AllowStartingMover}" />
-                <Button Visibility="{Binding StartSorterCancelButtonVisibility}" Width="40" Height="40" FontSize="20" x:Name="btnStartCancel" Click="btnStartCancel_Click" Content="{DynamicResource CancelContent}" />
-            </DockPanel>
-            <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Width="150" Height="40" HorizontalContentAlignment="Center" FontSize="20" x:Name="statusMessage" Content="{Binding StatusMessageContent}"/>
-                <ed:Arc x:Name="ProgressBarArc" Fill="CornflowerBlue" Height="70" Width="70" Stretch="None" ArcThickness="8" ArcThicknessUnit="Pixel" EndAngle="{Binding ArcEndAngle}" />
-            </Grid>
-        </Grid>-->
     </Grid>
 </UserControl>

@@ -3,44 +3,36 @@ using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PictureMoverGui.Store
 {
     public class FileExtensionStore
     {
-        public event Action<FileExtension> FileExtensionChanged;
-        public event Action<IEnumerable<FileExtension>> FileExtensionDictReset;
+        public event Action<FileExtensionModel> FileExtensionChanged;
+        public event Action<IEnumerable<FileExtensionModel>> FileExtensionDictReset;
 
-        private List<FileExtension> _fileExtensionList;
+        private List<FileExtensionModel> _fileExtensionList;
         public IEnumerable<int> FileExtensionKeys => Enumerable.Range(0, _fileExtensionList.Count);
-        public IEnumerable<FileExtension> FileExtensionValues => _fileExtensionList;
+        public IEnumerable<FileExtensionModel> FileExtensionValues => _fileExtensionList;
 
         public FileExtensionStore()
         {
-            _fileExtensionList = new List<FileExtension>();
-            //_fileExtensionDict["jpeg"] = new FileExtension("jpeg", 14, true);
-            //_fileExtensionDict["png"] = new FileExtension("png", 25, true);
-            //_fileExtensionDict["db"] = new FileExtension("db", 4, false);
-            //_fileExtensionDict["mp4"] = new FileExtension("mp4", 9, true);
-            //_fileExtensionDict["ini"] = new FileExtension("ini", 2, false);
-
-            // TODO: Read extension on startup, based on presat source dir
+            _fileExtensionList = new List<FileExtensionModel>();
         }
 
         public void SetActive(int key, bool state)
         {
-            FileExtension old = _fileExtensionList[key];
-            _fileExtensionList[key] = new FileExtension(old.Name, old.Count, state);
+            FileExtensionModel old = _fileExtensionList[key];
+            _fileExtensionList[key] = new FileExtensionModel(old.Name, old.Count, state);
             FileExtensionChanged?.Invoke(_fileExtensionList[key]);
         }
 
-        public FileExtension GetFileExtension(int key)
+        public FileExtensionModel GetFileExtension(int key)
         {
             return _fileExtensionList[key];
         }
 
-        public void Set(List<FileExtension> newFileExtensionDict)
+        public void Set(List<FileExtensionModel> newFileExtensionDict)
         {
             _fileExtensionList = newFileExtensionDict;
             FileExtensionDictReset?.Invoke(_fileExtensionList);
@@ -51,7 +43,7 @@ namespace PictureMoverGui.Store
             _fileExtensionList.Clear();
             foreach (var extCount in extensionCount)
             {
-                _fileExtensionList.Add(new FileExtension(extCount.Key, extCount.Value, ExtensionLookup.imageAndVideoExtensions.Contains(extCount.Key)));
+                _fileExtensionList.Add(new FileExtensionModel(extCount.Key, extCount.Value, ExtensionLookup.imageAndVideoExtensions.Contains(extCount.Key)));
             }
             _fileExtensionList.Sort((a, b) =>
             {

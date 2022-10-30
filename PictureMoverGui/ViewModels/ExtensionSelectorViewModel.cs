@@ -3,12 +3,9 @@ using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using PictureMoverGui.SubViewModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels
@@ -89,7 +86,7 @@ namespace PictureMoverGui.ViewModels
             _fileExtensionList.Clear();
         }
 
-        protected void FileExtensionStore_FileExtensionChanged(FileExtension fileExtensionModel)
+        protected void FileExtensionStore_FileExtensionChanged(FileExtensionModel fileExtensionModel)
         {
             Debug.WriteLine("FileExtensionStore_FileExtensionChanged");
             foreach (var fileExtension in FileExtensionList)
@@ -101,7 +98,7 @@ namespace PictureMoverGui.ViewModels
             OnPropertyChanged(nameof(ActiveFiles));
         }
         
-        protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<FileExtension> fileExtensionDict)
+        protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<FileExtensionModel> fileExtensionDict)
         {
             Debug.WriteLine("FileExtensionStore_FileExtensionReset");
             ResetFileExtensionsFromStore();

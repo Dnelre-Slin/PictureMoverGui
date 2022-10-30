@@ -1,12 +1,5 @@
-﻿using PictureMoverGui.Commands;
-using PictureMoverGui.Store;
-using System;
-using System.Collections.Generic;
+﻿using PictureMoverGui.Store;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels
 {
@@ -55,6 +48,8 @@ namespace PictureMoverGui.ViewModels
             base.Dispose();
 
             Sorter.Dispose();
+            PhoneInput.Dispose();
+            Events.Dispose();
             ExtensionSelector.Dispose();
             AdvancedOptions.Dispose();
             StatusInfo.Dispose();

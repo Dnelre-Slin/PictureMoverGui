@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows;
 
 namespace PictureMoverGui.DirectoryWorkers
 {
@@ -85,8 +83,6 @@ namespace PictureMoverGui.DirectoryWorkers
                     _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.RunningSorter);
 
                     PictureMover pictureMover = new PictureMover(_pictureMoverArguments, fileInfoList, sender as BackgroundWorker);
-                    //List<string> infoStatusMessages = pictureMover.Mover();
-                    //e.Result = infoStatusMessages;
                     int nrOfErrors = pictureMover.Mover();
 
                     if (_worker.CancellationPending)
@@ -109,15 +105,6 @@ namespace PictureMoverGui.DirectoryWorkers
         private void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
             int nrOfErrors = e.Result != null ? (int)e.Result : -1;
-
-            //if (_workStatus == WorkStatus.Invalid)
-            //{
-            //    MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
-            //    //this.moverModel.labelSourceDirContent = "";
-            //}
-
-            //this.moverModel.infoStatusMessagesLastRun = infoStatusMessages;
-            //this.moverModel.statusPercentage = 0;
 
             _worker = null;
             _pictureMoverArguments.UpdateRunPercentage(0);

@@ -3,7 +3,6 @@ using MediaDevices;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
 {
@@ -42,7 +41,6 @@ namespace PictureMoverGui.DirectoryUtils
         {
             if (_directroyInfo != null)
             {
-                //foreach (var v in _directroyInfo.EnumerateFiles(,))
                 foreach (var file in _directroyInfo.EnumerateFiles(searchPattern, searchOption).CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions))
                 {
                     yield return new GenericFileInfo(file, null);
@@ -50,7 +48,6 @@ namespace PictureMoverGui.DirectoryUtils
             }
             else
             {
-                //_mediaDevice.EnumerateFiles(searchPattern, searchOption);
                 MediaDriveInfo[] mi = _mediaDevice.GetDrives();
                 foreach (var drive in _mediaDevice.GetDrives())
                 {

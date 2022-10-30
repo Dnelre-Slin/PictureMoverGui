@@ -1,14 +1,10 @@
-﻿using PictureMoverGui.Commands;
-using PictureMoverGui.Models;
+﻿using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
 
 namespace PictureMoverGui.SubViewModels
 {
@@ -31,6 +27,15 @@ namespace PictureMoverGui.SubViewModels
             _masterStore.EventDataStore.EventDataAdded += EventDataStore_EventDataAdded;
             _masterStore.EventDataStore.EventDataUpdated += EventDataStore_EventDataUpdated;
             _masterStore.EventDataStore.EventDataRemoved += EventDataStore_EventDataRemoved;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            _masterStore.EventDataStore.EventDataAdded -= EventDataStore_EventDataAdded;
+            _masterStore.EventDataStore.EventDataUpdated -= EventDataStore_EventDataUpdated;
+            _masterStore.EventDataStore.EventDataRemoved -= EventDataStore_EventDataRemoved;
         }
 
         protected void ResetEventDataListFromStore()

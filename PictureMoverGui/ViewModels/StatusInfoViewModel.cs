@@ -1,7 +1,5 @@
 ﻿using PictureMoverGui.Store;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PictureMoverGui.ViewModels
 {

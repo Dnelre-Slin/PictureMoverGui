@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PictureMoverGui.Models
+﻿namespace PictureMoverGui.Models
 {
-    public class FileExtension
+    public class FileExtensionModel
     {
         public string Name { get; }
         public int Count { get; }
         public bool Active { get; }
 
-        public FileExtension(string name, int count, bool active)
+        public FileExtensionModel(string name, int count, bool active)
         {
             Name = name;
             Count = count;

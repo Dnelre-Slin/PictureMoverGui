@@ -1,6 +1,4 @@
-﻿using MediaDevices;
-using PictureMoverGui.DirectoryUtils;
-using PictureMoverGui.Helpers;
+﻿using PictureMoverGui.Helpers;
 using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
 using System;
@@ -8,8 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
 {

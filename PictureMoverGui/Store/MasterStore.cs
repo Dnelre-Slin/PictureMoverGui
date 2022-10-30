@@ -1,9 +1,4 @@
-﻿using PictureMoverGui.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PictureMoverGui.Store
+﻿namespace PictureMoverGui.Store
 {
     public class MasterStore
     {

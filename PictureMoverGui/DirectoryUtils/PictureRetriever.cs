@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 
 namespace PictureMoverGui.DirectoryUtils
 {
@@ -92,7 +91,6 @@ namespace PictureMoverGui.DirectoryUtils
 
         static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, BackgroundWorker sender_worker, DateTime newerThan)
         {
-            //DirectoryInfo d = new DirectoryInfo(search_dir);
             using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source))
             {
                 if (!pictureRetriever.IsValid)

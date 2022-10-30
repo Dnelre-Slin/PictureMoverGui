@@ -2,9 +2,6 @@
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -117,10 +114,6 @@ namespace PictureMoverGui.ViewModels
             if (result == MessageBoxResult.OK)
             {
                 _masterStore.SorterConfigurationStore.ResetToDefaultSettings();
-                //Properties.Settings.Default.Reset();
-                //this.moverModel.SettingsRefresh();
-                //Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
-                //Properties.Settings.Default.Save();
             }
         }
 

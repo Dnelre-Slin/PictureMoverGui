@@ -1,10 +1,8 @@
-﻿using MediaDevices;
+﻿//using MediaDevices;
 using PictureMoverGui.Commands;
 using PictureMoverGui.Store;
-using System;
 using System.Collections.Generic;
 //using System.Management;
-using System.Text;
 using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels

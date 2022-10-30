@@ -4,7 +4,6 @@ using PictureMoverGui.Helpers.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace PictureMoverGui.DirectoryWorkers
 {
@@ -13,11 +12,6 @@ namespace PictureMoverGui.DirectoryWorkers
         private BackgroundWorker _worker;
         private ExtensionCounterArguments _extensionCounterArguments;
         private WorkStatus _workStatus;
-        //private MediaTypeEnum _mediaType;
-        //private string _source;
-        //private DateTime _newerThan;
-        //private Action<RunStates> _updateRunState;
-        //private Action<Dictionary<string, int>> _workDone;
 
         public ExtensionCounterWorker()
         {
@@ -83,23 +77,6 @@ namespace PictureMoverGui.DirectoryWorkers
         {
             Dictionary<string, int> extensionInfo = e.Result as Dictionary<string, int>;
 
-            //if (e.Cancelled || extensionInfo == null)
-            //{
-            //    // All did not work fine (Cancelled | Failed)
-            //}
-            //else
-            //{
-            //    // All worked fine. (Success)
-            //}
-            //_worker = null;
-            //if (_updateRunState != null)
-            //{
-            //    _updateRunState(RunStates.Idle);
-            //}
-            //if (_workDone != null)
-            //{
-            //    _workDone(extensionInfo);
-            //}
             _worker = null;
             _extensionCounterArguments.UpdateRunState?.Invoke(RunStates.Idle);
             _extensionCounterArguments.WorkDone?.Invoke(_workStatus, extensionInfo);

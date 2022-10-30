@@ -26,15 +26,9 @@ namespace PictureMoverGui.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        //PictureMoverModel moverModel;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            //this.moverModel = this.Resources["moverModel"] as PictureMoverModel;
-            //this.DataContext = this.moverModel;
-
         }
 
     }

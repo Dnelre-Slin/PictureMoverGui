@@ -1,8 +1,5 @@
 ﻿using PictureMoverGui.Helpers;
-using PictureMoverGui.StoreHelpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PictureMoverGui.Helpers.StoreHelpers;
 
 namespace PictureMoverGui.Models
 {

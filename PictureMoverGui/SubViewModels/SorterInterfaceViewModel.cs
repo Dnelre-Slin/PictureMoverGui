@@ -7,7 +7,6 @@ using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -127,7 +126,6 @@ namespace PictureMoverGui.SubViewModels
                     _masterStore.RunningStore.AddStatusLog,
                     OnPictureMoverWorkerDone
                 ));
-                //_masterStore.RunningStore.SetRunState(RunStates.RunningSorter);
             }
         }
 
@@ -159,7 +157,6 @@ namespace PictureMoverGui.SubViewModels
         {
             System.Diagnostics.Debug.WriteLine("OnCancelSorting");
             _pictureMoverWorker.CancelWorker();
-            //_masterStore.RunningStore.SetRunState(RunStates.Idle);
         }
     }
 }

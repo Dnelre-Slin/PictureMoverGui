@@ -1,9 +1,7 @@
 ﻿using PictureMoverGui.Helpers;
+using PictureMoverGui.Helpers.StoreHelpers;
 using PictureMoverGui.Models;
-using PictureMoverGui.StoreHelpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PictureMoverGui.Store
 {
@@ -28,24 +26,8 @@ namespace PictureMoverGui.Store
 
         public SorterConfigurationStore()
         {
-            //InitSorterConfiguration();
             LoadFromFile();
         }
-
-        //protected void InitSorterConfiguration()
-        //{
-        //    _sorterConfiguration = new SorterConfigurationModel(
-        //        "FirstFolder", 
-        //        "destPath", 
-        //        true, 
-        //        true, 
-        //        true,
-        //        NameCollisionActionEnum.CompareFiles,
-        //        CompareFilesActionEnum.NameAndDateOnly,
-        //        HashTypeEnum.MD5,
-        //        MediaTypeEnum.NormalDirectory);
-        //    // Todo: Load from settings
-        //}
 
         public void ResetToDefaultSettings()
         {

@@ -2,9 +2,6 @@
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Store;
 using PictureMoverGui.SubViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace PictureMoverGui.ViewModels

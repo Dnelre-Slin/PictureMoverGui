@@ -1,10 +1,6 @@
 ﻿using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
 
 namespace PictureMoverGui.SubViewModels
 {
@@ -13,7 +9,7 @@ namespace PictureMoverGui.SubViewModels
         private MasterStore _masterStore;
 
         private int _key;
-        private FileExtension FileExtension => _masterStore.FileExtensionStore.GetFileExtension(_key);
+        private FileExtensionModel FileExtension => _masterStore.FileExtensionStore.GetFileExtension(_key);
 
         public string Name => FileExtension.Name;
         public int Count => FileExtension.Count;

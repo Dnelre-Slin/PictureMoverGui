@@ -20,47 +20,9 @@ namespace PictureMoverGui.Views
     /// </summary>
     public partial class AdvancedOptionsView : UserControl
     {
-        //private PictureMoverModel moverModel;
-
         public AdvancedOptionsView()
         {
             InitializeComponent();
-
-            //this.DataContextChanged += new DependencyPropertyChangedEventHandler(AdvancedOptionsView_DataContextChanged);
         }
-
-        //void AdvancedOptionsView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    //Trace.WriteLine("Context changed!!!!");
-        //    this.moverModel = this.DataContext as PictureMoverModel;
-        //}
-
-        //private void btnResetSettings_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        MessageBoxResult result = MessageBox.Show($"{App.Current.FindResource("MessageBoxResetSettingsText")}", $"{App.Current.FindResource("MessageBoxResetSettingsTitle")}", MessageBoxButton.OKCancel);
-        //        if (result == MessageBoxResult.OK)
-        //        {
-        //            Properties.Settings.Default.Reset();
-        //            this.moverModel.SettingsRefresh();
-        //            //Properties.Datastore.Default.EventList = Simplifiers.EventListToSimpleList(this.moverModel.eventDataList);
-        //            //Properties.Settings.Default.Save();
-        //        }
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        Trace.TraceError(err.Message);
-        //    }
-        //}
-
-        //private void btnTest_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Debug.WriteLine(this.moverModel.NrOfActiveFilesInCurrentDir);
-        //    foreach (var ext in this.moverModel.extensionInfoList)
-        //    {
-        //        Debug.WriteLine(ext.Name + " : " + ext.Active);
-        //    }
-        //}
     }
 }
