@@ -17,7 +17,10 @@
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="{DynamicResource TabNormalView}">
             <localviews:SorterView DataContext="{Binding Sorter}"></localviews:SorterView>
-        </TabItem>        
+        </TabItem>
+        <!--<TabItem Header="Phone">
+            <localviews:PhoneInputView DataContext="{Binding PhoneInput}"></localviews:PhoneInputView>
+        </TabItem>-->
         <TabItem Header="{DynamicResource TabEventView}">
             <localviews:EventsView DataContext="{Binding Events}"></localviews:EventsView>
         </TabItem>

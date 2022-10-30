@@ -15,6 +15,7 @@ namespace PictureMoverGui.ViewModels
         private MasterStore _masterStore;
 
         public SorterViewModel Sorter { get; }
+        public PhoneInputViewModel PhoneInput { get; }
         public EventsViewModel Events { get; }
         public ExtensionSelectorViewModel ExtensionSelector { get; }
         public AdvancedOptionsViewModel AdvancedOptions { get; }
@@ -42,6 +43,7 @@ namespace PictureMoverGui.ViewModels
             _selectedTabIndex = 0;
 
             Sorter = new SorterViewModel(masterStore);
+            PhoneInput = new PhoneInputViewModel(masterStore);
             Events = new EventsViewModel(masterStore);
             ExtensionSelector = new ExtensionSelectorViewModel(masterStore);
             AdvancedOptions = new AdvancedOptionsViewModel(masterStore);
