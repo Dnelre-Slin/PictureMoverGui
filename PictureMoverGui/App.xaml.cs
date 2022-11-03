@@ -12,6 +12,7 @@ namespace PictureMoverGui
     public partial class App : Application
     {
         private MasterStore _masterStore;
+        private MainWindowViewModel _viewModel;
         public App()
         {
             Trace.Listeners.Add(new TextWriterTraceListener("Error.log"));
@@ -28,10 +29,20 @@ namespace PictureMoverGui
 
             MainWindow = new MainWindow();
 
-            MainWindowViewModel viewModel = new MainWindowViewModel(_masterStore);
+            _viewModel = new MainWindowViewModel(_masterStore);
 
-            MainWindow.DataContext = viewModel;
+            MainWindow.DataContext = _viewModel;
             MainWindow.Show();
+
+            _masterStore.UsbDeviceStore.Setup(MainWindow);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            _viewModel.Dispose();
+            _masterStore.UsbDeviceStore.Dispose();
         }
     }
 }

@@ -8,8 +8,8 @@
     <Grid>
         <StackPanel Margin="50">
             <TextBlock FontSize="20" Text="Elem 1"></TextBlock>
-            <TextBlock FontSize="20" Text="Elem 2"></TextBlock>
-            <TextBlock FontSize="20" Text="Elem 3"></TextBlock>
+            <TextBlock FontSize="20" Text="{Binding PhoneStuff}"></TextBlock>
+            <TextBlock FontSize="20" Text="{Binding PhoneStuff2}"></TextBlock>
             <ComboBox FontSize="20" ItemsSource="{Binding ItemChoices}" SelectedItem="{Binding ChosenString}"></ComboBox>
             <Button Content="Refresh" Command="{Binding RefreshDevices}" FontSize="20"></Button>
             <Button Content="Connect" Command="{Binding ConnectDevice}" FontSize="20"></Button>

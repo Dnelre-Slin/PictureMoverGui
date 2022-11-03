@@ -47,6 +47,8 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
 
+            Debug.WriteLine("Disposing");
+
             Sorter.Dispose();
             PhoneInput.Dispose();
             Events.Dispose();

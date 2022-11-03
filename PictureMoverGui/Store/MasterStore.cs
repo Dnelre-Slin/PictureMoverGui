@@ -6,6 +6,7 @@
         public SorterConfigurationStore SorterConfigurationStore { get; }
         public RunningStore RunningStore { get; }
         public EventDataStore EventDataStore { get; }
+        public UsbDeviceStore UsbDeviceStore { get; }
 
         public MasterStore()
         {
@@ -13,6 +14,7 @@
             SorterConfigurationStore = new SorterConfigurationStore();
             RunningStore = new RunningStore();
             EventDataStore = new EventDataStore();
+            UsbDeviceStore = new UsbDeviceStore();
         }
     }
 }
