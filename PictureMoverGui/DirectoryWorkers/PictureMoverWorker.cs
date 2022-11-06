@@ -57,7 +57,7 @@ namespace PictureMoverGui.DirectoryWorkers
         {
             try
             {
-                using (PictureRetriever pictureRetriever = new PictureRetriever(_pictureMoverArguments.SorterMediaType, _pictureMoverArguments.PictureRetrieverSource))
+                using (PictureRetriever pictureRetriever = new PictureRetriever(_pictureMoverArguments.SorterMediaType, _pictureMoverArguments.PictureRetrieverSource, _pictureMoverArguments.ChosenMediaDevice))
                 {
                     if (!pictureRetriever.IsValid)
                     {

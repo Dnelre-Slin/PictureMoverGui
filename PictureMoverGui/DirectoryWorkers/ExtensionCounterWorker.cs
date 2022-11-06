@@ -48,8 +48,9 @@ namespace PictureMoverGui.DirectoryWorkers
             try
             {
                 Dictionary<string, int> extensionInfo = PictureRetriever.GetExtensions(
-                    _extensionCounterArguments.MediaType, 
+                    _extensionCounterArguments.MediaType,
                     _extensionCounterArguments.Source, 
+                    _extensionCounterArguments.ChosenMediaDevice,
                     sender as BackgroundWorker, 
                     _extensionCounterArguments.NewerThan);
 

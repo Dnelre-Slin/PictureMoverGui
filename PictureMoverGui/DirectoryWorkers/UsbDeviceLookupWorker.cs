@@ -12,7 +12,7 @@ namespace PictureMoverGui.DirectoryWorkers
     public class UsbDeviceLookupWorker
     {
         private BackgroundWorker _worker;
-        private string _chosenMediaDeviceName;
+        //private string _chosenMediaDeviceName;
         private Action<WorkStatus, CollectiveDeviceInfoModel> _workDone;
         private WorkStatus _workStatus;
         private ManualResetEvent _manualEvent;
@@ -22,11 +22,11 @@ namespace PictureMoverGui.DirectoryWorkers
             _worker = null;
         }
 
-        public void StartWorker(string chosenMediaDeviceName, Action<WorkStatus, CollectiveDeviceInfoModel> workDone)
+        public void StartWorker(Action<WorkStatus, CollectiveDeviceInfoModel> workDone)
         {
             if (_worker == null) // Make sure it is not already running
             {
-                _chosenMediaDeviceName = chosenMediaDeviceName;
+                //_chosenMediaDeviceName = chosenMediaDeviceName;
                 _workDone = workDone;
 
                 _workStatus = WorkStatus.Unfinished;
@@ -65,8 +65,9 @@ namespace PictureMoverGui.DirectoryWorkers
                 List<DriveInfoModel> driveInfoList = UsbDeviceListGatherer.GetDriveInfoList();
                 List<string> exclusionList = driveInfoList.Select(di => di.SerialId).ToList();
                 List<MediaDeviceModel> mediaDeviceList = UsbDeviceListGatherer.GetMediaDeviceList(exclusionList);
-                MediaDeviceModel selectedMediaDevice = mediaDeviceList.Find(md => md.FriendlyName == _chosenMediaDeviceName);
-                CollectiveDeviceInfoModel collectiveDeviceInfo = new CollectiveDeviceInfoModel(driveInfoList, mediaDeviceList, selectedMediaDevice);
+                //MediaDeviceModel selectedMediaDevice = mediaDeviceList.Find(md => md.FriendlyName == _chosenMediaDeviceName);
+                //CollectiveDeviceInfoModel collectiveDeviceInfo = new CollectiveDeviceInfoModel(driveInfoList, mediaDeviceList, selectedMediaDevice);
+                CollectiveDeviceInfoModel collectiveDeviceInfo = new CollectiveDeviceInfoModel(driveInfoList, mediaDeviceList);
 
                 _workStatus = WorkStatus.Success;
                 e.Result = collectiveDeviceInfo;

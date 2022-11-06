@@ -18,6 +18,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public List<EventDataModel> EventDataList { get; }
         public MediaTypeEnum SorterMediaType { get; }
         public string PictureRetrieverSource { get; }
+        public MediaDeviceModel ChosenMediaDevice { get; }
         public DateTime PictureRetrieverNewerThan { get; }
 
         public Action<RunStates> UpdateRunState { get; }
@@ -37,8 +38,9 @@ namespace PictureMoverGui.Helpers.HelperClasses
             List<string> validExtensions, 
             List<EventDataModel> eventDataList, 
             MediaTypeEnum sorterMediaType, 
-            string pictureRetrieverSource, 
-            DateTime pictureRetrieverNewerThan, 
+            string pictureRetrieverSource,
+            MediaDeviceModel chosenMediaDevice,
+            DateTime pictureRetrieverNewerThan,
             Action<RunStates> updateRunState, 
             Action<double> updateRunPercentage, 
             Action<string> addRunStatusLog, 
@@ -56,6 +58,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             EventDataList = eventDataList;
             SorterMediaType = sorterMediaType;
             PictureRetrieverSource = pictureRetrieverSource;
+            ChosenMediaDevice = chosenMediaDevice;
             PictureRetrieverNewerThan = pictureRetrieverNewerThan;
             UpdateRunState = updateRunState;
             UpdateRunPercentage = updateRunPercentage;
@@ -69,6 +72,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public RunStates RunState { get; }
         public MediaTypeEnum MediaType;
         public string Source;
+        public MediaDeviceModel ChosenMediaDevice { get; }
         public DateTime NewerThan;
 
         public Action<RunStates> UpdateRunState;
@@ -78,6 +82,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             RunStates runState,
             MediaTypeEnum mediaType,
             string source,
+            MediaDeviceModel chosenMediaDevice,
             DateTime newerThan,
             Action<RunStates> updateRunState,
             Action<WorkStatus, Dictionary<string, int>> workDone)
@@ -85,6 +90,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             RunState = runState;
             MediaType = mediaType;
             Source = source;
+            ChosenMediaDevice = chosenMediaDevice;
             NewerThan = newerThan;
             UpdateRunState = updateRunState;
             WorkDone = workDone;

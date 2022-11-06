@@ -1,5 +1,6 @@
 ﻿using MediaDevices;
 using PictureMoverGui.Helpers;
+using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace PictureMoverGui.DirectoryUtils
 
         public bool IsValid { get; }
 
-        public PictureRetriever(MediaTypeEnum mediaType, string source)
+        public PictureRetriever(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo)
         {
             if (mediaType == MediaTypeEnum.NormalDirectory)
             {
@@ -35,18 +36,19 @@ namespace PictureMoverGui.DirectoryUtils
             }
             else if (mediaType == MediaTypeEnum.MediaDevice)
             {
-                MediaDevice m = null;
-                foreach (var dev in MediaDevice.GetDevices())
+                //MediaDevice m = null;
+                //foreach (var dev in MediaDevice.GetDevices())
+                //{
+                //    if (dev.FriendlyName == source)
+                //    {
+                //        m = dev;
+                //        break;
+                //    }
+                //}
+                //if (m != null)
+                if (mediaDeviceInfo.MediaDevice != null)
                 {
-                    if (dev.FriendlyName == source)
-                    {
-                        m = dev;
-                        break;
-                    }
-                }
-                if (m != null)
-                {
-                    _genericFileInfoServer = new GenericFileInfoServer(null, m);
+                    _genericFileInfoServer = new GenericFileInfoServer(null, mediaDeviceInfo.MediaDevice);
                     IsValid = true;
                 }
                 else
@@ -84,14 +86,14 @@ namespace PictureMoverGui.DirectoryUtils
             System.Diagnostics.Debug.WriteLine(e);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, BackgroundWorker sender_worker)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo, BackgroundWorker sender_worker)
         {
-            return GetExtensions(mediaType, source, sender_worker, DateTime.MinValue);
+            return GetExtensions(mediaType, source, mediaDeviceInfo, sender_worker, DateTime.MinValue);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, BackgroundWorker sender_worker, DateTime newerThan)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo, BackgroundWorker sender_worker, DateTime newerThan)
         {
-            using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source))
+            using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source, mediaDeviceInfo))
             {
                 if (!pictureRetriever.IsValid)
                 {

@@ -8,13 +8,13 @@ namespace PictureMoverGui.Models
     {
         public List<DriveInfoModel> DriveInfoList { get; }
         public List<MediaDeviceModel> MediaDeviceList { get; }
-        public MediaDeviceModel SelectedMediaDevice { get; }
+        //public MediaDeviceModel SelectedMediaDevice { get; }
 
-        public CollectiveDeviceInfoModel(List<DriveInfoModel> driveInfoList, List<MediaDeviceModel> mediaDeviceList, MediaDeviceModel selectedMediaDevice)
+        public CollectiveDeviceInfoModel(List<DriveInfoModel> driveInfoList, List<MediaDeviceModel> mediaDeviceList)
         {
             DriveInfoList = driveInfoList;
             MediaDeviceList = mediaDeviceList;
-            SelectedMediaDevice = selectedMediaDevice;
+            //SelectedMediaDevice = selectedMediaDevice;
         }
     }
 }

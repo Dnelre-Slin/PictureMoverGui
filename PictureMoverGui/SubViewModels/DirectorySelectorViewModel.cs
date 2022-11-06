@@ -91,7 +91,8 @@ namespace PictureMoverGui.SubViewModels
                     _masterStore.RunningStore.RunState,
                     MediaTypeEnum.NormalDirectory, 
                     _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath, 
-                    DateTime.MinValue, 
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice,
+                    _masterStore.UsbDeviceStore.ChosenMediaLastTime,
                     _masterStore.RunningStore.SetRunState, 
                     OnExtensionCounterWorkerDone
                 ));
