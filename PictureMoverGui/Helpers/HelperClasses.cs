@@ -1,4 +1,5 @@
-﻿using PictureMoverGui.Models;
+﻿using MediaDevices;
+using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
     public class PictureMoverArguments
     {
         public RunStates RunState { get; }
-        public string DestinationPath { get; }
+        public List<string> DestinationPaths { get; }
         public bool DoCopy { get; }
         public bool DoMakeStructured { get; }
         public bool DoRename { get; }
@@ -18,7 +19,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public List<EventDataModel> EventDataList { get; }
         public MediaTypeEnum SorterMediaType { get; }
         public string PictureRetrieverSource { get; }
-        public MediaDeviceModel ChosenMediaDevice { get; }
+        public MediaDevice SelectedMediaDevice { get; }
         public DateTime PictureRetrieverNewerThan { get; }
 
         public Action<RunStates> UpdateRunState { get; }
@@ -28,7 +29,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
 
         public PictureMoverArguments(
             RunStates runState, 
-            string destinationPath, 
+            List<string> destinationPaths, 
             bool doCopy, 
             bool doMakeStructured, 
             bool doRename, 
@@ -39,7 +40,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             List<EventDataModel> eventDataList, 
             MediaTypeEnum sorterMediaType, 
             string pictureRetrieverSource,
-            MediaDeviceModel chosenMediaDevice,
+            MediaDevice selectedMediaDevice,
             DateTime pictureRetrieverNewerThan,
             Action<RunStates> updateRunState, 
             Action<double> updateRunPercentage, 
@@ -47,7 +48,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             Action<WorkStatus, int> workDone)
         {
             RunState = runState;
-            DestinationPath = destinationPath;
+            DestinationPaths = destinationPaths;
             DoCopy = doCopy;
             DoMakeStructured = doMakeStructured;
             DoRename = doRename;
@@ -58,7 +59,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             EventDataList = eventDataList;
             SorterMediaType = sorterMediaType;
             PictureRetrieverSource = pictureRetrieverSource;
-            ChosenMediaDevice = chosenMediaDevice;
+            SelectedMediaDevice = selectedMediaDevice;
             PictureRetrieverNewerThan = pictureRetrieverNewerThan;
             UpdateRunState = updateRunState;
             UpdateRunPercentage = updateRunPercentage;
@@ -72,7 +73,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public RunStates RunState { get; }
         public MediaTypeEnum MediaType;
         public string Source;
-        public MediaDeviceModel ChosenMediaDevice { get; }
+        public MediaDevice SelectedMediaDevice { get; }
         public DateTime NewerThan;
 
         public Action<RunStates> UpdateRunState;
@@ -82,7 +83,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             RunStates runState,
             MediaTypeEnum mediaType,
             string source,
-            MediaDeviceModel chosenMediaDevice,
+            MediaDevice selectedMediaDevice,
             DateTime newerThan,
             Action<RunStates> updateRunState,
             Action<WorkStatus, Dictionary<string, int>> workDone)
@@ -90,7 +91,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             RunState = runState;
             MediaType = mediaType;
             Source = source;
-            ChosenMediaDevice = chosenMediaDevice;
+            SelectedMediaDevice = selectedMediaDevice;
             NewerThan = newerThan;
             UpdateRunState = updateRunState;
             WorkDone = workDone;

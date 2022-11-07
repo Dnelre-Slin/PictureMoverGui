@@ -90,9 +90,11 @@ namespace PictureMoverGui.SubViewModels
                 _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
                     _masterStore.RunningStore.RunState,
                     MediaTypeEnum.NormalDirectory, 
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath, 
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice,
-                    _masterStore.UsbDeviceStore.ChosenMediaLastTime,
+                    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
+                    null,
+                    //_masterStore.UsbDeviceStore.SelectedMediaDevice,
+                    //_masterStore.UsbDeviceStore.ChosenMediaLastTime,
+                    DateTime.MinValue,
                     _masterStore.RunningStore.SetRunState, 
                     OnExtensionCounterWorkerDone
                 ));

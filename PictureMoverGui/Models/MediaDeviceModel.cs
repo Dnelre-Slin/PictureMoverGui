@@ -7,14 +7,16 @@ namespace PictureMoverGui.Models
 {
     public class MediaDeviceModel
     {
-        public string FriendlyName { get; }
+        public string Name { get; }
         public string SerialId { get; }
+        public DateTime LastRun { get; }
         public MediaDevice MediaDevice { get; }
 
-        public MediaDeviceModel(string friendlyName, string serialId, MediaDevice mediaDevice)
+        public MediaDeviceModel(string name, string serialId, DateTime lastRun, MediaDevice mediaDevice)
         {
-            FriendlyName = friendlyName;
+            Name = name;
             SerialId = serialId;
+            LastRun = lastRun;
             MediaDevice = mediaDevice;
         }
     }

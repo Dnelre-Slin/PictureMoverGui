@@ -50,7 +50,7 @@ namespace PictureMoverGui.DirectoryWorkers
                 Dictionary<string, int> extensionInfo = PictureRetriever.GetExtensions(
                     _extensionCounterArguments.MediaType,
                     _extensionCounterArguments.Source, 
-                    _extensionCounterArguments.ChosenMediaDevice,
+                    _extensionCounterArguments.SelectedMediaDevice,
                     sender as BackgroundWorker, 
                     _extensionCounterArguments.NewerThan);
 

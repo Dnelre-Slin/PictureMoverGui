@@ -14,7 +14,7 @@ namespace PictureMoverGui.DirectoryUtils
         private BackgroundWorker _workerSender;
         private List<GenericFileInfo> _fileInfoList;
 
-        private string _destinationPath;
+        private List<string> _destinationPaths;
         private NameCollisionActionEnum _nameCollisionAction;
         private CompareFilesActionEnum _compareFilesAction;
         private HashTypeEnum _hashType;
@@ -26,7 +26,7 @@ namespace PictureMoverGui.DirectoryUtils
         private int _currentProgress;
 
         private Action<GenericFileInfo, string, string> _copyOrMoveTransferAction;
-        private Func<GenericFileInfo, DirectoryInfo> _structuredOrDirectTransferAction;
+        private Func<string, GenericFileInfo, DirectoryInfo> _structuredOrDirectTransferAction;
         private Func<GenericFileInfo, string> _datePrependOrOriginalFilenameAction;
 
         private Action<string> _addRunStatusLog;
@@ -38,7 +38,7 @@ namespace PictureMoverGui.DirectoryUtils
             _workerSender = workerSender;
             _fileInfoList = fileInfoList;
 
-            _destinationPath = pictureMoverArguments.DestinationPath;
+            _destinationPaths = pictureMoverArguments.DestinationPaths;
             _nameCollisionAction = pictureMoverArguments.NameCollisionAction;
             _compareFilesAction = pictureMoverArguments.CompareFilesAction;
             _hashType = pictureMoverArguments.HashTypeAction;
@@ -80,17 +80,20 @@ namespace PictureMoverGui.DirectoryUtils
 
         public int Mover()
         {
-            Directory.CreateDirectory(_destinationPath);
+            //Directory.CreateDirectory(_destinationPath);
 
             _currentProgress = 0;
 
             foreach (GenericFileInfo fileInfo in _fileInfoList)
             {
-                DoStructuredOrDirectTransferFile(fileInfo);
-                if (_cancel)
+                foreach (string destinationPath in _destinationPaths)
                 {
-                    _addRunStatusLog?.Invoke($"Cancelled during sorting");
-                    break;
+                    DoStructuredOrDirectTransferFile(destinationPath, fileInfo);
+                    if (_cancel)
+                    {
+                        _addRunStatusLog?.Invoke($"Cancelled during sorting");
+                        break;
+                    }
                 }
             }
 
@@ -102,9 +105,9 @@ namespace PictureMoverGui.DirectoryUtils
             return _nrOfErrors;
         }
 
-        private void DoStructuredOrDirectTransferFile(GenericFileInfo file)
+        private void DoStructuredOrDirectTransferFile(string destinationPath, GenericFileInfo file)
         {
-            DirectoryInfo destinationDir = GetDestinationDirectory(file);
+            DirectoryInfo destinationDir = GetDestinationDirectory(destinationPath, file);
             string destinationFilename = _datePrependOrOriginalFilenameAction(file);
             FilenameCollisionRenamer filenameCollisionRenamer = new FilenameCollisionRenamer(
                 _nameCollisionAction, 
@@ -161,17 +164,17 @@ namespace PictureMoverGui.DirectoryUtils
             return newFilename;
         }
 
-        private DirectoryInfo GetDestinationDirectory(GenericFileInfo file)
+        private DirectoryInfo GetDestinationDirectory(string destinationPath, GenericFileInfo file)
         {
             string eventName = "";
             if (FileInEvent(file, out eventName))
             {
-                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{_destinationPath}\\{eventName}");
+                DirectoryInfo eventDirectory = Directory.CreateDirectory($"{destinationPath}\\{eventName}");
                 return eventDirectory;
             }
             else
             {
-                return _structuredOrDirectTransferAction(file);
+                return _structuredOrDirectTransferAction(destinationPath, file);
             }
         }
 
@@ -190,21 +193,21 @@ namespace PictureMoverGui.DirectoryUtils
             return false;
         }
 
-        private DirectoryInfo GetDestinationDirectoryStructured(GenericFileInfo file)
+        private DirectoryInfo GetDestinationDirectoryStructured(string destinationPath, GenericFileInfo file)
         {
             DateTime dt = file.LastWriteTime;
 
             string monthName = char.ToUpper(dt.ToString("MMMM")[0]) + dt.ToString("MMMM").Substring(1);
             string monthNameAndDate = $"{dt.ToString("MM")} {monthName}";
-            string thisDirectory = $"{_destinationPath}\\{dt.Year}\\{monthNameAndDate}";
+            string thisDirectory = $"{destinationPath}\\{dt.Year}\\{monthNameAndDate}";
 
             DirectoryInfo destinationDir = Directory.CreateDirectory(thisDirectory);
             return destinationDir;
         }
 
-        private DirectoryInfo GetDestinationDirectoryDirect(GenericFileInfo _)
+        private DirectoryInfo GetDestinationDirectoryDirect(string destinationPath, GenericFileInfo _)
         {
-            DirectoryInfo destinationDir = Directory.CreateDirectory(_destinationPath);
+            DirectoryInfo destinationDir = Directory.CreateDirectory(destinationPath);
             return destinationDir;
         }
 

@@ -107,27 +107,59 @@ namespace PictureMoverGui.SubViewModels
             if (AllowStartSorting)
             {
                 System.Diagnostics.Debug.WriteLine("OnStartSorting");
-                _pictureMoverWorker.StartWorker(new PictureMoverArguments(
-                    _masterStore.RunningStore.RunState,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
-                    //_masterStore.FileExtensionStore.GetListOfValidExtension(),
-                    ExtensionLookup.imageAndVideoExtensions,
-                    new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice,
-                    _masterStore.UsbDeviceStore.ChosenMediaLastTime,
-                    _masterStore.RunningStore.SetRunState,
-                    _masterStore.RunningStore.SetStatusPercentage,
-                    _masterStore.RunningStore.AddStatusLog,
-                    OnPictureMoverWorkerDone
-                ));
+                if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
+                {
+                    _pictureMoverWorker.StartWorker(new PictureMoverArguments(
+                        _masterStore.RunningStore.RunState,
+                        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
+                        _masterStore.FileExtensionStore.GetListOfValidExtension(),
+                        //ExtensionLookup.imageAndVideoExtensions,
+                        new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
+                        MediaTypeEnum.NormalDirectory,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
+                        null,
+                        DateTime.MinValue,
+                        _masterStore.RunningStore.SetRunState,
+                        _masterStore.RunningStore.SetStatusPercentage,
+                        _masterStore.RunningStore.AddStatusLog,
+                        OnPictureMoverWorkerDone
+                    ));                    
+                }
+                else if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
+                {
+                    _pictureMoverWorker.StartWorker(new PictureMoverArguments(
+                        _masterStore.RunningStore.RunState,
+                        //new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, @"I:\PictureMoverTesting\PhoneTest1\UsbDev" },
+                        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
+                        true,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
+                        _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
+                        //_masterStore.FileExtensionStore.GetListOfValidExtension(),
+                        ExtensionLookup.imageAndVideoExtensions,
+                        new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
+                        MediaTypeEnum.MediaDevice,
+                        null,
+                        _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+                        _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
+                        _masterStore.RunningStore.SetRunState,
+                        _masterStore.RunningStore.SetStatusPercentage,
+                        _masterStore.RunningStore.AddStatusLog,
+                        OnPictureMoverWorkerDone
+                    ));
+                }
+                else
+                {
+                    throw new NotImplementedException($"SorterInterfaceViewModel has not implemented supported for this media type: {_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType}");
+                }
             }
         }
 

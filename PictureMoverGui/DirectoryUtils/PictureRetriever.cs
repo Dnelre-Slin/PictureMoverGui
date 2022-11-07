@@ -14,7 +14,7 @@ namespace PictureMoverGui.DirectoryUtils
 
         public bool IsValid { get; }
 
-        public PictureRetriever(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo)
+        public PictureRetriever(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice)
         {
             if (mediaType == MediaTypeEnum.NormalDirectory)
             {
@@ -46,9 +46,9 @@ namespace PictureMoverGui.DirectoryUtils
                 //    }
                 //}
                 //if (m != null)
-                if (mediaDeviceInfo.MediaDevice != null)
+                if (mediaDevice != null)
                 {
-                    _genericFileInfoServer = new GenericFileInfoServer(null, mediaDeviceInfo.MediaDevice);
+                    _genericFileInfoServer = new GenericFileInfoServer(null, mediaDevice);
                     IsValid = true;
                 }
                 else
@@ -86,14 +86,14 @@ namespace PictureMoverGui.DirectoryUtils
             System.Diagnostics.Debug.WriteLine(e);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo, BackgroundWorker sender_worker)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker)
         {
-            return GetExtensions(mediaType, source, mediaDeviceInfo, sender_worker, DateTime.MinValue);
+            return GetExtensions(mediaType, source, mediaDevice, sender_worker, DateTime.MinValue);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDeviceModel mediaDeviceInfo, BackgroundWorker sender_worker, DateTime newerThan)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, DateTime newerThan)
         {
-            using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source, mediaDeviceInfo))
+            using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source, mediaDevice))
             {
                 if (!pictureRetriever.IsValid)
                 {

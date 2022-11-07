@@ -6,11 +6,11 @@ namespace PictureMoverGui.Models
 {
     public class CollectiveDeviceInfoModel
     {
-        public List<DriveInfoModel> DriveInfoList { get; }
+        public List<RemovableDeviceModel> DriveInfoList { get; }
         public List<MediaDeviceModel> MediaDeviceList { get; }
         //public MediaDeviceModel SelectedMediaDevice { get; }
 
-        public CollectiveDeviceInfoModel(List<DriveInfoModel> driveInfoList, List<MediaDeviceModel> mediaDeviceList)
+        public CollectiveDeviceInfoModel(List<RemovableDeviceModel> driveInfoList, List<MediaDeviceModel> mediaDeviceList)
         {
             DriveInfoList = driveInfoList;
             MediaDeviceList = mediaDeviceList;

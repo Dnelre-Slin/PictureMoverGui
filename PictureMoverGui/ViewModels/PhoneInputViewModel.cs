@@ -1,6 +1,8 @@
 ﻿using MediaDevices;
 using PictureMoverGui.Commands;
+using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
+using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
 using PictureMoverGui.Store;
 using PictureMoverGui.SubViewModels;
@@ -19,13 +21,16 @@ namespace PictureMoverGui.ViewModels
     public class PhoneInputViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
-        private PhoneUnlockPoller _phoneUnlockPoller;
+        //private PhoneUnlockPoller _phoneUnlockPoller;
+        private UsbMediaDeviceUnlockWorker _usbMediaDeviceUnlockWorker;
+        private ExtensionCounterWorker _extensionCounterWorker;
 
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
         public SorterInterfaceViewModel SorterInterface { get; }
 
         //public IEnumerable<string> ItemChoices => _masterStore.UsbDeviceStore.DriveInfoList.Select(di => di.DriveId);
-        public IEnumerable<string> ItemChoices => _masterStore.UsbDeviceStore.MediaDeviceList.Select(md => md.FriendlyName);
+        public IEnumerable<string> MediaDeviceChoices => _masterStore.UsbDeviceStore.MediaDeviceList.Select(md => md.Name);
+        public IEnumerable<string> RemovableDeviceChoices => _masterStore.UsbDeviceStore.RemovableDeviceList.Select(rd => rd.Name);
         //private string _chosenString;
         //public string ChosenString
         //{
@@ -76,8 +81,8 @@ namespace PictureMoverGui.ViewModels
         //    }
         //}
 
-        public string PhoneConnected => _masterStore.UsbDeviceStore.SelectedMediaDevice != null ? "✔️" : "❌";
-        public Brush PhoneConnectedColor => _masterStore.UsbDeviceStore.SelectedMediaDevice != null ? Brushes.Green : Brushes.Red;
+        public string PhoneConnected => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? "✔️" : "❌";
+        public Brush PhoneConnectedColor => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? Brushes.Green : Brushes.Red;
         //public string PhoneUnlocked => _phoneUnlockPoller.IsLocked ? "🔒" : "🔓";
         //public Brush PhoneUnlockedColor => _phoneUnlockPoller.IsLocked ? Brushes.Red : Brushes.Green;       
         public string PhoneUnlocked => _isLocked ? "🔒" : "🔓";
@@ -85,25 +90,43 @@ namespace PictureMoverGui.ViewModels
         public Visibility PhonePickerVisibility => _masterStore.UsbDeviceStore.MediaDeviceList.Count() > 0 ? Visibility.Visible : Visibility.Hidden;
         public string PhoneChosenName
         {
-            get => _masterStore.UsbDeviceStore.ChosenMediaDeviceName;
+            get => _masterStore.UsbDeviceStore.SelectedMediaDevice.Name;
             set
             {
-                if (value != null && value != _masterStore.UsbDeviceStore.ChosenMediaDeviceName)
+                if (value != null && value != _masterStore.UsbDeviceStore.SelectedMediaDevice.Name)
                 {
-                    _masterStore.UsbDeviceStore.SetNewChosenMediaName(value);
+                    _masterStore.UsbDeviceStore.SetNewSelectedMediaDevice(value);
                 }
             }
         }
-        public string LastRunDateTime => _masterStore.UsbDeviceStore.ChosenMediaLastTime.ToString();
-            
-            //=> _masterStore.UsbDeviceStore.ChosenMediaDeviceName;
+        public string LastRunDateTime => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.ToString();
+
+        //=> _masterStore.UsbDeviceStore.ChosenMediaDeviceName;
+
+        public string RemovableDeviceConnected => _masterStore.UsbDeviceStore.SelectedRemovableDevice.IsConnected ? "✔️" : "❌";
+        public Brush RemovableDeviceConnectedColor => _masterStore.UsbDeviceStore.SelectedRemovableDevice.IsConnected ? Brushes.Green : Brushes.Red;
+        public Visibility RemovableDevicePickerVisibility => _masterStore.UsbDeviceStore.RemovableDeviceList.Count() > 0 ? Visibility.Visible : Visibility.Hidden;
+        public string RemovableDeviceChosenName
+        {
+            get => _masterStore.UsbDeviceStore.SelectedRemovableDevice.Name;
+            set
+            {
+                if (value != null && value != _masterStore.UsbDeviceStore.SelectedRemovableDevice.Name)
+                {
+                    _masterStore.UsbDeviceStore.SetNewSelectedRemovableDevice(value);
+                }
+            }
+        }
 
         public ICommand RefreshDevices { get; }
         public ICommand ConnectDevice { get; }
+        public ICommand RefreshUsbDevices { get; }
 
         public PhoneInputViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
+            _usbMediaDeviceUnlockWorker = new UsbMediaDeviceUnlockWorker();
+            _extensionCounterWorker = new ExtensionCounterWorker();
 
             DestinationDirectorySelector = new DirectorySelectorLiteViewModel(masterStore);
             SorterInterface = new SorterInterfaceViewModel(masterStore);
@@ -112,8 +135,11 @@ namespace PictureMoverGui.ViewModels
 
             RefreshDevices = new CallbackCommand(OnRefreshDevices);
             ConnectDevice = new CallbackCommand(OnConnectDevice);
+            RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
+
+            StartUnlockWorker();
 
             //_phoneUnlockPoller = new PhoneUnlockPoller(_masterStore, OnPhoneUnlockChange);
         }
@@ -128,19 +154,38 @@ namespace PictureMoverGui.ViewModels
             //_phoneUnlockPoller.Dispose();
         }
 
-        private void UsbDeviceStore_DeviceInfoChanged(CollectiveDeviceInfoModel collectiveDeviceInfo)
+        private void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
         {
             System.Diagnostics.Debug.WriteLine($"Device change: PhoneConnected: {PhoneConnected}");
             System.Diagnostics.Debug.WriteLine($"Device change: PhoneChosenName: {PhoneChosenName}");
-            foreach (var ic in ItemChoices)
+            System.Diagnostics.Debug.WriteLine($"Device change: RemovableDeviceConnected: {RemovableDeviceConnected}");
+            foreach (var ic in MediaDeviceChoices)
             {
                 System.Diagnostics.Debug.WriteLine($"Device change: ItemChoices: {ic}");
             }
-            OnPropertyChanged(nameof(ItemChoices));
+
+            if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
+            {
+                _isLocked = true;
+                OnPropertyChanged(nameof(PhoneUnlocked));
+                OnPropertyChanged(nameof(PhoneUnlockedColor));
+            }
+
+            StartUnlockWorker();
+            StopUnlockWorker();
+
+            OnPropertyChanged(nameof(MediaDeviceChoices));
+            OnPropertyChanged(nameof(RemovableDeviceChoices));
+
             OnPropertyChanged(nameof(PhoneConnected));
             OnPropertyChanged(nameof(PhoneConnectedColor));
             OnPropertyChanged(nameof(PhonePickerVisibility));
             OnPropertyChanged(nameof(PhoneChosenName));
+
+            OnPropertyChanged(nameof(RemovableDeviceConnected));
+            OnPropertyChanged(nameof(RemovableDeviceConnectedColor));
+            OnPropertyChanged(nameof(RemovableDevicePickerVisibility));
+            OnPropertyChanged(nameof(RemovableDeviceChosenName));
             //OnPropertyChanged(nameof(ChosenString));
             //foreach (var drive in collectiveDeviceInfo.DriveInfoList)
             //{
@@ -152,13 +197,41 @@ namespace PictureMoverGui.ViewModels
             //}
         }
 
-        private void OnPhoneUnlockChange(bool phoneLocked)
+        private void StartUnlockWorker()
         {
-            System.Diagnostics.Debug.WriteLine($"OnPhoneUnlockChange : {phoneLocked}");
-            _isLocked = phoneLocked;
-            OnPropertyChanged(nameof(PhoneUnlocked));
-            OnPropertyChanged(nameof(PhoneUnlockedColor));
+            if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null && _isLocked)
+            {
+                _usbMediaDeviceUnlockWorker.StartWorker(_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice, OnUnlockWorkerDone);
+            }
         }
+
+        private void StopUnlockWorker()
+        {
+            if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
+            {
+                _usbMediaDeviceUnlockWorker.CancelWorker();
+            }
+        }
+
+        private void OnUnlockWorkerDone(WorkStatus workStatus)
+        {
+            System.Diagnostics.Debug.WriteLine($"OnUnlockWorkerDone : {workStatus}");
+            if (workStatus == WorkStatus.Success)
+            {
+                _isLocked = false;
+                StartExtensionCountnerWorker();
+                OnPropertyChanged(nameof(PhoneUnlocked));
+                OnPropertyChanged(nameof(PhoneUnlockedColor));
+            }
+        }
+
+        //private void OnPhoneUnlockChange(bool phoneLocked)
+        //{
+        //    System.Diagnostics.Debug.WriteLine($"OnPhoneUnlockChange : {phoneLocked}");
+        //    _isLocked = phoneLocked;
+        //    OnPropertyChanged(nameof(PhoneUnlocked));
+        //    OnPropertyChanged(nameof(PhoneUnlockedColor));
+        //}
 
         protected void OnRefreshDevices(object parameter)
         {
@@ -168,6 +241,62 @@ namespace PictureMoverGui.ViewModels
         protected void OnConnectDevice(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnConnectDevice");
+        }
+        protected void OnRefreshUsbDevices(object parameter)
+        {
+            _masterStore.UsbDeviceStore.RefreshUsbDevices();
+        }
+
+        protected void StartExtensionCountnerWorker()
+        {
+            if (!_isLocked)
+            {
+                _masterStore.FileExtensionStore.Clear(); // Clear old extensions
+                _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
+                    _masterStore.RunningStore.RunState,
+                    MediaTypeEnum.MediaDevice,
+                    null,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
+                    //DateTime.MinValue,
+                    _masterStore.RunningStore.SetRunState,
+                    OnExtensionCounterWorkerDone
+                ));
+            }
+        }
+
+        protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)
+        {
+            System.Diagnostics.Debug.WriteLine("Worker done!");
+            System.Diagnostics.Debug.WriteLine(workStatus);
+            switch (workStatus)
+            {
+                case WorkStatus.Unfinished:
+                    _masterStore.FileExtensionStore.Clear();
+                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
+                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
+                    break;
+                case WorkStatus.Success:
+                    _masterStore.FileExtensionStore.Set(extensionInfo);
+                    break;
+                case WorkStatus.Invalid:
+                    _masterStore.FileExtensionStore.Clear();
+                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
+                    System.Diagnostics.Debug.WriteLine("The source was invald");
+                    break;
+                case WorkStatus.Cancelled:
+                    _masterStore.FileExtensionStore.Clear();
+                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
+                    break;
+                default:
+                    throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
+            }
+        }
+
+        protected void OnExtensionCounterWorkerCancel(object parameter)
+        {
+            System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
+            _extensionCounterWorker.CancelWorker();
         }
     }
 }

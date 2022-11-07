@@ -7,23 +7,34 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <WrapPanel>
                 <TextBlock FontSize="20" Foreground="{Binding PhoneConnectedColor}" Text="{Binding PhoneConnected}"></TextBlock>
                 <TextBlock FontSize="20" Margin="10 0" Foreground="{Binding PhoneUnlockedColor}" Text="{Binding PhoneUnlocked}"></TextBlock>
-                <TextBlock FontSize="20" Margin="0 0 10 0" Text="{Binding PhoneChosenName}"></TextBlock>
-                <ComboBox FontSize="20" MinWidth="100" ItemsSource="{Binding ItemChoices}" SelectedValue="{Binding PhoneChosenName}" Visibility="{Binding PhonePickerVisibility}"></ComboBox>
+                <Button FontSize="20" Width="23" Height="24" Padding="-12" Content="🔄" Command="{Binding RefreshUsbDevices}"></Button>
+                <TextBlock FontSize="20" Margin="10 0" Text="{Binding PhoneChosenName}"></TextBlock>
+                <ComboBox FontSize="20" MinWidth="100" ItemsSource="{Binding MediaDeviceChoices}" SelectedValue="{Binding PhoneChosenName}" Visibility="{Binding PhonePickerVisibility}"></ComboBox>
                 <TextBlock FontSize="20" Margin="10 0 0 0" Text="Sist kjørt: "></TextBlock>
                 <TextBlock FontSize="20" Margin="10 0 0 0" Text="{Binding LastRunDateTime}"></TextBlock>
             </WrapPanel>
             <!--<Button Content="Refresh" Command="{Binding RefreshDevices}" FontSize="20"></Button>
             <Button Content="Connect" Command="{Binding ConnectDevice}" FontSize="20"></Button>-->
         </StackPanel>
-        <subviews:DirectorySelectorLiteView Grid.Row="1" DataContext="{Binding DestinationDirectorySelector}"></subviews:DirectorySelectorLiteView>
+        <StackPanel Grid.Row="1">
+            <WrapPanel>
+                <TextBlock FontSize="20" Foreground="{Binding RemovableDeviceConnectedColor}" Text="{Binding RemovableDeviceConnected}"></TextBlock>
+                <Button FontSize="20" Width="23" Height="24" Padding="-12" Content="🔄" Command="{Binding RefreshUsbDevices}"></Button>
+                <TextBlock FontSize="20" Margin="10 0" Text="{Binding RemovableDeviceChosenName}"></TextBlock>
+                <ComboBox FontSize="20" MinWidth="100" ItemsSource="{Binding RemovableDeviceChoices}" SelectedValue="{Binding RemovableDeviceChosenName}" Visibility="{Binding RemovableDevicePickerVisibility}"></ComboBox>
+            </WrapPanel>
+            <TextBlock FontSize="20" Margin="10 0 0 0" Text="{Binding LastRunDateTime}"></TextBlock>
+        </StackPanel>
+        <subviews:DirectorySelectorLiteView Grid.Row="2" DataContext="{Binding DestinationDirectorySelector}"></subviews:DirectorySelectorLiteView>
         <subviews:SorterInterfaceView Grid.Row="3" DataContext="{Binding SorterInterface}"></subviews:SorterInterfaceView>
     </Grid>
 </UserControl>

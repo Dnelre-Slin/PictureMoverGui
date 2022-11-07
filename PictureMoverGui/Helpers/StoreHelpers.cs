@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Models;
+using System;
 
 namespace PictureMoverGui.Helpers.StoreHelpers
 {
@@ -25,6 +26,30 @@ namespace PictureMoverGui.Helpers.StoreHelpers
             CompareFilesAction = model.CompareFilesAction;
             HashType = model.HashType;
             MediaType = model.MediaType;
+        }
+    }
+
+    public class MediaDeviceStorage
+    {
+        public string SeriaId { get; set; }
+        public DateTime LastRun { get; set; }
+
+        public MediaDeviceStorage(string serialId, DateTime lastRun)
+        {
+            SeriaId = serialId;
+            LastRun = lastRun;
+        }
+    }
+
+    public class RemovableDeviceStorage
+    {
+        public string SerialId { get; set; }
+        public string Path { get; set; }
+
+        public RemovableDeviceStorage(string serialId, string path)
+        {
+            SerialId = serialId;
+            Path = path;
         }
     }
 }
