@@ -7,9 +7,9 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading;
 
-namespace PictureMoverGui.DirectoryWorkers
+namespace PictureMoverGui.DeviceWorkers
 {
-    public class UsbMediaDeviceUnlockWorker
+    public class MediaDeviceUnlockWorker
     {
         private BackgroundWorker _worker;
         //private string _chosenMediaDeviceName;
@@ -19,7 +19,7 @@ namespace PictureMoverGui.DirectoryWorkers
         private WorkStatus _workStatus;
         private ManualResetEvent _manualEvent;
 
-        public UsbMediaDeviceUnlockWorker()
+        public MediaDeviceUnlockWorker()
         {
             _worker = null;
         }

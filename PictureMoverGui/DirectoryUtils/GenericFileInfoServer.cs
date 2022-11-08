@@ -41,7 +41,8 @@ namespace PictureMoverGui.DirectoryUtils
         {
             if (_directroyInfo != null)
             {
-                foreach (var file in _directroyInfo.EnumerateFiles(searchPattern, searchOption).CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions))
+                //foreach (var file in _directroyInfo.EnumerateFiles(searchPattern, searchOption).CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions).CatchExceptions(WorkerHelpers.HandleFileAccessExceptions))
+                foreach (var file in _directroyInfo.EnumerateFiles(searchPattern, searchOption).CatchExceptions(WorkerHelpers.HandleFileAccessExceptions))
                 {
                     yield return new GenericFileInfo(file, null);
                 }
@@ -51,7 +52,8 @@ namespace PictureMoverGui.DirectoryUtils
                 MediaDriveInfo[] mi = _mediaDevice.GetDrives();
                 foreach (var drive in _mediaDevice.GetDrives())
                 {
-                    foreach (var file in drive.RootDirectory.EnumerateFiles(searchPattern, searchOption).CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions))
+                    //foreach (var file in drive.RootDirectory.EnumerateFiles(searchPattern, searchOption).CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions).CatchExceptions(WorkerHelpers.HandleFileAccessExceptions))
+                    foreach (var file in drive.RootDirectory.EnumerateFiles(searchPattern, searchOption).CatchExceptions(WorkerHelpers.HandleFileAccessExceptions))
                     {
                         yield return new GenericFileInfo(null, file);
                     }

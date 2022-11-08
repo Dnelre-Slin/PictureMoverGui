@@ -1,5 +1,6 @@
 ﻿using MediaDevices;
 using PictureMoverGui.Commands;
+using PictureMoverGui.DeviceWorkers;
 using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Helpers.HelperClasses;
@@ -22,7 +23,7 @@ namespace PictureMoverGui.ViewModels
     {
         private MasterStore _masterStore;
         //private PhoneUnlockPoller _phoneUnlockPoller;
-        private UsbMediaDeviceUnlockWorker _usbMediaDeviceUnlockWorker;
+        private MediaDeviceUnlockWorker _usbMediaDeviceUnlockWorker;
         private ExtensionCounterWorker _extensionCounterWorker;
 
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
@@ -125,7 +126,7 @@ namespace PictureMoverGui.ViewModels
         public PhoneInputViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
-            _usbMediaDeviceUnlockWorker = new UsbMediaDeviceUnlockWorker();
+            _usbMediaDeviceUnlockWorker = new MediaDeviceUnlockWorker();
             _extensionCounterWorker = new ExtensionCounterWorker();
 
             DestinationDirectorySelector = new DirectorySelectorLiteViewModel(masterStore);
@@ -166,6 +167,7 @@ namespace PictureMoverGui.ViewModels
 
             if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
             {
+                OnExtensionCounterWorkerCancel(null);
                 _isLocked = true;
                 OnPropertyChanged(nameof(PhoneUnlocked));
                 OnPropertyChanged(nameof(PhoneUnlockedColor));

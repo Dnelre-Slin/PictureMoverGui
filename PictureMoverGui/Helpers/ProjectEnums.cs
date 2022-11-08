@@ -41,4 +41,11 @@
         Invalid,
         Cancelled
     }
+
+    public enum DeviceChangeType
+    {
+        None,
+        Added,
+        Removed
+    }
 }

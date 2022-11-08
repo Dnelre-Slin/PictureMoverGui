@@ -1,4 +1,5 @@
 ﻿using MediaDevices;
+using PictureMoverGui.DeviceWorkers;
 using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
@@ -24,7 +25,9 @@ namespace PictureMoverGui.Store
         //public static event Action UsbMediaDeviceAdded;
         //public static event Action UsbMediaDeviceRemoved;
 
-        private UsbDeviceLookupWorker _usbDeviceLookupWorker;
+        //private UsbDeviceLookupWorker _usbDeviceLookupWorker;
+        private MediaDeviceChangeWorker _mediaDeviceChangeWorker;
+        private RemovableDeviceChangeWorker _removableDeviceChangeWorker;
 
         //private CollectiveDeviceInfoModel _collectiveDeviceInfo;
         private List<MediaDeviceModel> _mediaDeviceList;
@@ -47,7 +50,9 @@ namespace PictureMoverGui.Store
 
         public UsbDeviceStore()
         {
-            _usbDeviceLookupWorker = new UsbDeviceLookupWorker();
+            //_usbDeviceLookupWorker = new UsbDeviceLookupWorker();
+            _mediaDeviceChangeWorker = new MediaDeviceChangeWorker();
+            _removableDeviceChangeWorker = new RemovableDeviceChangeWorker();
             //_collectiveDeviceInfo = new CollectiveDeviceInfoModel(new List<DriveInfoModel>(), new List<MediaDeviceModel>());
             _mediaDeviceList = new List<MediaDeviceModel>();
             _removableDeviceList = new List<RemovableDeviceModel>();
@@ -85,22 +90,26 @@ namespace PictureMoverGui.Store
         private void UsbDeviceNotifier_UsbRemovableDeviceAdded()
         {
             Debug.WriteLine("Removable device added");
-            UpdateUsbInfoLists();
+            //UpdateUsbInfoLists();
+            _removableDeviceChangeWorker.StartWorker(DeviceChangeType.Added, _removableDeviceList.Count, RemovableDeviceChangeWorkDone);
         }
 
         private void UsbDeviceNotifier_UsbRemovableDeviceRemoved()
         {
             Debug.WriteLine("Removable device removed");
             SelectedRemovableDevice = new RemovableDeviceModel(SelectedRemovableDevice.Name, SelectedRemovableDevice.SerialId, SelectedRemovableDevice.Path, false);
+            int currentCount = _removableDeviceList.Count;
             _removableDeviceList.Clear();
             DeviceInfoChanged?.Invoke(this);
-            UpdateUsbInfoLists();
+            //UpdateUsbInfoLists();
+            _removableDeviceChangeWorker.StartWorker(DeviceChangeType.Removed, currentCount, RemovableDeviceChangeWorkDone);
         }
 
         private void UsbDeviceNotifier_UsbMediaDeviceAdded()
         {
             Debug.WriteLine("Media device added");
-            UpdateUsbInfoLists();
+            _mediaDeviceChangeWorker.StartWorker(DeviceChangeType.Added, _mediaDeviceList.Count, MediaDeviceChangeWorkDone);
+            //UpdateUsbInfoLists();
             //UsbMediaDeviceAdded?.Invoke(null);
         }
 
@@ -110,10 +119,12 @@ namespace PictureMoverGui.Store
             SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun, null);
             //SelectedMediaDevice = null;
             //_mediaDeviceList = new List<MediaDeviceModel>();
+            int currentCount = _mediaDeviceList.Count;
             _mediaDeviceList.Clear();
             DeviceInfoChanged?.Invoke(this);
             //UsbMediaDeviceRemoved?.Invoke();
-            UpdateUsbInfoLists();
+            //UpdateUsbInfoLists();
+            _mediaDeviceChangeWorker.StartWorker(DeviceChangeType.Removed, currentCount, MediaDeviceChangeWorkDone);
         }
 
         //public void Setup(Window MainWindow)
@@ -194,31 +205,40 @@ namespace PictureMoverGui.Store
         private void UpdateUsbInfoLists()
         {
             //IsResolving = true;
-            _usbDeviceLookupWorker.StartWorker(UpdateUsbInfoListsWorkDone);
+            //_usbDeviceLookupWorker.StartWorker(UpdateUsbInfoListsWorkDone);
+            _mediaDeviceChangeWorker.StartWorker(DeviceChangeType.None, 0, MediaDeviceChangeWorkDone);
+            _removableDeviceChangeWorker.StartWorker(DeviceChangeType.None, 0, RemovableDeviceChangeWorkDone);
         }
 
-        //private void UpdateUsbInfoListsWorkDone(WorkStatus workStatus, CollectiveDeviceInfoModel collectiveDeviceInfo)
-        private void UpdateUsbInfoListsWorkDone(WorkStatus workStatus, Dictionary<string, MediaDevice> mediaDeviceDict, Dictionary<string, string> removableDeviceDict)
+        private void MediaDeviceChangeWorkDone(WorkStatus workStatus, Dictionary<string, MediaDevice> mediaDeviceDict)
         {
             _mediaDeviceList.Clear();
-            _removableDeviceList.Clear();
             if (workStatus == WorkStatus.Success)
             {
-                //_collectiveDeviceInfo = collectiveDeviceInfo;
-                //_mediaDeviceList = mediaDeviceList;
-                //_mediaDeviceList.Clear();
                 foreach (var kv in mediaDeviceDict)
                 {
                     _mediaDeviceList.Add(new MediaDeviceModel(kv.Value.FriendlyName, kv.Key, DateTime.MinValue, kv.Value));
                 }
-                _mediaDeviceList.Add(new MediaDeviceModel("Test Device 123", "1234567890", DateTime.MinValue, null));
+                //_mediaDeviceList.Add(new MediaDeviceModel("Test Device 123", "1234567890", DateTime.MinValue, null));
 
                 MediaDeviceModel newSelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == SelectedMediaDevice.SerialId);
                 if (newSelectedMediaDevice != null)
                 {
                     SelectedMediaDevice = newSelectedMediaDevice;
                 }
+            }
+            else
+            {
+                SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun, null);
+            }
+            DeviceInfoChanged?.Invoke(this);
+        }
 
+        private void RemovableDeviceChangeWorkDone(WorkStatus workStatus, Dictionary<string, string> removableDeviceDict)
+        {
+            _removableDeviceList.Clear();
+            if (workStatus == WorkStatus.Success)
+            {
                 foreach (var kv in removableDeviceDict)
                 {
                     _removableDeviceList.Add(new RemovableDeviceModel(kv.Value, kv.Key, "\\", true));
@@ -229,26 +249,66 @@ namespace PictureMoverGui.Store
                 {
                     SelectedRemovableDevice = _removableDeviceList.Find(rd => rd.SerialId == SelectedRemovableDevice.SerialId);
                 }
-                //SelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == );
-                //if (SelectedMediaDevice != null)
-                //{
-                //    Debug.WriteLine($"SerialId: {SelectedMediaDevice.SerialId}");
-                //}
             }
             else
             {
-                //_collectiveDeviceInfo = new CollectiveDeviceInfoModel(new List<DriveInfoModel>(), new List<MediaDeviceModel>());
-                //_mediaDeviceList.Clear();
-                //SelectedMediaDevice = null;
-                SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun, null);
                 SelectedRemovableDevice = new RemovableDeviceModel(SelectedRemovableDevice.Name, SelectedRemovableDevice.SerialId, SelectedRemovableDevice.Path, false);
             }
-            //IsResolving = false;
             DeviceInfoChanged?.Invoke(this);
-            //if (eventType == 2)
-            //{
-            //    UsbMediaDeviceAdded?.Invoke();
-            //}
         }
+
+        ////private void UpdateUsbInfoListsWorkDone(WorkStatus workStatus, CollectiveDeviceInfoModel collectiveDeviceInfo)
+        //private void UpdateUsbInfoListsWorkDone(WorkStatus workStatus, Dictionary<string, MediaDevice> mediaDeviceDict, Dictionary<string, string> removableDeviceDict)
+        //{
+        //    _mediaDeviceList.Clear();
+        //    _removableDeviceList.Clear();
+        //    if (workStatus == WorkStatus.Success)
+        //    {
+        //        //_collectiveDeviceInfo = collectiveDeviceInfo;
+        //        //_mediaDeviceList = mediaDeviceList;
+        //        //_mediaDeviceList.Clear();
+        //        foreach (var kv in mediaDeviceDict)
+        //        {
+        //            _mediaDeviceList.Add(new MediaDeviceModel(kv.Value.FriendlyName, kv.Key, DateTime.MinValue, kv.Value));
+        //        }
+        //        _mediaDeviceList.Add(new MediaDeviceModel("Test Device 123", "1234567890", DateTime.MinValue, null));
+
+        //        MediaDeviceModel newSelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == SelectedMediaDevice.SerialId);
+        //        if (newSelectedMediaDevice != null)
+        //        {
+        //            SelectedMediaDevice = newSelectedMediaDevice;
+        //        }
+
+        //        foreach (var kv in removableDeviceDict)
+        //        {
+        //            _removableDeviceList.Add(new RemovableDeviceModel(kv.Value, kv.Key, "\\", true));
+        //        }
+
+        //        RemovableDeviceModel newSelectedRemovableDevice = _removableDeviceList.Find(rd => rd.SerialId == SelectedRemovableDevice.SerialId);
+        //        if (newSelectedRemovableDevice != null)
+        //        {
+        //            SelectedRemovableDevice = _removableDeviceList.Find(rd => rd.SerialId == SelectedRemovableDevice.SerialId);
+        //        }
+        //        //SelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == );
+        //        //if (SelectedMediaDevice != null)
+        //        //{
+        //        //    Debug.WriteLine($"SerialId: {SelectedMediaDevice.SerialId}");
+        //        //}
+        //    }
+        //    else
+        //    {
+        //        //_collectiveDeviceInfo = new CollectiveDeviceInfoModel(new List<DriveInfoModel>(), new List<MediaDeviceModel>());
+        //        //_mediaDeviceList.Clear();
+        //        //SelectedMediaDevice = null;
+        //        SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun, null);
+        //        SelectedRemovableDevice = new RemovableDeviceModel(SelectedRemovableDevice.Name, SelectedRemovableDevice.SerialId, SelectedRemovableDevice.Path, false);
+        //    }
+        //    //IsResolving = false;
+        //    DeviceInfoChanged?.Invoke(this);
+        //    //if (eventType == 2)
+        //    //{
+        //    //    UsbMediaDeviceAdded?.Invoke();
+        //    //}
+        //}
     }
 }

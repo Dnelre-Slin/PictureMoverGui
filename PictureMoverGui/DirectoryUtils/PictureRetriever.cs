@@ -73,12 +73,12 @@ namespace PictureMoverGui.DirectoryUtils
 
         public IEnumerable<GenericFileInfo> EnumerateFiles()
         {
-            return _genericFileInfoServer.EnumerateFiles();
+            return _genericFileInfoServer.EnumerateFiles().CatchExceptions(WorkerHelpers.HandleFileAccessExceptions);
         }
 
         public IEnumerable<GenericFileInfo> EnumerateFiles(string searchPattern, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-            return _genericFileInfoServer.EnumerateFiles(searchPattern, searchOption);
+            return _genericFileInfoServer.EnumerateFiles(searchPattern, searchOption).CatchExceptions(WorkerHelpers.HandleFileAccessExceptions);
         }
 
         static private void tmpCatcher(Exception e)
