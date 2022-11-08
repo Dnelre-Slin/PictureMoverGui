@@ -86,6 +86,7 @@ namespace PictureMoverGui.SubViewModels
         {
             if (CanOpenDialog)
             {
+                _masterStore.RunningStore.ResetInfoFileCount();
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
                 _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
                     _masterStore.RunningStore.RunState,
@@ -96,6 +97,7 @@ namespace PictureMoverGui.SubViewModels
                     //_masterStore.UsbDeviceStore.ChosenMediaLastTime,
                     DateTime.MinValue,
                     _masterStore.RunningStore.SetRunState, 
+                    _masterStore.RunningStore.IncrementInfoFileCount,
                     OnExtensionCounterWorkerDone
                 ));
             }

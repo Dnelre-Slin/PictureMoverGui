@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading;
 
@@ -68,16 +69,20 @@ namespace PictureMoverGui.DeviceWorkers
                 {
                     System.Diagnostics.Debug.WriteLine("Runnin worker loop");
                     //newCount = MediaDevice.GetDevices().Count();
-                    foreach (MediaDevice removableDevice in MediaDevice.GetDevices())
+                    foreach (var y in new ManagementObjectSearcher("Select Name, VolumeSerialNumber From Win32_LogicalDisk Where Description='Removable Disk'").Get())
                     {
-                        removableDevice.Connect();
-                        if (removableDevice.Protocol.Contains("MSC"))
-                        {
-                            removableDeviceDict.Add(removableDevice.SerialNumber, RemovableDeviceLookup.GetDriveLetterFromSerialNumber(removableDevice.SerialNumber));
-
-                        }
-                        removableDevice.Disconnect();
+                        removableDeviceDict.Add(y.GetPropertyValue("VolumeSerialNumber").ToString(), y.GetPropertyValue("Name").ToString());
                     }
+                    //foreach (MediaDevice removableDevice in MediaDevice.GetDevices())
+                    //{
+                    //    removableDevice.Connect();
+                    //    if (removableDevice.Protocol.Contains("MSC"))
+                    //    {
+                    //        removableDeviceDict.Add(removableDevice.SerialNumber, RemovableDeviceLookup.GetDriveLetterFromSerialNumber(removableDevice.SerialNumber));
+
+                    //    }
+                    //    removableDevice.Disconnect();
+                    //}
                     newCount = removableDeviceDict.Count;
                     System.Diagnostics.Debug.WriteLine(_currentCount);
                     System.Diagnostics.Debug.WriteLine(newCount);

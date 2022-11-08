@@ -52,6 +52,7 @@ namespace PictureMoverGui.DirectoryWorkers
                     _extensionCounterArguments.Source, 
                     _extensionCounterArguments.SelectedMediaDevice,
                     sender as BackgroundWorker, 
+                    _extensionCounterArguments.IncrementInfoFileCount,
                     _extensionCounterArguments.NewerThan);
 
                 if (_worker.CancellationPending)

@@ -119,6 +119,8 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
+        public int InfoFileCount => _masterStore.RunningStore.InfoFileCount;
+
         public ICommand RefreshDevices { get; }
         public ICommand ConnectDevice { get; }
         public ICommand RefreshUsbDevices { get; }
@@ -139,6 +141,7 @@ namespace PictureMoverGui.ViewModels
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
 
             StartUnlockWorker();
 
@@ -151,6 +154,9 @@ namespace PictureMoverGui.ViewModels
 
             DestinationDirectorySelector.Dispose();
             SorterInterface.Dispose();
+
+            _masterStore.UsbDeviceStore.DeviceInfoChanged -= UsbDeviceStore_DeviceInfoChanged;
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
 
             //_phoneUnlockPoller.Dispose();
         }
@@ -197,6 +203,11 @@ namespace PictureMoverGui.ViewModels
             //{
             //    System.Diagnostics.Debug.WriteLine($"{media.FriendlyName} : {media.SerialId}");
             //}
+        }
+
+        private void RunningStore_RunningStoreChanged(RunningStore runningStore)
+        {
+            OnPropertyChanged(nameof(InfoFileCount));
         }
 
         private void StartUnlockWorker()
@@ -251,20 +262,22 @@ namespace PictureMoverGui.ViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            if (!_isLocked)
-            {
-                _masterStore.FileExtensionStore.Clear(); // Clear old extensions
-                _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
-                    _masterStore.RunningStore.RunState,
-                    MediaTypeEnum.MediaDevice,
-                    null,
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-                    //DateTime.MinValue,
-                    _masterStore.RunningStore.SetRunState,
-                    OnExtensionCounterWorkerDone
-                ));
-            }
+            //if (!_isLocked)
+            //{
+            //    _masterStore.RunningStore.ResetInfoFileCount();
+            //    _masterStore.FileExtensionStore.Clear(); // Clear old extensions
+            //    _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
+            //        _masterStore.RunningStore.RunState,
+            //        MediaTypeEnum.MediaDevice,
+            //        null,
+            //        _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+            //        _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
+            //        //DateTime.MinValue,
+            //        _masterStore.RunningStore.SetRunState,
+            //        _masterStore.RunningStore.IncrementInfoFileCount,
+            //        OnExtensionCounterWorkerDone
+            //    ));
+            //}
         }
 
         protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)

@@ -109,6 +109,7 @@ namespace PictureMoverGui.SubViewModels
                 System.Diagnostics.Debug.WriteLine("OnStartSorting");
                 if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
                 {
+                    _masterStore.RunningStore.ResetInfoFileCount();
                     _pictureMoverWorker.StartWorker(new PictureMoverArguments(
                         _masterStore.RunningStore.RunState,
                         new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
@@ -128,11 +129,13 @@ namespace PictureMoverGui.SubViewModels
                         _masterStore.RunningStore.SetRunState,
                         _masterStore.RunningStore.SetStatusPercentage,
                         _masterStore.RunningStore.AddStatusLog,
+                        _masterStore.RunningStore.IncrementInfoFileCount,
                         OnPictureMoverWorkerDone
                     ));                    
                 }
                 else if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
                 {
+                    _masterStore.RunningStore.ResetInfoFileCount();
                     _pictureMoverWorker.StartWorker(new PictureMoverArguments(
                         _masterStore.RunningStore.RunState,
                         //new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, @"I:\PictureMoverTesting\PhoneTest1\UsbDev" },
@@ -153,6 +156,7 @@ namespace PictureMoverGui.SubViewModels
                         _masterStore.RunningStore.SetRunState,
                         _masterStore.RunningStore.SetStatusPercentage,
                         _masterStore.RunningStore.AddStatusLog,
+                        _masterStore.RunningStore.IncrementInfoFileCount,
                         OnPictureMoverWorkerDone
                     ));
                 }

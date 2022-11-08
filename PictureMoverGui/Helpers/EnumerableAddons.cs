@@ -52,5 +52,22 @@ namespace PictureMoverGui.Helpers
                 }
             }
         }
+
+        public static IEnumerable<T> IncrementInfoFileCount<T>(this IEnumerable<T> src, Action<int> incrementInfoFileCount)
+        {
+            using (IEnumerator<T> enumerator = src.GetEnumerator())
+            {
+                bool next = true;
+                while (next)
+                {
+                    next = enumerator.MoveNext();
+                    if (next)
+                    {
+                        incrementInfoFileCount.Invoke(1);
+                        yield return enumerator.Current;
+                    }
+                }
+            }
+        }
     }
 }

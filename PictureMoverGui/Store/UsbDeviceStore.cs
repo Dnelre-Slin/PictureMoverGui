@@ -58,7 +58,8 @@ namespace PictureMoverGui.Store
             _removableDeviceList = new List<RemovableDeviceModel>();
 
             SelectedMediaDevice = new MediaDeviceModel("Nils sin S20+", "75903ADBED212FFCAF7789C73E685D3D", new DateTime(2019, 01, 01), null);
-            SelectedRemovableDevice = new RemovableDeviceModel("I:", "AA00000000000489", "\\", false);
+            //SelectedRemovableDevice = new RemovableDeviceModel("I:", "AA00000000000489", "\\", false);
+            SelectedRemovableDevice = new RemovableDeviceModel("I:", "507653BC", "\\", false);
             //ChosenMediaDeviceName = "Nils sin S20+";
             //ChosenMediaDeviceSerialId = "75903ADBED212FFCAF7789C73E685D3D";
             //ChosenMediaLastTime = new DateTime(2019, 01, 01);

@@ -86,12 +86,12 @@ namespace PictureMoverGui.DirectoryUtils
             System.Diagnostics.Debug.WriteLine(e);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, Action<int> incrementInfoFileCount)
         {
-            return GetExtensions(mediaType, source, mediaDevice, sender_worker, DateTime.MinValue);
+            return GetExtensions(mediaType, source, mediaDevice, sender_worker, incrementInfoFileCount, DateTime.MinValue);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, DateTime newerThan)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, Action<int> incrementInfoFileCount, DateTime newerThan)
         {
             using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source, mediaDevice))
             {
@@ -102,7 +102,9 @@ namespace PictureMoverGui.DirectoryUtils
 
                 Dictionary<string, int> extensionMap = new Dictionary<string, int>();
 
-                foreach (GenericFileInfo file in pictureRetriever.EnumerateFiles("*", SearchOption.AllDirectories).CatchExceptions(tmpCatcher))
+                foreach (GenericFileInfo file in pictureRetriever.EnumerateFiles("*", SearchOption.AllDirectories)
+                    .CatchExceptions(tmpCatcher)
+                    .IncrementInfoFileCount(incrementInfoFileCount))
                 {
                     if (file.LastWriteTime < newerThan)
                     {

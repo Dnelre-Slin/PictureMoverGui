@@ -25,6 +25,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public Action<RunStates> UpdateRunState { get; }
         public Action<double> UpdateRunPercentage { get; }
         public Action<string> AddRunStatusLog { get; }
+        public Action<int> IncrementInfoFileCount { get; }
         public Action<WorkStatus, int> WorkDone { get; }
 
         public PictureMoverArguments(
@@ -45,6 +46,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             Action<RunStates> updateRunState, 
             Action<double> updateRunPercentage, 
             Action<string> addRunStatusLog, 
+            Action<int> incrementInfoFileCount, 
             Action<WorkStatus, int> workDone)
         {
             RunState = runState;
@@ -64,6 +66,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             UpdateRunState = updateRunState;
             UpdateRunPercentage = updateRunPercentage;
             AddRunStatusLog = addRunStatusLog;
+            IncrementInfoFileCount = incrementInfoFileCount;
             WorkDone = workDone;
         }
     }
@@ -77,6 +80,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public DateTime NewerThan;
 
         public Action<RunStates> UpdateRunState;
+        public Action<int> IncrementInfoFileCount { get; }
         public Action<WorkStatus, Dictionary<string, int>> WorkDone;
 
         public ExtensionCounterArguments(
@@ -86,6 +90,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             MediaDevice selectedMediaDevice,
             DateTime newerThan,
             Action<RunStates> updateRunState,
+            Action<int> incrementInfoFileCount,
             Action<WorkStatus, Dictionary<string, int>> workDone)
         {
             RunState = runState;
@@ -94,6 +99,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             SelectedMediaDevice = selectedMediaDevice;
             NewerThan = newerThan;
             UpdateRunState = updateRunState;
+            IncrementInfoFileCount = incrementInfoFileCount;
             WorkDone = workDone;
         }
     }

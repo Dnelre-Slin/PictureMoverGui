@@ -22,6 +22,10 @@
                 <TextBlock FontSize="20" Margin="10 0 0 0" Text="Sist kjørt: "></TextBlock>
                 <TextBlock FontSize="20" Margin="10 0 0 0" Text="{Binding LastRunDateTime}"></TextBlock>
             </WrapPanel>
+            <WrapPanel>
+                <TextBlock FontSize="20" Margin="10 0" Text="File count : "></TextBlock>
+                <TextBlock FontSize="20" Margin="10 0" Text="{Binding InfoFileCount}"></TextBlock>
+            </WrapPanel>
             <!--<Button Content="Refresh" Command="{Binding RefreshDevices}" FontSize="20"></Button>
             <Button Content="Connect" Command="{Binding ConnectDevice}" FontSize="20"></Button>-->
         </StackPanel>

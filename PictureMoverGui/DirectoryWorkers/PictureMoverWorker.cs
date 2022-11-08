@@ -71,6 +71,7 @@ namespace PictureMoverGui.DirectoryWorkers
                                     WorkerHelpers.IsFileNewerThan(f.LastWriteTime, _pictureMoverArguments.PictureRetrieverNewerThan))
                         .CancelWorker(_worker)
                         .CatchUnauthorizedAccessExceptions(WorkerHelpers.HandleFileAccessExceptions)
+                        .IncrementInfoFileCount(_pictureMoverArguments.IncrementInfoFileCount)
                         .ToList();
 
                     if (_worker.CancellationPending)

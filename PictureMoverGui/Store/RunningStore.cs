@@ -12,6 +12,7 @@ namespace PictureMoverGui.Store
         public RunStates RunState { get; private set; }
         public double StatusPercentage { get; private set; }
         public string StatusMessage { get; private set; }
+        public int InfoFileCount { get; private set; }
 
         private List<string> _statusMessageLogList;
         public IEnumerable<string> StatusMessageLogList => _statusMessageLogList;
@@ -21,6 +22,7 @@ namespace PictureMoverGui.Store
             RunState = RunStates.Idle;
             StatusPercentage = 0.0;
             StatusMessage = "";
+            InfoFileCount = 0;
             _statusMessageLogList = new List<string>();
         }
 
@@ -42,6 +44,18 @@ namespace PictureMoverGui.Store
         {
             _statusMessageLogList.Add(statusLog);
             StatusMessageLogAdded?.Invoke(statusLog);
+        }
+
+        public void IncrementInfoFileCount(int incrementAmount = 1)
+        {
+            InfoFileCount += incrementAmount;
+            RunningStoreChanged?.Invoke(this);
+        }
+
+        public void ResetInfoFileCount()
+        {
+            InfoFileCount = 0;
+            RunningStoreChanged?.Invoke(this);
         }
 
         protected void SetStatusMessage()
