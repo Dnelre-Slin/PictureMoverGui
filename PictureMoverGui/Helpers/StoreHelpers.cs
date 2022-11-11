@@ -31,12 +31,12 @@ namespace PictureMoverGui.Helpers.StoreHelpers
 
     public class MediaDeviceStorage
     {
-        public string SeriaId { get; set; }
+        public string SerialId { get; set; }
         public DateTime LastRun { get; set; }
 
         public MediaDeviceStorage(string serialId, DateTime lastRun)
         {
-            SeriaId = serialId;
+            SerialId = serialId;
             LastRun = lastRun;
         }
     }

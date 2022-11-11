@@ -35,5 +35,31 @@ namespace PictureMoverGui.Properties {
                 this["EventDataList"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
+            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        public global::System.Collections.Specialized.StringCollection MediaDeviceStorageList {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["MediaDeviceStorageList"]));
+            }
+            set {
+                this["MediaDeviceStorageList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
+            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        public global::System.Collections.Specialized.StringCollection RemovableDeviceStorageList {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RemovableDeviceStorageList"]));
+            }
+            set {
+                this["RemovableDeviceStorageList"] = value;
+            }
+        }
     }
 }

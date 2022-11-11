@@ -2,16 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PictureMoverGui.Properties" GeneratedClassName="Persistant">
   <Profiles />
   <Settings>
-    <Setting Name="LastMobilePull" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2022-03-01</Value>
+    <Setting Name="MediaDeviceName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FancyListy" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
-  &lt;string&gt;hello\nworld&lt;/string&gt;
-  &lt;string&gt;2020-03-04T12:13:14&lt;/string&gt;
-  &lt;string&gt;2020-03-05T12:13:14&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
+    <Setting Name="MediaDeviceSerialNr" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RemovableDeviceName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RemovableDeviceSerialNr" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

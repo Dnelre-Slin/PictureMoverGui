@@ -25,30 +25,49 @@ namespace PictureMoverGui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2022-03-01")]
-        public global::System.DateTime LastMobilePull {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MediaDeviceName {
             get {
-                return ((global::System.DateTime)(this["LastMobilePull"]));
+                return ((string)(this["MediaDeviceName"]));
             }
             set {
-                this["LastMobilePull"] = value;
+                this["MediaDeviceName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
-  <string>hello\nworld</string>
-  <string>2020-03-04T12:13:14</string>
-  <string>2020-03-05T12:13:14</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection FancyListy {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MediaDeviceSerialNr {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["FancyListy"]));
+                return ((string)(this["MediaDeviceSerialNr"]));
             }
             set {
-                this["FancyListy"] = value;
+                this["MediaDeviceSerialNr"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RemovableDeviceName {
+            get {
+                return ((string)(this["RemovableDeviceName"]));
+            }
+            set {
+                this["RemovableDeviceName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RemovableDeviceSerialNr {
+            get {
+                return ((string)(this["RemovableDeviceSerialNr"]));
+            }
+            set {
+                this["RemovableDeviceSerialNr"] = value;
             }
         }
     }
