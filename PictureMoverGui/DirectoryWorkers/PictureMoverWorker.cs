@@ -9,51 +9,58 @@ using System.Linq;
 
 namespace PictureMoverGui.DirectoryWorkers
 {
-    public class PictureMoverWorker
+    public class PictureMoverWorker : BaseWorker
     {
-        private BackgroundWorker _worker;
-        private PictureMoverArguments _pictureMoverArguments;
-        private WorkStatus _workStatus;
+        protected PictureMoverArguments _pictureMoverArguments;
+        protected Action<RunStates> _updateRunState;
+        protected Action<BaseWorker> _workDoneCallback;
 
-        public PictureMoverWorker()
+        public PictureMoverWorker(PictureMoverArguments pictureMoverArguments, Action<RunStates> updateRunState, Action<BaseWorker> workDoneCallback) : base ()
         {
-            _worker = null;
+            _worker.WorkerReportsProgress = true;
+            _worker.ProgressChanged += worker_PictureMoverProgressChanged;
+
+
+            _pictureMoverArguments = pictureMoverArguments;
+            _updateRunState = updateRunState;
+            _workDoneCallback = workDoneCallback;
+
+            //_pictureMoverArguments.UpdateRunState?.Invoke(RunStates.DirectoryValidation);
+
+            _workStatus = WorkStatus.Unfinished;
         }
 
-        public void StartWorker(PictureMoverArguments pictureMoverArguments)
-        {
-            if (_worker == null && pictureMoverArguments.RunState == RunStates.Idle) // Make sure it is not already running
-            {
-                _pictureMoverArguments = pictureMoverArguments;
+        //public void SetupWorker(PictureMoverArguments pictureMoverArguments)
+        //{
+        //    if (_worker == null && pictureMoverArguments.RunState == RunStates.Idle) // Make sure it is not already running
+        //    {
+        //        BaseSetupWorker();
+        //        _worker.WorkerReportsProgress = true;
+        //        _worker.ProgressChanged += worker_PictureMoverProgressChanged;
 
-                _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.DirectoryValidation);
 
-                _workStatus = WorkStatus.Unfinished;
+        //        _pictureMoverArguments = pictureMoverArguments;
 
-                _worker = new BackgroundWorker();
-                _worker.WorkerReportsProgress = true;
-                _worker.WorkerSupportsCancellation = true;
-                _worker.ProgressChanged += worker_PictureMoverProgressChanged;
-                _worker.DoWork += worker_DoWork;
-                _worker.RunWorkerCompleted += worker_WorkDone;
-                _worker.RunWorkerAsync();
-            }
-        }
+        //        _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.DirectoryValidation);
 
-        public void CancelWorker()
-        {
-            if (_worker != null) // Make sure it is running
-            {
-                _worker.CancelAsync();
-            }
-        }
+        //        _workStatus = WorkStatus.Unfinished;
+        //    }
+        //}
 
-        private void worker_PictureMoverProgressChanged(object sender, ProgressChangedEventArgs e)
+        //public void CancelWorker()
+        //{
+        //    if (_worker != null) // Make sure it is running
+        //    {
+        //        _worker.CancelAsync();
+        //    }
+        //}
+
+        protected void worker_PictureMoverProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             _pictureMoverArguments.UpdateRunPercentage?.Invoke(e.ProgressPercentage);
         }
 
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        protected override void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -77,11 +84,12 @@ namespace PictureMoverGui.DirectoryWorkers
                     if (_worker.CancellationPending)
                     {
                         _pictureMoverArguments.AddRunStatusLog?.Invoke("Cancelled during preparation");
-                        _workStatus = WorkStatus.Cancelled;
+                        //_workStatus = WorkStatus.Cancelled;
                         return;
                     }
 
-                    _pictureMoverArguments.UpdateRunState?.Invoke(RunStates.RunningSorter);
+                    //_pictureMoverArguments.UpdateRunState?.Invoke(RunStates.RunningSorter);
+                    _updateRunState?.Invoke(RunStates.RunningSorter);
 
                     PictureMover pictureMover = new PictureMover(_pictureMoverArguments, fileInfoList, sender as BackgroundWorker);
                     int nrOfErrors = pictureMover.Mover();
@@ -89,7 +97,7 @@ namespace PictureMoverGui.DirectoryWorkers
                     if (_worker.CancellationPending)
                     {
                         _pictureMoverArguments.AddRunStatusLog?.Invoke("Cancelled during running");
-                        _workStatus = WorkStatus.Cancelled;
+                        //_workStatus = WorkStatus.Cancelled;
                         return;
                     }
 
@@ -103,13 +111,14 @@ namespace PictureMoverGui.DirectoryWorkers
             }
         }
 
-        private void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
+        protected override void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
             int nrOfErrors = e.Result != null ? (int)e.Result : -1;
 
             _worker = null;
             _pictureMoverArguments.UpdateRunPercentage(0);
-            _pictureMoverArguments.UpdateRunState(RunStates.Idle);
+            //_pictureMoverArguments.UpdateRunState(RunStates.Idle);
+            _workDoneCallback?.Invoke(this);
             _pictureMoverArguments.WorkDone(_workStatus, nrOfErrors);
         }
     }

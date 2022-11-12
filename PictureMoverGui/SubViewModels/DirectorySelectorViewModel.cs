@@ -15,10 +15,10 @@ namespace PictureMoverGui.SubViewModels
     public class DirectorySelectorViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
-        private ExtensionCounterWorker _extensionCounterWorker;
+        //private ExtensionCounterWorker _extensionCounterWorker;
 
         private SorterConfigurationModel SorterConfig => _masterStore.SorterConfigurationStore.SorterConfiguration;
-   
+        
         public string SourcePath
         {
             get { return SorterConfig.SourcePath; }
@@ -32,8 +32,10 @@ namespace PictureMoverGui.SubViewModels
             }
         }
 
-        public bool CanOpenDialog => _masterStore.RunningStore.RunState == RunStates.Idle;
- 
+        //public bool CanOpenDialog => _masterStore.RunningStore.GathererState == RunStates.Idle;
+        public bool CanOpenDialog => true;
+
+        //public Visibility CancelVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
         public Visibility CancelVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
 
         public ICommand OpenFolderBrowserDialog { get; }
@@ -42,7 +44,7 @@ namespace PictureMoverGui.SubViewModels
         public DirectorySelectorViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
-            _extensionCounterWorker = new ExtensionCounterWorker();
+            //_extensionCounterWorker = new ExtensionCounterWorker();
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -84,11 +86,27 @@ namespace PictureMoverGui.SubViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            if (CanOpenDialog)
+            if (CanOpenDialog && _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
             {
+                //_extensionCounterWorker.CancelWorker();
+                //_masterStore.RunningStore.ResetInfoFileCount();
+                //_masterStore.FileExtensionStore.Clear(); // Clear old extensions
+                //_extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
+                //    _masterStore.RunningStore.RunState,
+                //    MediaTypeEnum.NormalDirectory, 
+                //    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
+                //    null,
+                //    //_masterStore.UsbDeviceStore.SelectedMediaDevice,
+                //    //_masterStore.UsbDeviceStore.ChosenMediaLastTime,
+                //    DateTime.MinValue,
+                //    _masterStore.RunningStore.SetGathererState,
+                //    _masterStore.RunningStore.IncrementInfoFileCount,
+                //    OnExtensionCounterWorkerDone
+                //));                
+                _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
                 _masterStore.RunningStore.ResetInfoFileCount();
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
-                _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
+                _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
                     _masterStore.RunningStore.RunState,
                     MediaTypeEnum.NormalDirectory, 
                     _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
@@ -96,7 +114,7 @@ namespace PictureMoverGui.SubViewModels
                     //_masterStore.UsbDeviceStore.SelectedMediaDevice,
                     //_masterStore.UsbDeviceStore.ChosenMediaLastTime,
                     DateTime.MinValue,
-                    _masterStore.RunningStore.SetRunState, 
+                    //_masterStore.RunningStore.SetGathererState,
                     _masterStore.RunningStore.IncrementInfoFileCount,
                     OnExtensionCounterWorkerDone
                 ));
@@ -124,7 +142,11 @@ namespace PictureMoverGui.SubViewModels
                     break;
                 case WorkStatus.Cancelled:
                     _masterStore.FileExtensionStore.Clear();
-                    _masterStore.SorterConfigurationStore.SetSourcePath("");
+                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
+                    break;
+                case WorkStatus.Interupted:
+                    _masterStore.FileExtensionStore.Clear();
+                    StartExtensionCountnerWorker(); // Rerun, as this is what should be done on interupts
                     break;
                 default:
                     throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
@@ -134,7 +156,8 @@ namespace PictureMoverGui.SubViewModels
         protected void OnCancelGatherer(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
-            _extensionCounterWorker.CancelWorker();
+            //_extensionCounterWorker.CancelWorker();
+            _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace PictureMoverGui.ViewModels
         private MasterStore _masterStore;
         //private PhoneUnlockPoller _phoneUnlockPoller;
         private MediaDeviceUnlockWorker _usbMediaDeviceUnlockWorker;
-        private ExtensionCounterWorker _extensionCounterWorker;
+        //private ExtensionCounterWorker _extensionCounterWorker;
 
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
         public SorterInterfaceViewModel SorterInterface { get; }
@@ -124,21 +124,23 @@ namespace PictureMoverGui.ViewModels
         public ICommand RefreshDevices { get; }
         public ICommand ConnectDevice { get; }
         public ICommand RefreshUsbDevices { get; }
+        public ICommand CancelGatherer { get; }
 
         public PhoneInputViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
             _usbMediaDeviceUnlockWorker = new MediaDeviceUnlockWorker();
-            _extensionCounterWorker = new ExtensionCounterWorker();
+            //_extensionCounterWorker = new ExtensionCounterWorker();
+
+            RefreshDevices = new CallbackCommand(OnRefreshDevices);
+            ConnectDevice = new CallbackCommand(OnConnectDevice);
+            RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
+            CancelGatherer = new CallbackCommand(OnExtensionCounterWorkerCancel);
 
             DestinationDirectorySelector = new DirectorySelectorLiteViewModel(masterStore);
             SorterInterface = new SorterInterfaceViewModel(masterStore);
 
             //ChosenString = "hello";
-
-            RefreshDevices = new CallbackCommand(OnRefreshDevices);
-            ConnectDevice = new CallbackCommand(OnConnectDevice);
-            RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -262,22 +264,23 @@ namespace PictureMoverGui.ViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            //if (!_isLocked)
-            //{
-            //    _masterStore.RunningStore.ResetInfoFileCount();
-            //    _masterStore.FileExtensionStore.Clear(); // Clear old extensions
-            //    _extensionCounterWorker.StartWorker(new ExtensionCounterArguments(
-            //        _masterStore.RunningStore.RunState,
-            //        MediaTypeEnum.MediaDevice,
-            //        null,
-            //        _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
-            //        _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-            //        //DateTime.MinValue,
-            //        _masterStore.RunningStore.SetRunState,
-            //        _masterStore.RunningStore.IncrementInfoFileCount,
-            //        OnExtensionCounterWorkerDone
-            //    ));
-            //}
+            if (!_isLocked && _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
+            {
+                _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
+                _masterStore.RunningStore.ResetInfoFileCount();
+                _masterStore.FileExtensionStore.Clear(); // Clear old extensions
+                _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
+                    _masterStore.RunningStore.RunState,
+                    MediaTypeEnum.MediaDevice,
+                    null,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
+                    //DateTime.MinValue,
+                    //_masterStore.RunningStore.SetGathererState,
+                    _masterStore.RunningStore.IncrementInfoFileCount,
+                    OnExtensionCounterWorkerDone
+                ));
+            }
         }
 
         protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)
@@ -303,6 +306,10 @@ namespace PictureMoverGui.ViewModels
                     _masterStore.FileExtensionStore.Clear();
                     //_masterStore.SorterConfigurationStore.SetSourcePath("");
                     break;
+                case WorkStatus.Interupted:
+                    _masterStore.FileExtensionStore.Clear();
+                    StartExtensionCountnerWorker(); // Rerun, as this is what should be done on interupts
+                    break;
                 default:
                     throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
             }
@@ -311,7 +318,8 @@ namespace PictureMoverGui.ViewModels
         protected void OnExtensionCounterWorkerCancel(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
-            _extensionCounterWorker.CancelWorker();
+            //_extensionCounterWorker.CancelWorker();
+            _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
     }
 }

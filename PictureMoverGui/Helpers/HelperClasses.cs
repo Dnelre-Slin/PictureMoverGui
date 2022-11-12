@@ -22,7 +22,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public MediaDevice SelectedMediaDevice { get; }
         public DateTime PictureRetrieverNewerThan { get; }
 
-        public Action<RunStates> UpdateRunState { get; }
+        //public Action<RunStates> UpdateRunState { get; }
         public Action<double> UpdateRunPercentage { get; }
         public Action<string> AddRunStatusLog { get; }
         public Action<int> IncrementInfoFileCount { get; }
@@ -43,7 +43,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             string pictureRetrieverSource,
             MediaDevice selectedMediaDevice,
             DateTime pictureRetrieverNewerThan,
-            Action<RunStates> updateRunState, 
+            //Action<RunStates> updateRunState, 
             Action<double> updateRunPercentage, 
             Action<string> addRunStatusLog, 
             Action<int> incrementInfoFileCount, 
@@ -63,7 +63,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             PictureRetrieverSource = pictureRetrieverSource;
             SelectedMediaDevice = selectedMediaDevice;
             PictureRetrieverNewerThan = pictureRetrieverNewerThan;
-            UpdateRunState = updateRunState;
+            //UpdateRunState = updateRunState;
             UpdateRunPercentage = updateRunPercentage;
             AddRunStatusLog = addRunStatusLog;
             IncrementInfoFileCount = incrementInfoFileCount;
@@ -79,7 +79,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public MediaDevice SelectedMediaDevice { get; }
         public DateTime NewerThan;
 
-        public Action<RunStates> UpdateRunState;
+        //public Action<RunStates> UpdateGathererState;
         public Action<int> IncrementInfoFileCount { get; }
         public Action<WorkStatus, Dictionary<string, int>> WorkDone;
 
@@ -89,7 +89,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             string source,
             MediaDevice selectedMediaDevice,
             DateTime newerThan,
-            Action<RunStates> updateRunState,
+            //Action<RunStates> updateGathererState,
             Action<int> incrementInfoFileCount,
             Action<WorkStatus, Dictionary<string, int>> workDone)
         {
@@ -98,7 +98,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             Source = source;
             SelectedMediaDevice = selectedMediaDevice;
             NewerThan = newerThan;
-            UpdateRunState = updateRunState;
+            //UpdateGathererState = updateGathererState;
             IncrementInfoFileCount = incrementInfoFileCount;
             WorkDone = workDone;
         }

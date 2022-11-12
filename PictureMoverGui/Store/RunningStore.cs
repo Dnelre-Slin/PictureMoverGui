@@ -1,4 +1,5 @@
-﻿using PictureMoverGui.Helpers;
+﻿using PictureMoverGui.DirectoryWorkers;
+using PictureMoverGui.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,12 @@ namespace PictureMoverGui.Store
         public event Action<RunningStore> RunningStoreChanged;
         public event Action<string> StatusMessageLogAdded;
 
-        public RunStates RunState { get; private set; }
+        public WorkerHandler _workerHandler;
+        public WorkerHandler WorkerHandler => _workerHandler;
+
+        //public RunStates RunState { get; private set; }
+        public RunStates RunState => _workerHandler.RunState;
+        //public RunStates GathererState { get; private set; }
         public double StatusPercentage { get; private set; }
         public string StatusMessage { get; private set; }
         public int InfoFileCount { get; private set; }
@@ -19,19 +25,36 @@ namespace PictureMoverGui.Store
 
         public RunningStore()
         {
-            RunState = RunStates.Idle;
+            _workerHandler = new WorkerHandler();
+            //RunState = RunStates.Idle;
+            //GathererState = RunStates.Idle;
             StatusPercentage = 0.0;
             StatusMessage = "";
             InfoFileCount = 0;
             _statusMessageLogList = new List<string>();
+
+            _workerHandler.RunStateChanged += WorkerHandler_RunStateChanged;
         }
 
-        public void SetRunState(RunStates runState)
+        protected void WorkerHandler_RunStateChanged(RunStates runState)
         {
-            RunState = runState;
             SetStatusMessage();
             RunningStoreChanged?.Invoke(this);
         }
+
+        //public void SetRunState(RunStates runState)
+        //{
+        //    //RunState = runState;
+        //    //RunState
+        //    SetStatusMessage();
+        //    RunningStoreChanged?.Invoke(this);
+        //}
+
+        //public void SetGathererState(RunStates gathererState)
+        //{
+        //    GathererState = gathererState;
+        //    RunningStoreChanged?.Invoke(this);
+        //}
 
         public void SetStatusPercentage(double statusPercentage)
         {

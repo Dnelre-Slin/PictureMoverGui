@@ -92,7 +92,7 @@ namespace PictureMoverGui.DirectoryUtils
                     if (_cancel)
                     {
                         _addRunStatusLog?.Invoke($"Cancelled during sorting");
-                        break;
+                        return GetNrOfErrors();
                     }
                 }
             }

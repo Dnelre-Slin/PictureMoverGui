@@ -67,6 +67,10 @@ namespace PictureMoverGui.Store
 
         public List<string> GetListOfValidExtension()
         {
+            if (_fileExtensionList.Count == 0)
+            {
+                return ExtensionLookup.imageAndVideoExtensions;
+            }
             List<string> list = new List<string>();
             foreach (var ext in _fileExtensionList)
             {

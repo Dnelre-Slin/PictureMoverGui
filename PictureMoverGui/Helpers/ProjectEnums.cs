@@ -39,7 +39,8 @@
         Unfinished,
         Success,
         Invalid,
-        Cancelled
+        Cancelled,
+        Interupted
     }
 
     public enum DeviceChangeType

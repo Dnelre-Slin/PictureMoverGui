@@ -8,7 +8,8 @@
     <GroupBox Padding="10 0">
         <GroupBox.Header>
             <WrapPanel>
-                <Label MinWidth="500" FontSize="20" Content="{DynamicResource SourceLabelContent}"/>
+                <Label MinWidth="480" FontSize="20" Content="{DynamicResource SourceLabelContent}"/>
+                <TextBlock Padding="0 4 0 0" FontSize="20" Text="⌛" Visibility="{Binding CancelVisibility}"></TextBlock>
                 <Button Padding="10 0" Margin="5 0" FontSize="20" Command="{Binding OpenFolderBrowserDialog}" x:Name="btnChooseSourceDir" Content="{DynamicResource FolderButtonContent}" IsEnabled="{Binding CanOpenDialog}"/>
                 <Button Padding="10 -20" FontSize="20" Command="{Binding CancelGatherer}" x:Name="btnChooseSourceDirCancel" Content="{DynamicResource CancelContent}" Visibility="{Binding CancelVisibility}"/>
             </WrapPanel>

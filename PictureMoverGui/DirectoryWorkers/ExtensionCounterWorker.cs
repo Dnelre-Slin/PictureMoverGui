@@ -7,43 +7,37 @@ using System.ComponentModel;
 
 namespace PictureMoverGui.DirectoryWorkers
 {
-    public class ExtensionCounterWorker
+    public class ExtensionCounterWorker : BaseWorker
     {
-        private BackgroundWorker _worker;
-        private ExtensionCounterArguments _extensionCounterArguments;
-        private WorkStatus _workStatus;
+        protected ExtensionCounterArguments _extensionCounterArguments;
+        protected Action<BaseWorker> _workDoneCallback;
 
-        public ExtensionCounterWorker()
+        public ExtensionCounterWorker(ExtensionCounterArguments extensionCounterArguments, Action<BaseWorker> workDoneCallback) : base()
         {
-            _worker = null;
+            _extensionCounterArguments = extensionCounterArguments;
+            _workDoneCallback = workDoneCallback;
+            //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.DirectoryGathering);
+            //_extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.DirectoryGathering);
+
+            _workStatus = WorkStatus.Unfinished;
         }
 
-        public void StartWorker(ExtensionCounterArguments extensionCounterArguments)
-        {
-            if (_worker == null && extensionCounterArguments.RunState == RunStates.Idle) // Make sure it is not already running
-            {
-                _extensionCounterArguments = extensionCounterArguments;
-                _extensionCounterArguments.UpdateRunState?.Invoke(RunStates.DirectoryGathering);
+        //public void SetupWorker(ExtensionCounterArguments extensionCounterArguments)
+        //{
+        //    //if (_worker == null && extensionCounterArguments.RunState == RunStates.Idle) // Make sure it is not already running
+        //    if (_worker == null) // Make sure it is not already running
+        //    {
+        //        BaseSetupWorker();
 
-                _workStatus = WorkStatus.Unfinished;
+        //        _extensionCounterArguments = extensionCounterArguments;
+        //        //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.DirectoryGathering);
+        //        _extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.DirectoryGathering);
 
-                _worker = new BackgroundWorker();
-                _worker.WorkerSupportsCancellation = true;
-                _worker.DoWork += worker_DoWork;
-                _worker.RunWorkerCompleted += worker_WorkDone;
-                _worker.RunWorkerAsync();
-            }
-        }
+        //        _workStatus = WorkStatus.Unfinished;
+        //    }
+        //}
 
-        public void CancelWorker()
-        {
-            if (_worker != null) // Make sure it is running
-            {
-                _worker.CancelAsync();
-            }
-        }
-
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        protected override void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -51,13 +45,13 @@ namespace PictureMoverGui.DirectoryWorkers
                     _extensionCounterArguments.MediaType,
                     _extensionCounterArguments.Source, 
                     _extensionCounterArguments.SelectedMediaDevice,
-                    sender as BackgroundWorker, 
+                    this, 
                     _extensionCounterArguments.IncrementInfoFileCount,
                     _extensionCounterArguments.NewerThan);
 
                 if (_worker.CancellationPending)
                 {
-                    _workStatus = WorkStatus.Cancelled;
+                    //_workStatus = WorkStatus.Cancelled;
                 }
                 else if (extensionInfo == null)
                 {
@@ -75,12 +69,14 @@ namespace PictureMoverGui.DirectoryWorkers
             }
         }
 
-        private void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
+        protected override void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
             Dictionary<string, int> extensionInfo = e.Result as Dictionary<string, int>;
 
             _worker = null;
-            _extensionCounterArguments.UpdateRunState?.Invoke(RunStates.Idle);
+            //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.Idle);
+            //_extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.Idle);
+            _workDoneCallback?.Invoke(this);
             _extensionCounterArguments.WorkDone?.Invoke(_workStatus, extensionInfo);
         }
     }

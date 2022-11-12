@@ -14,7 +14,7 @@ namespace PictureMoverGui.ViewModels
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
         public SorterInterfaceViewModel SorterInterface { get; }
 
-        public bool AllowSwap => _masterStore.RunningStore.RunState == RunStates.Idle;
+        public bool AllowSwap => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
 
         public ICommand SwapSourceAndDestination { get; }
 

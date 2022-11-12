@@ -1,10 +1,12 @@
 ﻿using MediaDevices;
+using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
 
 namespace PictureMoverGui.DirectoryUtils
 {
@@ -86,12 +88,12 @@ namespace PictureMoverGui.DirectoryUtils
             System.Diagnostics.Debug.WriteLine(e);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, Action<int> incrementInfoFileCount)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BaseWorker worker, Action<int> incrementInfoFileCount)
         {
-            return GetExtensions(mediaType, source, mediaDevice, sender_worker, incrementInfoFileCount, DateTime.MinValue);
+            return GetExtensions(mediaType, source, mediaDevice, worker, incrementInfoFileCount, DateTime.MinValue);
         }
 
-        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BackgroundWorker sender_worker, Action<int> incrementInfoFileCount, DateTime newerThan)
+        static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BaseWorker worker, Action<int> incrementInfoFileCount, DateTime newerThan)
         {
             using (PictureRetriever pictureRetriever = new PictureRetriever(mediaType, source, mediaDevice))
             {
@@ -125,7 +127,8 @@ namespace PictureMoverGui.DirectoryUtils
                         extensionMap[ext] = 1;
                     }
 
-                    if (sender_worker.CancellationPending)
+                    //worker.WorkSuspender.WaitOne(Timeout.Infinite); // Wait if suspended
+                    if (worker.CancellationPending)
                     {
                         break;
                     }
