@@ -33,7 +33,7 @@ namespace PictureMoverGui.SubViewModels
         }
 
         //public bool CanOpenDialog => _masterStore.RunningStore.GathererState == RunStates.Idle;
-        public bool CanOpenDialog => true;
+        //public bool CanOpenDialog => true;
 
         //public Visibility CancelVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
         public Visibility CancelVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
@@ -69,7 +69,7 @@ namespace PictureMoverGui.SubViewModels
 
         protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
         {
-            OnPropertyChanged(nameof(CanOpenDialog));
+            //OnPropertyChanged(nameof(CanOpenDialog));
             OnPropertyChanged(nameof(CancelVisibility));
         }
 
@@ -86,7 +86,8 @@ namespace PictureMoverGui.SubViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            if (CanOpenDialog && _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
+            //if (CanOpenDialog && _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
+            if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
             {
                 //_extensionCounterWorker.CancelWorker();
                 //_masterStore.RunningStore.ResetInfoFileCount();
@@ -107,7 +108,7 @@ namespace PictureMoverGui.SubViewModels
                 _masterStore.RunningStore.ResetInfoFileCount();
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
                 _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
-                    _masterStore.RunningStore.RunState,
+                    //_masterStore.RunningStore.RunState,
                     MediaTypeEnum.NormalDirectory, 
                     _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
                     null,

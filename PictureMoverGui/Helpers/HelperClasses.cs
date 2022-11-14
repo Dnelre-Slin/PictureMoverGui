@@ -7,7 +7,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
 {
     public class PictureMoverArguments
     {
-        public RunStates RunState { get; }
+        //public RunStates RunState { get; }
         public List<string> DestinationPaths { get; }
         public bool DoCopy { get; }
         public bool DoMakeStructured { get; }
@@ -29,7 +29,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public Action<WorkStatus, int> WorkDone { get; }
 
         public PictureMoverArguments(
-            RunStates runState, 
+            //RunStates runState, 
             List<string> destinationPaths, 
             bool doCopy, 
             bool doMakeStructured, 
@@ -49,7 +49,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             Action<int> incrementInfoFileCount, 
             Action<WorkStatus, int> workDone)
         {
-            RunState = runState;
+            //RunState = runState;
             DestinationPaths = destinationPaths;
             DoCopy = doCopy;
             DoMakeStructured = doMakeStructured;
@@ -73,7 +73,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
 
     public class ExtensionCounterArguments
     {
-        public RunStates RunState { get; }
+        //public RunStates RunState { get; }
         public MediaTypeEnum MediaType;
         public string Source;
         public MediaDevice SelectedMediaDevice { get; }
@@ -84,7 +84,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public Action<WorkStatus, Dictionary<string, int>> WorkDone;
 
         public ExtensionCounterArguments(
-            RunStates runState,
+            //RunStates runState,
             MediaTypeEnum mediaType,
             string source,
             MediaDevice selectedMediaDevice,
@@ -93,7 +93,7 @@ namespace PictureMoverGui.Helpers.HelperClasses
             Action<int> incrementInfoFileCount,
             Action<WorkStatus, Dictionary<string, int>> workDone)
         {
-            RunState = runState;
+            //RunState = runState;
             MediaType = mediaType;
             Source = source;
             SelectedMediaDevice = selectedMediaDevice;

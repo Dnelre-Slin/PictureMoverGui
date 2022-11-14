@@ -56,6 +56,20 @@ namespace PictureMoverGui.SubViewModels
             }
         }
 
+        private Visibility _copyVisibility;
+        public Visibility CopyVisibility
+        {
+            get => _copyVisibility;
+            set
+            {
+                if (_copyVisibility != value)
+                {
+                    _copyVisibility = value;
+                    OnPropertyChanged(nameof(CopyVisibility));
+                }
+            }
+        }
+
         public bool AllowConfiguration => _masterStore.RunningStore.RunState != RunStates.RunningSorter;
         public bool AllowStartSorting => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
 
@@ -78,6 +92,8 @@ namespace PictureMoverGui.SubViewModels
 
             StartSorting = new CallbackCommand(OnStartSorting);
             CancelSorting = new CallbackCommand(OnCancelSorting);
+
+            _copyVisibility = Visibility.Visible;
         }
 
         public override void Dispose()
@@ -175,7 +191,7 @@ namespace PictureMoverGui.SubViewModels
                 {
                     _masterStore.RunningStore.ResetInfoFileCount();
                     _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                        _masterStore.RunningStore.RunState,
+                        //_masterStore.RunningStore.RunState,
                         new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
@@ -201,7 +217,7 @@ namespace PictureMoverGui.SubViewModels
                 {
                     _masterStore.RunningStore.ResetInfoFileCount();
                     _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                        _masterStore.RunningStore.RunState,
+                        //_masterStore.RunningStore.RunState,
                         //new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, @"I:\PictureMoverTesting\PhoneTest1\UsbDev" },
                         new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
                         true,
