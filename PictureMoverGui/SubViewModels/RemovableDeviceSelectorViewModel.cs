@@ -1,10 +1,8 @@
 ﻿using PictureMoverGui.Commands;
 using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,14 +29,17 @@ namespace PictureMoverGui.SubViewModels
                 }
             }
         }
+        public string RemovableMediaPath => RemovableDeviceChosenName + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path;
 
         public ICommand RefreshUsbDevices { get; }
+        public ICommand OpenFolderBrowserDialog { get; }
 
         public RemovableDeviceSelectorViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
 
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
+            OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
         }
@@ -59,11 +60,24 @@ namespace PictureMoverGui.SubViewModels
             OnPropertyChanged(nameof(RemovableDeviceConnectedColor));
             OnPropertyChanged(nameof(RemovableDevicePickerVisibility));
             OnPropertyChanged(nameof(RemovableDeviceChosenName));
+            OnPropertyChanged(nameof(RemovableMediaPath));
         }
 
         protected void OnRefreshUsbDevices(object parameter)
         {
             _masterStore.UsbDeviceStore.RefreshUsbDevices();
+        }
+
+        protected void OnOpenFolderBrowserDialog(object parameter)
+        {
+            System.Windows.Forms.FolderBrowserDialog openFileDlg = new System.Windows.Forms.FolderBrowserDialog();
+            var result = openFileDlg.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDlg.SelectedPath))
+            {
+                System.Diagnostics.Debug.WriteLine(openFileDlg.SelectedPath);
+                string[] paths = openFileDlg.SelectedPath.Split(':');
+                _masterStore.UsbDeviceStore.SetSelectedRemovableDevicePath(paths[1]);
+            }
         }
     }
 }

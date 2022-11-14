@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PictureMoverGui.SubViews"
              mc:Ignorable="d" 
              d:DesignHeight="90" d:DesignWidth="800">
     <Grid>
@@ -13,6 +12,10 @@
                 <Button FontSize="20" Width="23" Height="24" Padding="-12" Content="🔄" Command="{Binding RefreshUsbDevices}"></Button>
                 <TextBlock FontSize="20" Margin="10 0" Text="{Binding RemovableDeviceChosenName}"></TextBlock>
                 <ComboBox FontSize="20" MinWidth="100" ItemsSource="{Binding RemovableDeviceChoices}" SelectedValue="{Binding RemovableDeviceChosenName}" Visibility="{Binding RemovableDevicePickerVisibility}"></ComboBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label x:Name="SourceDirLabel" Margin="10 0" FontSize="20" Width="600" Height="40" Background="GhostWhite" Content="{Binding RemovableMediaPath}"/>
+                <Button Padding="10 0" Margin="0 0" FontSize="20" Command="{Binding OpenFolderBrowserDialog}" x:Name="btnChooseSourceDir" Content="{DynamicResource FolderButtonContent}"/>
             </WrapPanel>
         </StackPanel>
     </Grid>

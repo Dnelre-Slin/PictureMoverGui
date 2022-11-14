@@ -7,7 +7,6 @@ using PictureMoverGui.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -40,7 +39,109 @@ namespace PictureMoverGui.SubViewModels
                 }
             }
         }
+
         public string LastRunDateTime => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.ToString();
+        public string LastRunDate
+        {
+            get => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Date.ToString("dd.MM.yyyy");
+            set
+            {
+                if (_masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Date.ToString("dd.MM.yyyy") != value)
+                {
+                    string[] dateValues = value.Split('.');
+                    int hour = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Hour;
+                    int minute = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Minute;
+                    int second = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Second;
+                    _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(new DateTime(
+                        int.Parse(dateValues[2]),
+                        int.Parse(dateValues[1]),
+                        int.Parse(dateValues[0]),
+                        hour,
+                        minute,
+                        second));
+                    //OnPropertyChanged(nameof(LastRunDateTime));
+                    //OnPropertyChanged(nameof(LastRunDate));
+                }
+            }
+        }
+
+        public string LastRunHour
+        {
+            get => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Hour.ToString("00");
+            set
+            {
+                if (_masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Hour.ToString("00") != value)
+                {
+                    int year = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Year;
+                    int month = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Month;
+                    int day = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Day;
+                    int minute = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Minute;
+                    int second = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Second;
+                    _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(new DateTime(
+                        year,
+                        month,
+                        day,
+                        int.Parse(value),
+                        minute,
+                        second));
+                    //OnPropertyChanged(nameof(LastRunDateTime));
+                    //OnPropertyChanged(nameof(LastRunHour));
+                }
+            }
+        }
+
+        public string LastRunMinute
+        {
+            get => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Minute.ToString("00");
+            set
+            {
+                if (_masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Minute.ToString("00") != value)
+                {
+                    int year = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Year;
+                    int month = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Month;
+                    int day = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Day;
+                    int hour = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Hour;
+                    int second = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Second;
+                    _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(new DateTime(
+                        year,
+                        month,
+                        day,
+                        hour,
+                        int.Parse(value),
+                        second));
+                    //OnPropertyChanged(nameof(LastRunDateTime));
+                    //OnPropertyChanged(nameof(LastRunMinute));
+                }
+            }
+        }
+
+        public string LastRunSecond
+        {
+            get => _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Second.ToString("00");
+            set
+            {
+                if (_masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Second.ToString("00") != value)
+                {
+                    int year = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Year;
+                    int month = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Month;
+                    int day = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Day;
+                    int hour = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Hour;
+                    int minute = _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun.Minute;
+                    _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(new DateTime(
+                        year,
+                        month,
+                        day,
+                        hour,
+                        minute,
+                        int.Parse(value)));
+                    //OnPropertyChanged(nameof(LastRunDateTime));
+                    //OnPropertyChanged(nameof(LastRunSecond));
+                }
+            }
+        }
+
+        public IEnumerable<string> ValidHours => Enumerable.Range(0, 24).Select(i => i.ToString("00"));
+        public IEnumerable<string> ValidMinutesAndSeconds => Enumerable.Range(0, 60).Select(i => i.ToString("00"));
 
         public int InfoFileCount => _masterStore.RunningStore.InfoFileCount;
 
@@ -74,10 +175,6 @@ namespace PictureMoverGui.SubViewModels
         {
             System.Diagnostics.Debug.WriteLine($"Device change: MediaDeviceConnected: {MediaDeviceConnected}");
             System.Diagnostics.Debug.WriteLine($"Device change: MediaDeviceChosenName: {MediaDeviceChosenName}");
-            //foreach (var ic in MediaDeviceChoices)
-            //{
-            //    System.Diagnostics.Debug.WriteLine($"Device change: ItemChoices: {ic}");
-            //}
 
             if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
             {
@@ -96,6 +193,12 @@ namespace PictureMoverGui.SubViewModels
             OnPropertyChanged(nameof(MediaDeviceConnectedColor));
             OnPropertyChanged(nameof(MediaDevicePickerVisibility));
             OnPropertyChanged(nameof(MediaDeviceChosenName));
+
+            OnPropertyChanged(nameof(LastRunDateTime));
+            OnPropertyChanged(nameof(LastRunDate));
+            OnPropertyChanged(nameof(LastRunHour));
+            OnPropertyChanged(nameof(LastRunMinute));
+            OnPropertyChanged(nameof(LastRunSecond));
         }
 
         private void RunningStore_RunningStoreChanged(RunningStore runningStore)
@@ -144,13 +247,10 @@ namespace PictureMoverGui.SubViewModels
                 _masterStore.RunningStore.ResetInfoFileCount();
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
                 _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
-                    //_masterStore.RunningStore.RunState,
                     MediaTypeEnum.MediaDevice,
                     null,
                     _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
                     _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-                    //DateTime.MinValue,
-                    //_masterStore.RunningStore.SetGathererState,
                     _masterStore.RunningStore.IncrementInfoFileCount,
                     OnExtensionCounterWorkerDone
                 ));

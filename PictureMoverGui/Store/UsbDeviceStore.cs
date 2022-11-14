@@ -43,8 +43,6 @@ namespace PictureMoverGui.Store
             _removableDeviceStorageList = new List<RemovableDeviceStorage>();
             _removableDeviceList = new List<RemovableDeviceModel>();
 
-            //SelectedMediaDevice = new MediaDeviceModel("Nils sin S20+", "75903ADBED212FFCAF7789C73E685D3D", new DateTime(2019, 01, 01), null);
-            //SelectedRemovableDevice = new RemovableDeviceModel("I:", "507653BC", "\\", false);
             SelectedMediaDevice = new MediaDeviceModel(null, null, DateTime.MinValue, null);
             SelectedRemovableDevice = new RemovableDeviceModel(null, null, null, false);
 
@@ -125,6 +123,17 @@ namespace PictureMoverGui.Store
             DeviceInfoChanged?.Invoke(this);
         }
 
+        public void SetSelectedMediaDeviceDateTime(DateTime dateTime)
+        {
+            if (SelectedMediaDevice != null)
+            {
+                SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, dateTime, SelectedMediaDevice.MediaDevice);
+                _mediaDeviceStorageList.Find(mds => mds.SerialId == SelectedMediaDevice.SerialId).LastRun = dateTime;
+                SaveToStore();
+                DeviceInfoChanged?.Invoke(this);
+            }
+        }
+
         public void SetNewSelectedRemovableDevice(string newSelectedRemovableName)
         {
             foreach (RemovableDeviceModel removableDevice in RemovableDeviceList)
@@ -145,6 +154,17 @@ namespace PictureMoverGui.Store
                 }
             }
             DeviceInfoChanged?.Invoke(this);
+        }
+
+        public void SetSelectedRemovableDevicePath(string path)
+        {
+            if (SelectedRemovableDevice != null)
+            {
+                SelectedRemovableDevice = new RemovableDeviceModel(SelectedRemovableDevice.Name, SelectedRemovableDevice.SerialId, path, SelectedRemovableDevice.IsConnected);
+                _removableDeviceStorageList.Find(rds => rds.SerialId == SelectedRemovableDevice.SerialId).Path = path;
+                SaveToStore();
+                DeviceInfoChanged?.Invoke(this);
+            }
         }
 
         private void UpdateUsbInfoLists()
@@ -184,7 +204,7 @@ namespace PictureMoverGui.Store
             {
                 foreach (var kv in removableDeviceDict)
                 {
-                    _removableDeviceList.Add(new RemovableDeviceModel(kv.Value, kv.Key, "\\", true));
+                    _removableDeviceList.Add(new RemovableDeviceModel(kv.Value, kv.Key, _removableDeviceStorageList.Find(rd => rd.SerialId == kv.Key)?.Path ?? "\\", true));
                 }
 
                 RemovableDeviceModel newSelectedRemovableDevice = _removableDeviceList.Find(rd => rd.SerialId == SelectedRemovableDevice.SerialId);

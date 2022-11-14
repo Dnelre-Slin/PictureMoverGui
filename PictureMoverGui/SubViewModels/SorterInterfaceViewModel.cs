@@ -15,8 +15,6 @@ namespace PictureMoverGui.SubViewModels
     public class SorterInterfaceViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
-        //private PictureMoverWorker _pictureMoverWorker;
-        //private ICommand _cancelGatherer;
 
         private SorterConfigurationModel SorterConfig => _masterStore.SorterConfigurationStore.SorterConfiguration;
 
@@ -84,8 +82,6 @@ namespace PictureMoverGui.SubViewModels
         public SorterInterfaceViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
-            //_pictureMoverWorker = new PictureMoverWorker();
-            //_cancelGatherer = cancelGatherer;
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfigurationStore_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -124,74 +120,12 @@ namespace PictureMoverGui.SubViewModels
         {
             if (AllowStartSorting)
             {
-                //_cancelGatherer?.Execute(this);
-                //System.Diagnostics.Debug.WriteLine("OnStartSorting");
-                //if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
-                //{
-                //    _masterStore.RunningStore.ResetInfoFileCount();
-                //    _pictureMoverWorker.StartWorker(new PictureMoverArguments(
-                //        _masterStore.RunningStore.RunState,
-                //        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
-                //        _masterStore.FileExtensionStore.GetListOfValidExtension(),
-                //        //ExtensionLookup.imageAndVideoExtensions,
-                //        new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
-                //        MediaTypeEnum.NormalDirectory,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
-                //        null,
-                //        DateTime.MinValue,
-                //        _masterStore.RunningStore.SetRunState,
-                //        _masterStore.RunningStore.SetStatusPercentage,
-                //        _masterStore.RunningStore.AddStatusLog,
-                //        _masterStore.RunningStore.IncrementInfoFileCount,
-                //        OnPictureMoverWorkerDone
-                //    ));                    
-                //}
-                //else if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
-                //{
-                //    _masterStore.RunningStore.ResetInfoFileCount();
-                //    _pictureMoverWorker.StartWorker(new PictureMoverArguments(
-                //        _masterStore.RunningStore.RunState,
-                //        //new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, @"I:\PictureMoverTesting\PhoneTest1\UsbDev" },
-                //        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
-                //        true,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
-                //        _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
-                //        //_masterStore.FileExtensionStore.GetListOfValidExtension(),
-                //        ExtensionLookup.imageAndVideoExtensions,
-                //        new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
-                //        MediaTypeEnum.MediaDevice,
-                //        null,
-                //        _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
-                //        _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-                //        _masterStore.RunningStore.SetRunState,
-                //        _masterStore.RunningStore.SetStatusPercentage,
-                //        _masterStore.RunningStore.AddStatusLog,
-                //        _masterStore.RunningStore.IncrementInfoFileCount,
-                //        OnPictureMoverWorkerDone
-                //    ));                
-                //_cancelGatherer?.Execute(this);
-                //bool extensionCounterWasRunning = _masterStore.RunningStore.WorkerHandler.IsExtensionCounterRunning();
-                //if (extensionCounterWasRunning)
-                //{
-                //    //_masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
-                //    _masterStore.RunningStore.WorkerHandler.SuspendAndPushBackExtensionCounterWorker();
-                //}
                 _masterStore.RunningStore.WorkerHandler.InteruptExtensionCounterWorker();
                 System.Diagnostics.Debug.WriteLine("OnStartSorting");
                 if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.NormalDirectory)
                 {
                     _masterStore.RunningStore.ResetInfoFileCount();
                     _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                        //_masterStore.RunningStore.RunState,
                         new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
@@ -200,13 +134,11 @@ namespace PictureMoverGui.SubViewModels
                         _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
                         _masterStore.FileExtensionStore.GetListOfValidExtension(),
-                        //ExtensionLookup.imageAndVideoExtensions,
                         new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
                         MediaTypeEnum.NormalDirectory,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
                         null,
                         DateTime.MinValue,
-                        //_masterStore.RunningStore.SetRunState,
                         _masterStore.RunningStore.SetStatusPercentage,
                         _masterStore.RunningStore.AddStatusLog,
                         _masterStore.RunningStore.IncrementInfoFileCount,
@@ -217,8 +149,6 @@ namespace PictureMoverGui.SubViewModels
                 {
                     _masterStore.RunningStore.ResetInfoFileCount();
                     _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                        //_masterStore.RunningStore.RunState,
-                        //new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, @"I:\PictureMoverTesting\PhoneTest1\UsbDev" },
                         new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
                         true,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
@@ -227,13 +157,11 @@ namespace PictureMoverGui.SubViewModels
                         _masterStore.SorterConfigurationStore.SorterConfiguration.CompareFilesAction,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
                         _masterStore.FileExtensionStore.GetListOfValidExtension(),
-                        //ExtensionLookup.imageAndVideoExtensions,
                         new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
                         MediaTypeEnum.MediaDevice,
                         null,
                         _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
                         _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-                        //_masterStore.RunningStore.SetRunState,
                         _masterStore.RunningStore.SetStatusPercentage,
                         _masterStore.RunningStore.AddStatusLog,
                         _masterStore.RunningStore.IncrementInfoFileCount,
@@ -244,11 +172,6 @@ namespace PictureMoverGui.SubViewModels
                 {
                     throw new NotImplementedException($"SorterInterfaceViewModel has not implemented supported for this media type: {_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType}");
                 }
-                //if (extensionCounterWasRunning)
-                //{
-                //    //_masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
-                //    _masterStore.RunningStore.WorkerHandler.SuspendAndPushBackExtensionCounterWorker();
-                //}
             }
         }
 

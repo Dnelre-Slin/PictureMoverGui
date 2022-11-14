@@ -13,9 +13,7 @@ namespace PictureMoverGui.Store
         public WorkerHandler _workerHandler;
         public WorkerHandler WorkerHandler => _workerHandler;
 
-        //public RunStates RunState { get; private set; }
         public RunStates RunState => _workerHandler.RunState;
-        //public RunStates GathererState { get; private set; }
         public double StatusPercentage { get; private set; }
         public string StatusMessage { get; private set; }
         public int InfoFileCount { get; private set; }
@@ -26,8 +24,6 @@ namespace PictureMoverGui.Store
         public RunningStore()
         {
             _workerHandler = new WorkerHandler();
-            //RunState = RunStates.Idle;
-            //GathererState = RunStates.Idle;
             StatusPercentage = 0.0;
             StatusMessage = "";
             InfoFileCount = 0;
@@ -41,20 +37,6 @@ namespace PictureMoverGui.Store
             SetStatusMessage();
             RunningStoreChanged?.Invoke(this);
         }
-
-        //public void SetRunState(RunStates runState)
-        //{
-        //    //RunState = runState;
-        //    //RunState
-        //    SetStatusMessage();
-        //    RunningStoreChanged?.Invoke(this);
-        //}
-
-        //public void SetGathererState(RunStates gathererState)
-        //{
-        //    GathererState = gathererState;
-        //    RunningStoreChanged?.Invoke(this);
-        //}
 
         public void SetStatusPercentage(double statusPercentage)
         {
