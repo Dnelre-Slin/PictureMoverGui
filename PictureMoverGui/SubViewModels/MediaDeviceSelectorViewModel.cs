@@ -145,8 +145,13 @@ namespace PictureMoverGui.SubViewModels
 
         public int InfoFileCount => _masterStore.RunningStore.InfoFileCount;
 
+        public bool Editing { get; private set; }
+        public Visibility EditPanelVisibility => Editing ? Visibility.Visible : Visibility.Hidden;
+        public Brush EditColor => Editing ? Brushes.LightBlue : Brushes.LightGray;
+
         public ICommand RefreshUsbDevices { get; }
         public ICommand CancelGatherer { get; }
+        public ICommand Edit { get; }
 
         public MediaDeviceSelectorViewModel(MasterStore masterStore)
         {
@@ -156,6 +161,7 @@ namespace PictureMoverGui.SubViewModels
 
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
             CancelGatherer = new CallbackCommand(OnExtensionCounterWorkerCancel);
+            Edit = new CallbackCommand(OnEdit);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -294,6 +300,15 @@ namespace PictureMoverGui.SubViewModels
             System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
             //_extensionCounterWorker.CancelWorker();
             _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
+        }
+
+        protected void OnEdit(object parameter)
+        {
+            System.Diagnostics.Debug.WriteLine("OnEdit");
+            Editing = !Editing;
+            OnPropertyChanged(nameof(Editing));
+            OnPropertyChanged(nameof(EditPanelVisibility));
+            OnPropertyChanged(nameof(EditColor));
         }
     }
 }

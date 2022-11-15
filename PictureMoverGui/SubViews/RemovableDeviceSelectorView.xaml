@@ -8,12 +8,13 @@
     <Grid>
         <StackPanel>
             <WrapPanel>
+                <Button Margin="5 0 10 0" Width="24" Content="✎" FontSize="14" Height="24" Command="{Binding Edit}" Background="{Binding EditColor}"></Button>
                 <TextBlock FontSize="20" Foreground="{Binding RemovableDeviceConnectedColor}" Text="{Binding RemovableDeviceConnected}"></TextBlock>
-                <Button FontSize="20" Width="23" Height="24" Padding="-12" Content="🔄" Command="{Binding RefreshUsbDevices}"></Button>
+                <Button FontSize="20" Width="23" Height="24" Padding="0 -5 0 0" Content="↻" Command="{Binding RefreshUsbDevices}"></Button>
                 <TextBlock FontSize="20" Margin="10 0" Text="{Binding RemovableDeviceChosenName}"></TextBlock>
                 <ComboBox FontSize="20" MinWidth="100" ItemsSource="{Binding RemovableDeviceChoices}" SelectedValue="{Binding RemovableDeviceChosenName}" Visibility="{Binding RemovableDevicePickerVisibility}"></ComboBox>
             </WrapPanel>
-            <WrapPanel>
+            <WrapPanel Visibility="{Binding EditPanelVisibility}">
                 <Label x:Name="SourceDirLabel" Margin="10 0" FontSize="20" Width="600" Height="40" Background="GhostWhite" Content="{Binding RemovableMediaPath}"/>
                 <Button Padding="10 0" Margin="0 0" FontSize="20" Command="{Binding OpenFolderBrowserDialog}" x:Name="btnChooseSourceDir" Content="{DynamicResource FolderButtonContent}"/>
             </WrapPanel>

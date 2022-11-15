@@ -186,6 +186,10 @@ namespace PictureMoverGui.SubViewModels
                     System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
+                    if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
+                    {
+                        _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(DateTime.Now);
+                    }
                     break;
                 case WorkStatus.Invalid:
                     _masterStore.RunningStore.AddStatusLog("Source dir no longer exists");

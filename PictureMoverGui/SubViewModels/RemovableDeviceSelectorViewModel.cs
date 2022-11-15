@@ -31,8 +31,13 @@ namespace PictureMoverGui.SubViewModels
         }
         public string RemovableMediaPath => RemovableDeviceChosenName + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path;
 
+        public bool Editing { get; private set; }
+        public Visibility EditPanelVisibility => Editing ? Visibility.Visible : Visibility.Hidden;
+        public Brush EditColor => Editing ? Brushes.LightBlue : Brushes.LightGray;
+
         public ICommand RefreshUsbDevices { get; }
         public ICommand OpenFolderBrowserDialog { get; }
+        public ICommand Edit { get; }
 
         public RemovableDeviceSelectorViewModel(MasterStore masterStore)
         {
@@ -40,6 +45,7 @@ namespace PictureMoverGui.SubViewModels
 
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
             OpenFolderBrowserDialog = new CallbackCommand(OnOpenFolderBrowserDialog);
+            Edit = new CallbackCommand(OnEdit);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
         }
@@ -78,6 +84,15 @@ namespace PictureMoverGui.SubViewModels
                 string[] paths = openFileDlg.SelectedPath.Split(':');
                 _masterStore.UsbDeviceStore.SetSelectedRemovableDevicePath(paths[1]);
             }
+        }
+
+        protected void OnEdit(object parameter)
+        {
+            System.Diagnostics.Debug.WriteLine("OnEdit");
+            Editing = !Editing;
+            OnPropertyChanged(nameof(Editing));
+            OnPropertyChanged(nameof(EditPanelVisibility));
+            OnPropertyChanged(nameof(EditColor));
         }
     }
 }
