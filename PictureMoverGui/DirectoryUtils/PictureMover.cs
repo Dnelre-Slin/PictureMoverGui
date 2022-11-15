@@ -143,7 +143,7 @@ namespace PictureMoverGui.DirectoryUtils
             }
 
             _currentProgress++;
-            int progressPercent = (_currentProgress * 100) / _totalFiles;
+            int progressPercent = (_currentProgress * 100) / (_totalFiles * _destinationPaths.Count);
 
             _workerSender.ReportProgress(progressPercent);
         }

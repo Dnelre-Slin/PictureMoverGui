@@ -54,12 +54,14 @@ namespace PictureMoverGui.Store
         public void IncrementInfoFileCount(int incrementAmount = 1)
         {
             InfoFileCount += incrementAmount;
+            StatusMessage = CalculateStatusMessage();
             RunningStoreChanged?.Invoke(this);
         }
 
         public void ResetInfoFileCount()
         {
             InfoFileCount = 0;
+            StatusMessage = CalculateStatusMessage();
             RunningStoreChanged?.Invoke(this);
         }
 
@@ -73,9 +75,11 @@ namespace PictureMoverGui.Store
             switch (RunState)
             {
                 case RunStates.DirectoryValidation:
-                    return App.Current.FindResource("DirValidateStatusMessage").ToString();
+                    //return App.Current.FindResource("DirValidateStatusMessage").ToString();
+                    return $"Teller filer : {InfoFileCount}";
                 case RunStates.DirectoryGathering:
-                    return App.Current.FindResource("DirGatherStatusMessage").ToString();
+                    return App.Current.FindResource("ReadyStatusMessage").ToString();
+                    //return App.Current.FindResource("DirGatherStatusMessage").ToString();
                 case RunStates.RunningSorter:
                     return $"{StatusPercentage}%";
                 case RunStates.Idle:

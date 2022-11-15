@@ -148,8 +148,9 @@ namespace PictureMoverGui.SubViewModels
                 else if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
                 {
                     _masterStore.RunningStore.ResetInfoFileCount();
+                    System.Diagnostics.Debug.WriteLine(_masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path);
                     _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
+                        new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, _masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path },
                         true,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
                         _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
