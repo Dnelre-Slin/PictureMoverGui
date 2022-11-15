@@ -8,11 +8,18 @@
         Title="{DynamicResource MainWindowTitle}" Height="500" Width="800" MinHeight="500" MinWidth="800" Icon="/Images/PictureSorterIcon.ico">
     <TabControl SelectedIndex="{Binding SelectedTabIndex}">
         <TabItem Header="{DynamicResource TabNormalView}">
-            <localviews:SorterView DataContext="{Binding Sorter}"></localviews:SorterView>
+            <Grid>
+                <Grid Visibility="{Binding SorterVisibility}">
+                    <localviews:SorterView DataContext="{Binding Sorter}"></localviews:SorterView>
+                </Grid>
+                <Grid Visibility="{Binding PhoneVisibility}">
+                    <localviews:PhoneInputView DataContext="{Binding PhoneInput}"></localviews:PhoneInputView>
+                </Grid>
+            </Grid>
         </TabItem>
-        <TabItem Header="Phone">
+        <!--<TabItem Header="Phone">
             <localviews:PhoneInputView DataContext="{Binding PhoneInput}"></localviews:PhoneInputView>
-        </TabItem>
+        </TabItem>-->
         <TabItem Header="{DynamicResource TabEventView}">
             <localviews:EventsView DataContext="{Binding Events}"></localviews:EventsView>
         </TabItem>

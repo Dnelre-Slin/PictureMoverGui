@@ -1,5 +1,6 @@
 ﻿using PictureMoverGui.Store;
 using System.Diagnostics;
+using System.Windows;
 
 namespace PictureMoverGui.ViewModels
 {
@@ -29,6 +30,9 @@ namespace PictureMoverGui.ViewModels
             }
         }
 
+        public Visibility SorterVisibility => _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == Helpers.MediaTypeEnum.NormalDirectory ? Visibility.Visible : Visibility.Collapsed; 
+        public Visibility PhoneVisibility => _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == Helpers.MediaTypeEnum.MediaDevice ? Visibility.Visible : Visibility.Collapsed; 
+
         public MainWindowViewModel(MasterStore masterStore)
         {
             _masterStore = masterStore;
@@ -41,6 +45,8 @@ namespace PictureMoverGui.ViewModels
             ExtensionSelector = new ExtensionSelectorViewModel(masterStore);
             AdvancedOptions = new AdvancedOptionsViewModel(masterStore);
             StatusInfo = new StatusInfoViewModel(masterStore);
+
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfigurationStore_SorterConfigurationChanged;
         }
 
         public override void Dispose()
@@ -55,11 +61,19 @@ namespace PictureMoverGui.ViewModels
             ExtensionSelector.Dispose();
             AdvancedOptions.Dispose();
             StatusInfo.Dispose();
+
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged -= SorterConfigurationStore_SorterConfigurationChanged;
         }
 
         protected void OnSelectedIndexChanged()
         {
             Debug.WriteLine($"Tab changed : {SelectedTabIndex}");
+        }
+
+        private void SorterConfigurationStore_SorterConfigurationChanged(Models.SorterConfigurationModel sorterConfig)
+        {
+            OnPropertyChanged(nameof(SorterVisibility));
+            OnPropertyChanged(nameof(PhoneVisibility));
         }
     }
 }

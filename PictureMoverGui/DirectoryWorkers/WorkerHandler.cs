@@ -27,6 +27,15 @@ namespace PictureMoverGui.DirectoryWorkers
             RunState = RunStates.Idle;
         }
 
+        public void Dispose()
+        {
+            if (_workerQueue.Count > 0)
+            {
+                _workerQueue.Peek().CancelWorker();
+                _workerQueue.Clear();
+            }
+        }
+
         public void StartExtensionCounterWorker(ExtensionCounterArguments extensionCounterArguments)
         {
             _workerQueue.Enqueue(new ExtensionCounterWorker(extensionCounterArguments, OnWorkerDone));

@@ -16,5 +16,11 @@
             EventDataStore = new EventDataStore();
             UsbDeviceStore = new UsbDeviceStore();
         }
+
+        public void Dispose()
+        {
+            RunningStore.Dispose();
+            UsbDeviceStore.Dispose();
+        }
     }
 }

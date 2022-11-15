@@ -62,6 +62,9 @@ namespace PictureMoverGui.Store
             UsbDeviceNotifier.UsbRemovableDeviceRemoved -= UsbDeviceNotifier_UsbRemovableDeviceRemoved;
             UsbDeviceNotifier.UsbMediaDeviceAdded -= UsbDeviceNotifier_UsbMediaDeviceAdded;
             UsbDeviceNotifier.UsbMediaDeviceRemoved -= UsbDeviceNotifier_UsbMediaDeviceRemoved;
+
+            _mediaDeviceChangeWorker.CancelWorker();
+            _removableDeviceChangeWorker.CancelWorker();
         }
 
         public void RefreshUsbDevices()

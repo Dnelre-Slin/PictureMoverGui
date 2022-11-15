@@ -32,6 +32,12 @@ namespace PictureMoverGui.Store
             _workerHandler.RunStateChanged += WorkerHandler_RunStateChanged;
         }
 
+        public void Dispose()
+        {
+            _workerHandler.RunStateChanged -= WorkerHandler_RunStateChanged;
+            _workerHandler.Dispose();
+        }
+
         protected void WorkerHandler_RunStateChanged(RunStates runState)
         {
             SetStatusMessage();
@@ -76,9 +82,9 @@ namespace PictureMoverGui.Store
             {
                 case RunStates.DirectoryValidation:
                     //return App.Current.FindResource("DirValidateStatusMessage").ToString();
-                    return $"Teller filer : {InfoFileCount}";
+                    return $"{App.Current.FindResource("FileCountStatusMessage")} {InfoFileCount}";
                 case RunStates.DirectoryGathering:
-                    return App.Current.FindResource("ReadyStatusMessage").ToString();
+                    return App.Current?.FindResource("ReadyStatusMessage").ToString() ?? "";
                     //return App.Current.FindResource("DirGatherStatusMessage").ToString();
                 case RunStates.RunningSorter:
                     return $"{StatusPercentage}%";

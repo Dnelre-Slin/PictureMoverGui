@@ -35,6 +35,7 @@
         <System:String x:Key="NotReadyStatusMessage">Ikke klar</System:String>
         <System:String x:Key="DoneStatusMessage">Ferdig</System:String>
         <System:String x:Key="ErrorStatusMessage">Antall feil:</System:String>
+        <System:String x:Key="FileCountStatusMessage">Teller filer:</System:String>
         <System:String x:Key="DirValidateStatusMessage">Forbereder...</System:String>
         <System:String x:Key="DirGatherStatusMessage">Prosesserer...</System:String>
         <System:String x:Key="TabNormalView">Sorterer</System:String>
@@ -72,6 +73,7 @@
         <System:String x:Key="EventEditShowErrorText">Feil: Slutt dato er tidligere enn start dato</System:String>
         
         <System:String x:Key="TabStatusView">Status</System:String>
+        <System:String x:Key="MediaDeviceLastRun">Sist kjørt:</System:String>
 
         <System:String x:Key="MessageBoxDeleteEventTitle">Slett hendelse</System:String>
         <System:String x:Key="MessageBoxDeleteEventText">Er du sikker på at du vil slette hendelse</System:String>

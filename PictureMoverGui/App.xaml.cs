@@ -44,6 +44,7 @@ namespace PictureMoverGui
             base.OnExit(e);
 
             _viewModel.Dispose();
+            _masterStore.Dispose();
             //_masterStore.UsbDeviceStore.Dispose();
         }
     }

@@ -49,7 +49,7 @@ namespace PictureMoverGui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DoCopy {
             get {
                 return ((bool)(this["DoCopy"]));
@@ -61,7 +61,7 @@ namespace PictureMoverGui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DoStructured {
             get {
                 return ((bool)(this["DoStructured"]));
@@ -85,7 +85,7 @@ namespace PictureMoverGui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int NameCollisionAction {
             get {
                 return ((int)(this["NameCollisionAction"]));
@@ -97,7 +97,7 @@ namespace PictureMoverGui.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int CompareFilesAction {
             get {
                 return ((int)(this["CompareFilesAction"]));

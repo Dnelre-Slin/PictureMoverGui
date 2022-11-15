@@ -17,6 +17,7 @@ namespace PictureMoverGui.SubViewModels
     {
         private MasterStore _masterStore;
         private MediaDeviceUnlockWorker _usbMediaDeviceUnlockWorker;
+        private MediaTypeEnum _mediaType;
 
         public IEnumerable<string> MediaDeviceChoices => _masterStore.UsbDeviceStore.MediaDeviceList.Select(md => md.Name);
 
@@ -149,6 +150,8 @@ namespace PictureMoverGui.SubViewModels
         public Visibility EditPanelVisibility => Editing ? Visibility.Visible : Visibility.Hidden;
         public Brush EditColor => Editing ? Brushes.LightBlue : Brushes.LightGray;
 
+        public Visibility WorkerRunningVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
+
         public ICommand RefreshUsbDevices { get; }
         public ICommand CancelGatherer { get; }
         public ICommand Edit { get; }
@@ -158,6 +161,7 @@ namespace PictureMoverGui.SubViewModels
             _masterStore = masterStore;
             _usbMediaDeviceUnlockWorker = new MediaDeviceUnlockWorker();
             //_extensionCounterWorker = new ExtensionCounterWorker();
+            _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
 
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
             CancelGatherer = new CallbackCommand(OnExtensionCounterWorkerCancel);
@@ -165,6 +169,7 @@ namespace PictureMoverGui.SubViewModels
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfigurationStore_SorterConfigurationChanged;
 
             StartUnlockWorker();
         }
@@ -175,6 +180,9 @@ namespace PictureMoverGui.SubViewModels
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged -= UsbDeviceStore_DeviceInfoChanged;
             _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
+            _masterStore.SorterConfigurationStore.SorterConfigurationChanged -= SorterConfigurationStore_SorterConfigurationChanged;
+
+            _usbMediaDeviceUnlockWorker.CancelWorker();
         }
 
         private void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
@@ -210,6 +218,16 @@ namespace PictureMoverGui.SubViewModels
         private void RunningStore_RunningStoreChanged(RunningStore runningStore)
         {
             OnPropertyChanged(nameof(InfoFileCount));
+            OnPropertyChanged(nameof(WorkerRunningVisibility));
+        }
+
+        private void SorterConfigurationStore_SorterConfigurationChanged(Models.SorterConfigurationModel sorterConfig)
+        {
+            if (_mediaType != _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType)
+            {
+                _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
+                StartExtensionCountnerWorker();
+            }
         }
 
         private void StartUnlockWorker()
@@ -247,19 +265,22 @@ namespace PictureMoverGui.SubViewModels
 
         protected void StartExtensionCountnerWorker()
         {
-            if (!_isLocked && _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
+            if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
             {
-                _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
-                _masterStore.RunningStore.ResetInfoFileCount();
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
-                _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
-                    MediaTypeEnum.MediaDevice,
-                    null,
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
-                    _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
-                    _masterStore.RunningStore.IncrementInfoFileCount,
-                    OnExtensionCounterWorkerDone
-                ));
+                if (!_isLocked)
+                {
+                    _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
+                    _masterStore.RunningStore.ResetInfoFileCount();
+                    _masterStore.RunningStore.WorkerHandler.StartExtensionCounterWorker(new ExtensionCounterArguments(
+                        MediaTypeEnum.MediaDevice,
+                        null,
+                        _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+                        _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
+                        _masterStore.RunningStore.IncrementInfoFileCount,
+                        OnExtensionCounterWorkerDone
+                    ));
+                }
             }
         }
 

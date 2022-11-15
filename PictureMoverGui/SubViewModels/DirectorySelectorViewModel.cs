@@ -16,6 +16,7 @@ namespace PictureMoverGui.SubViewModels
     {
         private MasterStore _masterStore;
         //private ExtensionCounterWorker _extensionCounterWorker;
+        private MediaTypeEnum _mediaType;
 
         private SorterConfigurationModel SorterConfig => _masterStore.SorterConfigurationStore.SorterConfiguration;
         
@@ -45,6 +46,7 @@ namespace PictureMoverGui.SubViewModels
         {
             _masterStore = masterStore;
             //_extensionCounterWorker = new ExtensionCounterWorker();
+            _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -65,6 +67,11 @@ namespace PictureMoverGui.SubViewModels
         protected void SorterConfiguration_SorterConfigurationChanged(SorterConfigurationModel sorterConfigurationModel)
         {
             OnPropertyChanged(nameof(SourcePath));
+            if (_mediaType != _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType)
+            {
+                _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
+                StartExtensionCountnerWorker();
+            }
         }
 
         protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
