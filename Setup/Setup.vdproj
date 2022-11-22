@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_95C02391C088497687BEBFE92D3AE8DB"
+        "MsmKey" = "8:_0D18FBBAAAFD4CCDB29CCA7F50F4C53F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D56CF84C93784345BE154EE552F87E3A"
+        "MsmKey" = "8:_E46D4861E00F40679E80804065F53E2E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -50,6 +50,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -119,9 +127,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D56CF84C93784345BE154EE552F87E3A"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E46D4861E00F40679E80804065F53E2E"
             {
-            "SourcePath" = "8:..\\PictureMoverGui\\PictureSorterIcon.ico"
+            "SourcePath" = "8:..\\PictureMoverGui\\Images\\PictureSorterIcon.ico"
             "TargetName" = "8:PictureSorterIcon.ico"
             "Tag" = "8:"
             "Folder" = "8:_1DA17CD98BED4CE3826E44DF84A1F520"
@@ -206,15 +214,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Bildesorterer"
-        "ProductCode" = "8:{4EA025E4-0AB8-4D21-A184-B75C7A7EFC44}"
-        "PackageCode" = "8:{370ACC01-2416-42E1-A8C8-F58BB7C60D03}"
+        "ProductCode" = "8:{6D1CF21D-99E1-4C1F-A9A9-FAEE02AEFB09}"
+        "PackageCode" = "8:{A3E8BAD1-2001-4F0F-AD51-65D177C233CD}"
         "UpgradeCode" = "8:{020CB271-359B-4A18-B29F-4E0FB3787E6B}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Heggem Productions"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -224,7 +232,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Program for å sortere bilder"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_D56CF84C93784345BE154EE552F87E3A"
+        "ARPPRODUCTICON" = "8:_E46D4861E00F40679E80804065F53E2E"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -327,7 +335,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9FD4751F4FE0477ABCF2653F1C045046"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_62E5FCAAE6A64CDAAF8BA44335AD7D88"
             {
             "Name" = "8:Bildesorterer"
             "Arguments" = "8:"
@@ -335,24 +343,24 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_95C02391C088497687BEBFE92D3AE8DB"
-            "Folder" = "8:_8A87C25686A8454999586BAADD2EE23F"
-            "WorkingFolder" = "8:_1DA17CD98BED4CE3826E44DF84A1F520"
-            "Icon" = "8:_D56CF84C93784345BE154EE552F87E3A"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A7313E5553D7456B8DCC72CF29443C4F"
-            {
-            "Name" = "8:Bildesorterer"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_95C02391C088497687BEBFE92D3AE8DB"
+            "Target" = "8:_0D18FBBAAAFD4CCDB29CCA7F50F4C53F"
             "Folder" = "8:_9D8349F11D474A968FD25C9F42D8044E"
             "WorkingFolder" = "8:_1DA17CD98BED4CE3826E44DF84A1F520"
-            "Icon" = "8:_D56CF84C93784345BE154EE552F87E3A"
+            "Icon" = "8:_E46D4861E00F40679E80804065F53E2E"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AD6CA7722E894CFEBFA390C09C62396D"
+            {
+            "Name" = "8:Bildesorterer"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_0D18FBBAAAFD4CCDB29CCA7F50F4C53F"
+            "Folder" = "8:_8A87C25686A8454999586BAADD2EE23F"
+            "WorkingFolder" = "8:_1DA17CD98BED4CE3826E44DF84A1F520"
+            "Icon" = "8:_E46D4861E00F40679E80804065F53E2E"
             "Feature" = "8:"
             }
         }
@@ -754,7 +762,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_95C02391C088497687BEBFE92D3AE8DB"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0D18FBBAAAFD4CCDB29CCA7F50F4C53F"
             {
             "SourcePath" = "8:..\\PictureMoverGui\\obj\\Release\\netcoreapp3.1\\apphost.exe"
             "TargetName" = "8:"
