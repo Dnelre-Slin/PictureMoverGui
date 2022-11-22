@@ -7,7 +7,6 @@ namespace PictureMoverGui.Helpers.HelperClasses
 {
     public class PictureMoverArguments
     {
-        //public RunStates RunState { get; }
         public List<string> DestinationPaths { get; }
         public bool DoCopy { get; }
         public bool DoMakeStructured { get; }
@@ -22,14 +21,12 @@ namespace PictureMoverGui.Helpers.HelperClasses
         public MediaDevice SelectedMediaDevice { get; }
         public DateTime PictureRetrieverNewerThan { get; }
 
-        //public Action<RunStates> UpdateRunState { get; }
         public Action<double> UpdateRunPercentage { get; }
         public Action<string> AddRunStatusLog { get; }
         public Action<int> IncrementInfoFileCount { get; }
         public Action<WorkStatus, int> WorkDone { get; }
 
         public PictureMoverArguments(
-            //RunStates runState, 
             List<string> destinationPaths, 
             bool doCopy, 
             bool doMakeStructured, 
@@ -43,13 +40,11 @@ namespace PictureMoverGui.Helpers.HelperClasses
             string pictureRetrieverSource,
             MediaDevice selectedMediaDevice,
             DateTime pictureRetrieverNewerThan,
-            //Action<RunStates> updateRunState, 
             Action<double> updateRunPercentage, 
             Action<string> addRunStatusLog, 
             Action<int> incrementInfoFileCount, 
             Action<WorkStatus, int> workDone)
         {
-            //RunState = runState;
             DestinationPaths = destinationPaths;
             DoCopy = doCopy;
             DoMakeStructured = doMakeStructured;
@@ -63,7 +58,6 @@ namespace PictureMoverGui.Helpers.HelperClasses
             PictureRetrieverSource = pictureRetrieverSource;
             SelectedMediaDevice = selectedMediaDevice;
             PictureRetrieverNewerThan = pictureRetrieverNewerThan;
-            //UpdateRunState = updateRunState;
             UpdateRunPercentage = updateRunPercentage;
             AddRunStatusLog = addRunStatusLog;
             IncrementInfoFileCount = incrementInfoFileCount;
@@ -73,32 +67,26 @@ namespace PictureMoverGui.Helpers.HelperClasses
 
     public class ExtensionCounterArguments
     {
-        //public RunStates RunState { get; }
         public MediaTypeEnum MediaType;
         public string Source;
         public MediaDevice SelectedMediaDevice { get; }
         public DateTime NewerThan;
 
-        //public Action<RunStates> UpdateGathererState;
         public Action<int> IncrementInfoFileCount { get; }
         public Action<WorkStatus, Dictionary<string, int>> WorkDone;
 
         public ExtensionCounterArguments(
-            //RunStates runState,
             MediaTypeEnum mediaType,
             string source,
             MediaDevice selectedMediaDevice,
             DateTime newerThan,
-            //Action<RunStates> updateGathererState,
             Action<int> incrementInfoFileCount,
             Action<WorkStatus, Dictionary<string, int>> workDone)
         {
-            //RunState = runState;
             MediaType = mediaType;
             Source = source;
             SelectedMediaDevice = selectedMediaDevice;
             NewerThan = newerThan;
-            //UpdateGathererState = updateGathererState;
             IncrementInfoFileCount = incrementInfoFileCount;
             WorkDone = workDone;
         }

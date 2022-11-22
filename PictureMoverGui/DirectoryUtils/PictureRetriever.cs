@@ -38,16 +38,6 @@ namespace PictureMoverGui.DirectoryUtils
             }
             else if (mediaType == MediaTypeEnum.MediaDevice)
             {
-                //MediaDevice m = null;
-                //foreach (var dev in MediaDevice.GetDevices())
-                //{
-                //    if (dev.FriendlyName == source)
-                //    {
-                //        m = dev;
-                //        break;
-                //    }
-                //}
-                //if (m != null)
                 if (mediaDevice != null)
                 {
                     _genericFileInfoServer = new GenericFileInfoServer(null, mediaDevice);

@@ -35,8 +35,6 @@ namespace PictureMoverGui
             MainWindow.Show();
 
             Helpers.UsbDeviceNotifier.Setup(MainWindow);
-
-            //_masterStore.UsbDeviceStore.Setup(MainWindow);
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -45,7 +43,6 @@ namespace PictureMoverGui
 
             _viewModel.Dispose();
             _masterStore.Dispose();
-            //_masterStore.UsbDeviceStore.Dispose();
         }
     }
 }

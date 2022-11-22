@@ -16,26 +16,9 @@ namespace PictureMoverGui.DirectoryWorkers
         {
             _extensionCounterArguments = extensionCounterArguments;
             _workDoneCallback = workDoneCallback;
-            //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.DirectoryGathering);
-            //_extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.DirectoryGathering);
 
             _workStatus = WorkStatus.Unfinished;
         }
-
-        //public void SetupWorker(ExtensionCounterArguments extensionCounterArguments)
-        //{
-        //    //if (_worker == null && extensionCounterArguments.RunState == RunStates.Idle) // Make sure it is not already running
-        //    if (_worker == null) // Make sure it is not already running
-        //    {
-        //        BaseSetupWorker();
-
-        //        _extensionCounterArguments = extensionCounterArguments;
-        //        //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.DirectoryGathering);
-        //        _extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.DirectoryGathering);
-
-        //        _workStatus = WorkStatus.Unfinished;
-        //    }
-        //}
 
         protected override void worker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -74,8 +57,6 @@ namespace PictureMoverGui.DirectoryWorkers
             Dictionary<string, int> extensionInfo = e.Result as Dictionary<string, int>;
 
             _worker = null;
-            //_extensionCounterArguments.UpdateRunState?.Invoke(RunStates.Idle);
-            //_extensionCounterArguments.UpdateGathererState?.Invoke(RunStates.Idle);
             _workDoneCallback?.Invoke(this);
             _extensionCounterArguments.WorkDone?.Invoke(_workStatus, extensionInfo);
         }

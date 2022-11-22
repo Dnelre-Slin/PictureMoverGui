@@ -68,21 +68,10 @@ namespace PictureMoverGui.DeviceWorkers
                 while (index < stopIndex)
                 {
                     System.Diagnostics.Debug.WriteLine("Runnin worker loop");
-                    //newCount = MediaDevice.GetDevices().Count();
                     foreach (var y in new ManagementObjectSearcher("Select Name, VolumeSerialNumber From Win32_LogicalDisk Where Description='Removable Disk'").Get())
                     {
                         removableDeviceDict.Add(y.GetPropertyValue("VolumeSerialNumber").ToString(), y.GetPropertyValue("Name").ToString());
                     }
-                    //foreach (MediaDevice removableDevice in MediaDevice.GetDevices())
-                    //{
-                    //    removableDevice.Connect();
-                    //    if (removableDevice.Protocol.Contains("MSC"))
-                    //    {
-                    //        removableDeviceDict.Add(removableDevice.SerialNumber, RemovableDeviceLookup.GetDriveLetterFromSerialNumber(removableDevice.SerialNumber));
-
-                    //    }
-                    //    removableDevice.Disconnect();
-                    //}
                     newCount = removableDeviceDict.Count;
                     System.Diagnostics.Debug.WriteLine(_currentCount);
                     System.Diagnostics.Debug.WriteLine(newCount);

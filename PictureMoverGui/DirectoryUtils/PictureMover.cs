@@ -80,8 +80,6 @@ namespace PictureMoverGui.DirectoryUtils
 
         public int Mover()
         {
-            //Directory.CreateDirectory(_destinationPath);
-
             _currentProgress = 0;
 
             foreach (GenericFileInfo fileInfo in _fileInfoList)
@@ -137,7 +135,6 @@ namespace PictureMoverGui.DirectoryUtils
         {
             if (_workerSender.CancellationPending)
             {
-                //this.dirSearcher.cancel = true;
                 _cancel = true;
                 return;
             }

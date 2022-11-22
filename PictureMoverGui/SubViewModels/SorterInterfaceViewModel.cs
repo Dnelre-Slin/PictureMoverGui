@@ -209,7 +209,6 @@ namespace PictureMoverGui.SubViewModels
         protected void OnCancelSorting(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnCancelSorting");
-            //_pictureMoverWorker.CancelWorker();
             _masterStore.RunningStore.WorkerHandler.CancelPictureMoverWorker();
         }
     }

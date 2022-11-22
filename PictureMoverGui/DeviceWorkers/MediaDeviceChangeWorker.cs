@@ -67,7 +67,6 @@ namespace PictureMoverGui.DeviceWorkers
                 while (index < stopIndex)
                 {
                     System.Diagnostics.Debug.WriteLine("Runnin worker gloop");
-                    //newCount = MediaDevice.GetDevices().Count();
                     foreach (MediaDevice mediaDevice in MediaDevice.GetDevices())
                     {
                         mediaDevice.Connect();

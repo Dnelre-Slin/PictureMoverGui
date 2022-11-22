@@ -12,8 +12,6 @@ namespace PictureMoverGui.DeviceWorkers
     public class MediaDeviceUnlockWorker
     {
         private BackgroundWorker _worker;
-        //private string _chosenMediaDeviceName;
-        //private Action<WorkStatus, CollectiveDeviceInfoModel> _workDone;
         private MediaDevice _mediaDevice;
         private Action<WorkStatus> _workDone;
         private WorkStatus _workStatus;
@@ -98,7 +96,6 @@ namespace PictureMoverGui.DeviceWorkers
                 }
 
                 _workStatus = WorkStatus.Success;
-                //e.Result = mediaDeviceList;
             }
             catch (Exception err)
             {
@@ -108,8 +105,6 @@ namespace PictureMoverGui.DeviceWorkers
 
         private void worker_WorkDone(object sender, RunWorkerCompletedEventArgs e)
         {
-            //List<MediaDeviceModel> mediaDeviceList = e.Result as List<MediaDeviceModel>;
-
             _worker = null;
             _workDone(_workStatus);
         }

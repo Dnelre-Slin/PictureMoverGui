@@ -9,19 +9,13 @@ namespace PictureMoverGui.DirectoryWorkers
     public class WorkerHandler
     {
         public event Action<RunStates> RunStateChanged;
-        //private ExtensionCounterWorker _extensionCounterWorker;
-        //private PictureMoverWorker _pictureMoverWorker;
 
         private Queue<BaseWorker> _workerQueue;
-        //private Queue<BaseWorker> _workerSuspendedQueue;
 
         public RunStates RunState { get; private set; }
 
         public WorkerHandler()
         {
-            //_extensionCounterWorker = new ExtensionCounterWorker();
-            //_pictureMoverWorker = new PictureMoverWorker();
-
             _workerQueue = new Queue<BaseWorker>();
 
             RunState = RunStates.Idle;
@@ -58,30 +52,10 @@ namespace PictureMoverGui.DirectoryWorkers
             }
         }
 
-        //public void SuspendAndPushBackExtensionCounterWorker()
-        //{
-        //    if (IsExtensionCounterRunning())
-        //    {
-        //        BaseWorker currentWorker = _workerQueue.Dequeue();
-        //        currentWorker.PauseWorker();
-        //        _workerQueue.Enqueue(currentWorker);
-        //        RunState = RunStates.Idle;
-        //        RunNextWorker();
-        //    }
-        //}
-
         protected bool IsExtensionCounterRunning()
         {
             return (RunState != RunStates.Idle && _workerQueue.Peek() is ExtensionCounterWorker);
         }
-
-        //public void SuspendExtensionCounterWorker()
-        //{
-        //    if (RunState != RunStates.Idle && _workerQueue.Peek() is ExtensionCounterWorker)
-        //    {
-        //        _workerQueue.Peek().CancelWorker();
-        //    }
-        //}
 
         public void StartPictureMoverWorker(PictureMoverArguments pictureMoverArguments)
         {
@@ -113,7 +87,6 @@ namespace PictureMoverGui.DirectoryWorkers
             {
                 if (_workerQueue.Count > 0)
                 {
-                    //WorkerArgumentWrapper workerArgumentWrapper = _workerQueue.Dequeue();
                     BaseWorker worker = _workerQueue.Peek();
                     if (worker is ExtensionCounterWorker)
                     {

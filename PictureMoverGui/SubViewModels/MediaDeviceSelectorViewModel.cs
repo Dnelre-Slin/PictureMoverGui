@@ -60,8 +60,6 @@ namespace PictureMoverGui.SubViewModels
                         hour,
                         minute,
                         second));
-                    //OnPropertyChanged(nameof(LastRunDateTime));
-                    //OnPropertyChanged(nameof(LastRunDate));
                 }
             }
         }
@@ -85,8 +83,6 @@ namespace PictureMoverGui.SubViewModels
                         int.Parse(value),
                         minute,
                         second));
-                    //OnPropertyChanged(nameof(LastRunDateTime));
-                    //OnPropertyChanged(nameof(LastRunHour));
                 }
             }
         }
@@ -110,8 +106,6 @@ namespace PictureMoverGui.SubViewModels
                         hour,
                         int.Parse(value),
                         second));
-                    //OnPropertyChanged(nameof(LastRunDateTime));
-                    //OnPropertyChanged(nameof(LastRunMinute));
                 }
             }
         }
@@ -135,8 +129,6 @@ namespace PictureMoverGui.SubViewModels
                         hour,
                         minute,
                         int.Parse(value)));
-                    //OnPropertyChanged(nameof(LastRunDateTime));
-                    //OnPropertyChanged(nameof(LastRunSecond));
                 }
             }
         }
@@ -161,7 +153,6 @@ namespace PictureMoverGui.SubViewModels
         {
             _masterStore = masterStore;
             _usbMediaDeviceUnlockWorker = new MediaDeviceUnlockWorker();
-            //_extensionCounterWorker = new ExtensionCounterWorker();
             _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
 
             RefreshUsbDevices = new CallbackCommand(OnRefreshUsbDevices);
@@ -294,7 +285,6 @@ namespace PictureMoverGui.SubViewModels
             {
                 case WorkStatus.Unfinished:
                     _masterStore.FileExtensionStore.Clear();
-                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
                     System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
@@ -302,12 +292,10 @@ namespace PictureMoverGui.SubViewModels
                     break;
                 case WorkStatus.Invalid:
                     _masterStore.FileExtensionStore.Clear();
-                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
                     System.Diagnostics.Debug.WriteLine("The source was invald");
                     break;
                 case WorkStatus.Cancelled:
                     _masterStore.FileExtensionStore.Clear();
-                    //_masterStore.SorterConfigurationStore.SetSourcePath("");
                     break;
                 case WorkStatus.Interupted:
                     _masterStore.FileExtensionStore.Clear();
@@ -321,7 +309,6 @@ namespace PictureMoverGui.SubViewModels
         protected void OnExtensionCounterWorkerCancel(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
-            //_extensionCounterWorker.CancelWorker();
             _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
 

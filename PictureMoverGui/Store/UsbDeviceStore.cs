@@ -116,11 +116,6 @@ namespace PictureMoverGui.Store
                         _mediaDeviceStorageList.Add(new MediaDeviceStorage(SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun));
                     }
                     SaveToStore();
-                    //SelectedMediaDevice.Name = chosenMediaName;
-                    //ChosenMediaDeviceSerialId = mediaDevice.SerialId;
-                    //SelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == mediaDevice.SerialId);
-                    //Get ChosenDateTime from store
-                    // Save new Chosen name and serial id to store
                 }
             }
             DeviceInfoChanged?.Invoke(this);
@@ -149,11 +144,6 @@ namespace PictureMoverGui.Store
                         _removableDeviceStorageList.Add(new RemovableDeviceStorage(SelectedRemovableDevice.SerialId, SelectedRemovableDevice.Path));
                     }
                     SaveToStore();
-                    //SelectedMediaDevice.Name = chosenMediaName;
-                    //ChosenMediaDeviceSerialId = mediaDevice.SerialId;
-                    //SelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == mediaDevice.SerialId);
-                    //Get ChosenDateTime from store
-                    // Save new Chosen name and serial id to store
                 }
             }
             DeviceInfoChanged?.Invoke(this);
@@ -185,7 +175,6 @@ namespace PictureMoverGui.Store
                 {
                     _mediaDeviceList.Add(new MediaDeviceModel(kv.Value.FriendlyName, kv.Key, _mediaDeviceStorageList.Find(md => md.SerialId == kv.Key)?.LastRun ?? DateTime.MinValue, kv.Value));
                 }
-                //_mediaDeviceList.Add(new MediaDeviceModel("Test Device 123", "1234567890", DateTime.MinValue, null));
 
                 MediaDeviceModel newSelectedMediaDevice = _mediaDeviceList.Find(md => md.SerialId == SelectedMediaDevice.SerialId);
                 if (newSelectedMediaDevice != null)

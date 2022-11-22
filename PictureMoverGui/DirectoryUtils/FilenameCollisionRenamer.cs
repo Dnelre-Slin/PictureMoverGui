@@ -202,7 +202,6 @@ namespace PictureMoverGui.DirectoryUtils
                 string renamed_filename = $"{fname}_{i + 1}.{extname}";
                 if (!FilenameInDir(destinationDir, renamed_filename))
                 {
-                    //Trace.TraceInformation($"Renamed {filename} to {renamed_filename}");
                     new_filename = renamed_filename;
                     break;
                 }
