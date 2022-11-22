@@ -73,7 +73,6 @@
         </Grid>
         <WrapPanel Grid.Row="1">
             <Button FontSize="20" Padding="10" Margin="10" Content="{DynamicResource ResetSettingsButton}" x:Name="btnResetSettings" Command="{Binding ResetSettings}"></Button>
-            <Button FontSize="20" Padding="10" Margin="10" Content="TEST" x:Name="btnTest" Command="{Binding TestButton}"></Button>
         </WrapPanel>
     </Grid>
 </UserControl>
