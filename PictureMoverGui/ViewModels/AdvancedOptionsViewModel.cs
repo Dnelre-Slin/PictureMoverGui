@@ -109,7 +109,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnResetSettings(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnResetSettings");
             MessageBoxResult result = MessageBox.Show($"{App.Current.FindResource("MessageBoxResetSettingsText")}", $"{App.Current.FindResource("MessageBoxResetSettingsTitle")}", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
@@ -119,11 +118,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnTestButton(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnTestButton");
-            foreach (var ext in _masterStore.FileExtensionStore.FileExtensionValues)
-            {
-                System.Diagnostics.Debug.WriteLine(ext.Name + " : " + ext.Active);
-            }
         }
     }
 }

@@ -59,7 +59,6 @@ namespace PictureMoverGui.DeviceWorkers
                 
                 while (runLoop)
                 {
-                    System.Diagnostics.Debug.WriteLine("Checking unlock status");
                     if (_worker.CancellationPending)
                     {
                         _workStatus = WorkStatus.Cancelled;

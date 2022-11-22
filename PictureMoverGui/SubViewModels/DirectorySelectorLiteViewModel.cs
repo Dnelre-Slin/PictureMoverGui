@@ -61,7 +61,6 @@ namespace PictureMoverGui.SubViewModels
             var result = openFileDlg.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDlg.SelectedPath))
             {
-                System.Diagnostics.Debug.WriteLine(openFileDlg.SelectedPath);
                 DestinationPath = openFileDlg.SelectedPath;
             }
         }

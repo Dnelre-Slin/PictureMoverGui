@@ -66,7 +66,6 @@ namespace PictureMoverGui.DeviceWorkers
 
                 while (index < stopIndex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Runnin worker gloop");
                     foreach (MediaDevice mediaDevice in MediaDevice.GetDevices())
                     {
                         mediaDevice.Connect();
@@ -78,8 +77,6 @@ namespace PictureMoverGui.DeviceWorkers
                         mediaDevice.Disconnect();
                     }
                     newCount = mediaDeviceDict.Count;
-                    System.Diagnostics.Debug.WriteLine(_currentCount);
-                    System.Diagnostics.Debug.WriteLine(newCount);
 
                     if ((_deviceChangeType == DeviceChangeType.None) ||
                         (_deviceChangeType == DeviceChangeType.Added && newCount > _currentCount) ||

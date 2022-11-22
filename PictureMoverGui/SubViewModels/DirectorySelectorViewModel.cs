@@ -79,7 +79,6 @@ namespace PictureMoverGui.SubViewModels
             var result = openFileDlg.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDlg.SelectedPath))
             {
-                System.Diagnostics.Debug.WriteLine(openFileDlg.SelectedPath);
                 SourcePath = openFileDlg.SelectedPath;
             }
         }
@@ -104,14 +103,11 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)
         {
-            System.Diagnostics.Debug.WriteLine("Worker done!");
-            System.Diagnostics.Debug.WriteLine(workStatus);
             switch (workStatus)
             {
                 case WorkStatus.Unfinished:
                     _masterStore.FileExtensionStore.Clear();
                     _masterStore.SorterConfigurationStore.SetSourcePath("");
-                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
                     _masterStore.FileExtensionStore.Set(extensionInfo);
@@ -119,7 +115,6 @@ namespace PictureMoverGui.SubViewModels
                 case WorkStatus.Invalid:
                     _masterStore.FileExtensionStore.Clear();
                     _masterStore.SorterConfigurationStore.SetSourcePath("");
-                    System.Diagnostics.Debug.WriteLine("The source was invald");
                     break;
                 case WorkStatus.Cancelled:
                     _masterStore.FileExtensionStore.Clear();
@@ -135,7 +130,6 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnCancelGatherer(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
             _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
     }

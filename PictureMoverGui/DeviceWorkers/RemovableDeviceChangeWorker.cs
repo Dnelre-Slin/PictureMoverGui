@@ -67,14 +67,11 @@ namespace PictureMoverGui.DeviceWorkers
 
                 while (index < stopIndex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Runnin worker loop");
                     foreach (var y in new ManagementObjectSearcher("Select Name, VolumeSerialNumber From Win32_LogicalDisk Where Description='Removable Disk'").Get())
                     {
                         removableDeviceDict.Add(y.GetPropertyValue("VolumeSerialNumber").ToString(), y.GetPropertyValue("Name").ToString());
                     }
                     newCount = removableDeviceDict.Count;
-                    System.Diagnostics.Debug.WriteLine(_currentCount);
-                    System.Diagnostics.Debug.WriteLine(newCount);
 
                     if ((_deviceChangeType == DeviceChangeType.None) ||
                         (_deviceChangeType == DeviceChangeType.Added && newCount > _currentCount) ||

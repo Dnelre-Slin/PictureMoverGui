@@ -73,9 +73,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnEditDone(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine(EventEdit.EventName);
-            System.Diagnostics.Debug.WriteLine(EventEdit.StartDateTime);
-            System.Diagnostics.Debug.WriteLine(EventEdit.EndDateTime);
             if (_eventState == EventState.Creating)
             {
                 _masterStore.EventDataStore.CreateEventData(new EventDataModel(EventEdit.EventName, EventEdit.StartDateTime, EventEdit.EndDateTime));

@@ -53,8 +53,6 @@ namespace PictureMoverGui.ViewModels
         {
             base.Dispose();
 
-            Debug.WriteLine("Disposing");
-
             Sorter.Dispose();
             PhoneInput.Dispose();
             Events.Dispose();
@@ -67,7 +65,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnSelectedIndexChanged()
         {
-            Debug.WriteLine($"Tab changed : {SelectedTabIndex}");
         }
 
         private void SorterConfigurationStore_SorterConfigurationChanged(Models.SorterConfigurationModel sorterConfig)

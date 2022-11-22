@@ -64,7 +64,6 @@ namespace PictureMoverGui.SubViewModels
 
         private void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
         {
-            System.Diagnostics.Debug.WriteLine($"Device change: RemovableDeviceConnected: {RemovableDeviceConnected}");
             OnPropertyChanged(nameof(RemovableDeviceChoices));
 
             OnPropertyChanged(nameof(RemovableDeviceConnected));
@@ -90,7 +89,6 @@ namespace PictureMoverGui.SubViewModels
             var result = openFileDlg.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(openFileDlg.SelectedPath))
             {
-                System.Diagnostics.Debug.WriteLine(openFileDlg.SelectedPath);
                 string[] paths = openFileDlg.SelectedPath.Split(':');
                 _masterStore.UsbDeviceStore.SetSelectedRemovableDevicePath(paths[1]);
             }
@@ -98,7 +96,6 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnEdit(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnEdit");
             Editing = !Editing;
             OnPropertyChanged(nameof(Editing));
             OnPropertyChanged(nameof(EditPanelVisibility));

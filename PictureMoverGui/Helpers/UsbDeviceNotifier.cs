@@ -40,7 +40,6 @@ namespace PictureMoverGui.Helpers
                         var deviceTypeBytes = new byte[4];
                         Marshal.Copy(lparam + 4, deviceTypeBytes, 0, 4); // Get deviceType part of lparam
                         int deviceType = BitConverter.ToInt32(deviceTypeBytes);
-                        Debug.WriteLine($"{Added} : {deviceType}");
                         if (deviceType == DbtDevtypRemovableDevice)
                         {
                             if (Added)

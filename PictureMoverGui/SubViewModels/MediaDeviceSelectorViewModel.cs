@@ -179,9 +179,6 @@ namespace PictureMoverGui.SubViewModels
 
         private void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
         {
-            System.Diagnostics.Debug.WriteLine($"Device change: MediaDeviceConnected: {MediaDeviceConnected}");
-            System.Diagnostics.Debug.WriteLine($"Device change: MediaDeviceChosenName: {MediaDeviceChosenName}");
-
             if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
             {
                 OnExtensionCounterWorkerCancel(null);
@@ -241,7 +238,6 @@ namespace PictureMoverGui.SubViewModels
 
         private void OnUnlockWorkerDone(WorkStatus workStatus)
         {
-            System.Diagnostics.Debug.WriteLine($"OnUnlockWorkerDone : {workStatus}");
             if (workStatus == WorkStatus.Success)
             {
                 _isLocked = false;
@@ -279,20 +275,16 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnExtensionCounterWorkerDone(WorkStatus workStatus, Dictionary<string, int> extensionInfo)
         {
-            System.Diagnostics.Debug.WriteLine("Worker done!");
-            System.Diagnostics.Debug.WriteLine(workStatus);
             switch (workStatus)
             {
                 case WorkStatus.Unfinished:
                     _masterStore.FileExtensionStore.Clear();
-                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
                     _masterStore.FileExtensionStore.Set(extensionInfo);
                     break;
                 case WorkStatus.Invalid:
                     _masterStore.FileExtensionStore.Clear();
-                    System.Diagnostics.Debug.WriteLine("The source was invald");
                     break;
                 case WorkStatus.Cancelled:
                     _masterStore.FileExtensionStore.Clear();
@@ -308,13 +300,11 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnExtensionCounterWorkerCancel(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
             _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
 
         protected void OnEdit(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnEdit");
             Editing = !Editing;
             OnPropertyChanged(nameof(Editing));
             OnPropertyChanged(nameof(EditPanelVisibility));

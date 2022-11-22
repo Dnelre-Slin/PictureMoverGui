@@ -88,7 +88,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void FileExtensionStore_FileExtensionChanged(FileExtensionModel fileExtensionModel)
         {
-            Debug.WriteLine("FileExtensionStore_FileExtensionChanged");
             foreach (var fileExtension in FileExtensionList)
             {
                 fileExtension?.RefreshActive();
@@ -100,7 +99,6 @@ namespace PictureMoverGui.ViewModels
         
         protected void FileExtensionStore_FileExtensionDictReset(IEnumerable<FileExtensionModel> fileExtensionDict)
         {
-            Debug.WriteLine("FileExtensionStore_FileExtensionReset");
             ResetFileExtensionsFromStore();
         }
 
@@ -123,8 +121,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnFalsifyList(object parameter)
         {
-            Debug.WriteLine("OnFalsifyList");
-
             foreach (var item in FileExtensionList)
             {
                 item.Active = false;
@@ -133,7 +129,6 @@ namespace PictureMoverGui.ViewModels
 
         protected void OnActiveChanged(object parameter)
         {
-            Debug.WriteLine("OnActiveChanged");
             OnPropertyChanged(nameof(NumberOfFiles));
             OnPropertyChanged(nameof(ActiveFiles));
         }

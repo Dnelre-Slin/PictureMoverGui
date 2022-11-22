@@ -75,7 +75,6 @@ namespace PictureMoverGui.DirectoryUtils
 
         static private void tmpCatcher(Exception e)
         {
-            System.Diagnostics.Debug.WriteLine(e);
         }
 
         static public Dictionary<string, int> GetExtensions(MediaTypeEnum mediaType, string source, MediaDevice mediaDevice, BaseWorker worker, Action<int> incrementInfoFileCount)

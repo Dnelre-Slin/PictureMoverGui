@@ -74,13 +74,11 @@ namespace PictureMoverGui.Store
 
         private void UsbDeviceNotifier_UsbRemovableDeviceAdded()
         {
-            Debug.WriteLine("Removable device added");
             _removableDeviceChangeWorker.StartWorker(DeviceChangeType.Added, _removableDeviceList.Count, RemovableDeviceChangeWorkDone);
         }
 
         private void UsbDeviceNotifier_UsbRemovableDeviceRemoved()
         {
-            Debug.WriteLine("Removable device removed");
             SelectedRemovableDevice = new RemovableDeviceModel(SelectedRemovableDevice.Name, SelectedRemovableDevice.SerialId, SelectedRemovableDevice.Path, false);
             int currentCount = _removableDeviceList.Count;
             _removableDeviceList.Clear();
@@ -90,13 +88,11 @@ namespace PictureMoverGui.Store
 
         private void UsbDeviceNotifier_UsbMediaDeviceAdded()
         {
-            Debug.WriteLine("Media device added");
             _mediaDeviceChangeWorker.StartWorker(DeviceChangeType.Added, _mediaDeviceList.Count, MediaDeviceChangeWorkDone);
         }
 
         private void UsbDeviceNotifier_UsbMediaDeviceRemoved()
         {
-            Debug.WriteLine("Media device removed");
             SelectedMediaDevice = new MediaDeviceModel(SelectedMediaDevice.Name, SelectedMediaDevice.SerialId, SelectedMediaDevice.LastRun, null);
             int currentCount = _mediaDeviceList.Count;
             _mediaDeviceList.Clear();
