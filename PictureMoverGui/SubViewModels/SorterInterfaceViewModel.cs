@@ -68,7 +68,7 @@ namespace PictureMoverGui.SubViewModels
             }
         }
 
-        public bool AllowConfiguration => _masterStore.RunningStore.RunState != RunStates.RunningSorter;
+        public bool AllowConfiguration => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
         public bool AllowStartSorting => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
 
         public Visibility CancelVisibility => (_masterStore.RunningStore.RunState == RunStates.RunningSorter || _masterStore.RunningStore.RunState == RunStates.DirectoryValidation) ? Visibility.Visible : Visibility.Hidden;

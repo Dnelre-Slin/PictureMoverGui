@@ -1,4 +1,5 @@
 ﻿using PictureMoverGui.Commands;
+using PictureMoverGui.Helpers;
 using PictureMoverGui.Store;
 using PictureMoverGui.ViewModels;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace PictureMoverGui.SubViewModels
         public Visibility EditPanelVisibility => Editing ? Visibility.Visible : Visibility.Hidden;
         public Brush EditColor => Editing ? Brushes.LightBlue : Brushes.LightGray;
 
+        public bool IsEditable => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
+
         public ICommand RefreshUsbDevices { get; }
         public ICommand OpenFolderBrowserDialog { get; }
         public ICommand Edit { get; }
@@ -48,6 +51,7 @@ namespace PictureMoverGui.SubViewModels
             Edit = new CallbackCommand(OnEdit);
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
+            _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
         }
 
         public override void Dispose()
@@ -55,6 +59,7 @@ namespace PictureMoverGui.SubViewModels
             base.Dispose();
 
             _masterStore.UsbDeviceStore.DeviceInfoChanged -= UsbDeviceStore_DeviceInfoChanged;
+            _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
         }
 
         private void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
@@ -67,6 +72,11 @@ namespace PictureMoverGui.SubViewModels
             OnPropertyChanged(nameof(RemovableDevicePickerVisibility));
             OnPropertyChanged(nameof(RemovableDeviceChosenName));
             OnPropertyChanged(nameof(RemovableMediaPath));
+        }
+
+        private void RunningStore_RunningStoreChanged(RunningStore obj)
+        {
+            OnPropertyChanged(nameof(IsEditable));
         }
 
         protected void OnRefreshUsbDevices(object parameter)

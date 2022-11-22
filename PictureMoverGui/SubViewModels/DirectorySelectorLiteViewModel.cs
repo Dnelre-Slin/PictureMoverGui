@@ -24,7 +24,7 @@ namespace PictureMoverGui.SubViewModels
             }
         }
 
-        public bool CanOpenDialog => _masterStore.RunningStore.RunState != RunStates.RunningSorter;
+        public bool CanOpenDialog => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
 
         public ICommand OpenFolderBrowserDialog { get; }
 

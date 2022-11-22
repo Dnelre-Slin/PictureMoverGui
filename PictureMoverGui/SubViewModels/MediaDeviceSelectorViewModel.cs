@@ -151,6 +151,7 @@ namespace PictureMoverGui.SubViewModels
         public Brush EditColor => Editing ? Brushes.LightBlue : Brushes.LightGray;
 
         public Visibility WorkerRunningVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
+        public bool IsEditable => _masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering;
 
         public ICommand RefreshUsbDevices { get; }
         public ICommand CancelGatherer { get; }
@@ -219,6 +220,7 @@ namespace PictureMoverGui.SubViewModels
         {
             OnPropertyChanged(nameof(InfoFileCount));
             OnPropertyChanged(nameof(WorkerRunningVisibility));
+            OnPropertyChanged(nameof(IsEditable));
         }
 
         private void SorterConfigurationStore_SorterConfigurationChanged(Models.SorterConfigurationModel sorterConfig)
