@@ -11,7 +11,7 @@ namespace PictureMoverGui.ViewModels
         public MediaDeviceSelectorViewModel MediaDeviceSelector { get; }
         public RemovableDeviceSelectorViewModel RemovableDeviceSelector { get; }
         public DirectorySelectorLiteViewModel DestinationDirectorySelector { get; }
-        public SorterInterfaceViewModel SorterInterface { get; }
+        public PhoneInterfaceViewModel PhoneInterface { get; }
 
         public PhoneInputViewModel(MasterStore masterStore)
         {
@@ -20,9 +20,7 @@ namespace PictureMoverGui.ViewModels
             MediaDeviceSelector = new MediaDeviceSelectorViewModel(masterStore);
             RemovableDeviceSelector = new RemovableDeviceSelectorViewModel(masterStore);
             DestinationDirectorySelector = new DirectorySelectorLiteViewModel(masterStore);
-            SorterInterface = new SorterInterfaceViewModel(masterStore);
-
-            SorterInterface.CopyVisibility = Visibility.Collapsed;
+            PhoneInterface = new PhoneInterfaceViewModel(masterStore, MediaDeviceSelector);
         }
 
         public override void Dispose()
@@ -32,7 +30,7 @@ namespace PictureMoverGui.ViewModels
             MediaDeviceSelector.Dispose();
             RemovableDeviceSelector.Dispose();
             DestinationDirectorySelector.Dispose();
-            SorterInterface.Dispose();
+            PhoneInterface.Dispose();
         }
     }
 }

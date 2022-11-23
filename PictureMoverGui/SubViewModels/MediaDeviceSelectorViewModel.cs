@@ -21,13 +21,14 @@ namespace PictureMoverGui.SubViewModels
 
         public IEnumerable<string> MediaDeviceChoices => _masterStore.UsbDeviceStore.MediaDeviceList.Select(md => md.Name);
 
-        private bool _isLocked = true;
+        //private bool _isLocked = true;
+        //public bool IsLocked => _isLocked;
 
         public string MediaDeviceConnected => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? "✔️" : "❌";
         public Brush MediaDeviceConnectedColor => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? Brushes.Green : Brushes.Red;
      
-        public string MediaDeviceUnlocked => _isLocked ? "🔒" : "🔓";
-        public Brush MediaDeviceUnlockedColor => _isLocked ? Brushes.Red : Brushes.Green;
+        public string MediaDeviceUnlocked => _masterStore.RunningStore.IsMediaLocked ? "🔒" : "🔓";
+        public Brush MediaDeviceUnlockedColor => _masterStore.RunningStore.IsMediaLocked ? Brushes.Red : Brushes.Green;
         public Visibility MediaDevicePickerVisibility => _masterStore.UsbDeviceStore.MediaDeviceList.Count() > 0 ? Visibility.Visible : Visibility.Hidden;
         public string MediaDeviceChosenName
         {
@@ -182,9 +183,10 @@ namespace PictureMoverGui.SubViewModels
             if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice == null)
             {
                 OnExtensionCounterWorkerCancel(null);
-                _isLocked = true;
-                OnPropertyChanged(nameof(MediaDeviceUnlocked));
-                OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
+                _masterStore.RunningStore.SetMediaLockedState(true);
+                //_isLocked = true;
+                //OnPropertyChanged(nameof(MediaDeviceUnlocked));
+                //OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
             }
 
             StartUnlockWorker();
@@ -209,6 +211,8 @@ namespace PictureMoverGui.SubViewModels
             OnPropertyChanged(nameof(InfoFileCount));
             OnPropertyChanged(nameof(WorkerRunningVisibility));
             OnPropertyChanged(nameof(IsEditable));
+            OnPropertyChanged(nameof(MediaDeviceUnlocked));
+            OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
         }
 
         private void SorterConfigurationStore_SorterConfigurationChanged(Models.SorterConfigurationModel sorterConfig)
@@ -222,7 +226,7 @@ namespace PictureMoverGui.SubViewModels
 
         private void StartUnlockWorker()
         {
-            if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null && _isLocked)
+            if (_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null && _masterStore.RunningStore.IsMediaLocked)
             {
                 _usbMediaDeviceUnlockWorker.StartWorker(_masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice, OnUnlockWorkerDone);
             }
@@ -240,10 +244,11 @@ namespace PictureMoverGui.SubViewModels
         {
             if (workStatus == WorkStatus.Success)
             {
-                _isLocked = false;
+                _masterStore.RunningStore.SetMediaLockedState(false);
+                //_isLocked = false;
                 StartExtensionCountnerWorker();
-                OnPropertyChanged(nameof(MediaDeviceUnlocked));
-                OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
+                //OnPropertyChanged(nameof(MediaDeviceUnlocked));
+                //OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
             }
         }
 
@@ -257,7 +262,7 @@ namespace PictureMoverGui.SubViewModels
             if (_masterStore.SorterConfigurationStore.SorterConfiguration.MediaType == MediaTypeEnum.MediaDevice)
             {
                 _masterStore.FileExtensionStore.Clear(); // Clear old extensions
-                if (!_isLocked)
+                if (!_masterStore.RunningStore.IsMediaLocked)
                 {
                     _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
                     _masterStore.RunningStore.ResetInfoFileCount();
