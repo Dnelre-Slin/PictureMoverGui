@@ -15,6 +15,6 @@
         <subviews:MediaDeviceSelectorView Grid.Row="0" DataContext="{Binding MediaDeviceSelector}"></subviews:MediaDeviceSelectorView>
         <subviews:RemovableDeviceSelectorView Grid.Row="1" DataContext="{Binding RemovableDeviceSelector}"></subviews:RemovableDeviceSelectorView>
         <subviews:DirectorySelectorLiteView Grid.Row="2" DataContext="{Binding DestinationDirectorySelector}"></subviews:DirectorySelectorLiteView>
-        <subviews:SorterInterfaceView Grid.Row="3" DataContext="{Binding SorterInterface}"></subviews:SorterInterfaceView>
+        <subviews:PhoneInterfaceView Grid.Row="3" DataContext="{Binding PhoneInterface}"></subviews:PhoneInterfaceView>
     </Grid>
 </UserControl>

@@ -33,7 +33,7 @@ namespace PictureMoverGui.DirectoryUtils
 
         private bool _cancel;
 
-        public PictureMover(PictureMoverArguments pictureMoverArguments, List<GenericFileInfo> fileInfoList, BackgroundWorker workerSender)
+        public PictureMover(PictureMoverArguments pictureMoverArguments, List<GenericFileInfo> fileInfoList, BackgroundWorker workerSender, Action<string> addRunStatusLog)
         {
             _workerSender = workerSender;
             _fileInfoList = fileInfoList;
@@ -43,7 +43,7 @@ namespace PictureMoverGui.DirectoryUtils
             _compareFilesAction = pictureMoverArguments.CompareFilesAction;
             _hashType = pictureMoverArguments.HashTypeAction;
             _eventDataList = pictureMoverArguments.EventDataList;
-            _addRunStatusLog = pictureMoverArguments.AddRunStatusLog;
+            _addRunStatusLog = addRunStatusLog;
 
             _cancel = false;
 

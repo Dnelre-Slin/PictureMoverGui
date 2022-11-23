@@ -2,6 +2,7 @@
 using PictureMoverGui.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace PictureMoverGui.Store
 {
@@ -18,8 +19,10 @@ namespace PictureMoverGui.Store
         public string StatusMessage { get; private set; }
         public int InfoFileCount { get; private set; }
 
-        private List<string> _statusMessageLogList;
+        private ObservableCollection<string> _statusMessageLogList;
         public IEnumerable<string> StatusMessageLogList => _statusMessageLogList;
+
+        public bool IsMediaLocked { get; private set; }
 
         public RunningStore()
         {
@@ -27,7 +30,8 @@ namespace PictureMoverGui.Store
             StatusPercentage = 0.0;
             StatusMessage = "";
             InfoFileCount = 0;
-            _statusMessageLogList = new List<string>();
+            _statusMessageLogList = new ObservableCollection<string>();
+            IsMediaLocked = true;
 
             _workerHandler.RunStateChanged += WorkerHandler_RunStateChanged;
         }
@@ -68,6 +72,12 @@ namespace PictureMoverGui.Store
         {
             InfoFileCount = 0;
             StatusMessage = CalculateStatusMessage();
+            RunningStoreChanged?.Invoke(this);
+        }
+
+        public void SetMediaLockedState(bool locked)
+        {
+            IsMediaLocked = locked;
             RunningStoreChanged?.Invoke(this);
         }
 

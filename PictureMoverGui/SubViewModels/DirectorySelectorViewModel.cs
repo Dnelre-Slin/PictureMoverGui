@@ -32,7 +32,23 @@ namespace PictureMoverGui.SubViewModels
             }
         }
 
+        private bool _cancelActivated;
+        private bool CancelActivated
+        {
+            get => _cancelActivated;
+            set
+            {
+                if (_cancelActivated != value)
+                {
+                    _cancelActivated = value;
+                    OnPropertyChanged(nameof(CancelActivated));
+                    OnPropertyChanged(nameof(AllowCancel));
+                }
+            }
+        }
+
         public Visibility CancelVisibility => _masterStore.RunningStore.RunState == RunStates.DirectoryGathering ? Visibility.Visible : Visibility.Hidden;
+        public bool AllowCancel => !CancelActivated;
 
         public ICommand OpenFolderBrowserDialog { get; }
         public ICommand CancelGatherer { get; }
@@ -41,6 +57,7 @@ namespace PictureMoverGui.SubViewModels
         {
             _masterStore = masterStore;
             _mediaType = _masterStore.SorterConfigurationStore.SorterConfiguration.MediaType;
+            _cancelActivated = false;
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfiguration_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
@@ -131,11 +148,13 @@ namespace PictureMoverGui.SubViewModels
                 default:
                     throw new NotImplementedException("Switch case in OnExtensionCounterWorkerDone does not handle all cases");
             }
+            CancelActivated = false;
         }
 
         protected void OnCancelGatherer(object parameter)
         {
             System.Diagnostics.Debug.WriteLine("OnCancelGatherer");
+            CancelActivated = true;
             _masterStore.RunningStore.WorkerHandler.CancelExtensionCounterWorker();
         }
     }

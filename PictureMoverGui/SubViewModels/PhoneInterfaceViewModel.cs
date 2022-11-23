@@ -1,5 +1,4 @@
 ﻿using PictureMoverGui.Commands;
-using PictureMoverGui.DirectoryWorkers;
 using PictureMoverGui.Helpers;
 using PictureMoverGui.Helpers.HelperClasses;
 using PictureMoverGui.Models;
@@ -12,23 +11,13 @@ using System.Windows.Input;
 
 namespace PictureMoverGui.SubViewModels
 {
-    public class SorterInterfaceViewModel : ViewModelBase
+    public class PhoneInterfaceViewModel : ViewModelBase
     {
         private MasterStore _masterStore;
+        
+        private MediaDeviceSelectorViewModel _mediaDeviceSelector;
 
         private SorterConfigurationModel SorterConfig => _masterStore.SorterConfigurationStore.SorterConfiguration;
-
-        public bool DoCopy
-        {
-            get { return SorterConfig.DoCopy; }
-            set
-            {
-                if (value != SorterConfig.DoCopy)
-                {
-                    _masterStore.SorterConfigurationStore.SetDoCopy(value);
-                }
-            }
-        }
 
         public bool DoStructured
         {
@@ -90,7 +79,8 @@ namespace PictureMoverGui.SubViewModels
             get
             {
                 return ((_masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering) &&
-                    (!StartActivated) && (!string.IsNullOrEmpty(_masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath)));
+                    (!StartActivated) && (!_masterStore.RunningStore.IsMediaLocked) &&
+                    (_masterStore.UsbDeviceStore.SelectedRemovableDevice.IsConnected));
             }
         }
 
@@ -103,18 +93,22 @@ namespace PictureMoverGui.SubViewModels
         public ICommand StartSorting { get; }
         public ICommand CancelSorting { get; }
 
-        public SorterInterfaceViewModel(MasterStore masterStore)
+        public PhoneInterfaceViewModel(MasterStore masterStore, MediaDeviceSelectorViewModel mediaDeviceSelector)
         {
             _masterStore = masterStore;
             _startActivated = false;
             _cancelActivated = false;
 
+            _mediaDeviceSelector = mediaDeviceSelector;
+
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged += SorterConfigurationStore_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged += RunningStore_RunningStoreChanged;
+            _masterStore.UsbDeviceStore.DeviceInfoChanged += UsbDeviceStore_DeviceInfoChanged;
 
             StartSorting = new CallbackCommand(OnStartSorting);
             CancelSorting = new CallbackCommand(OnCancelSorting);
         }
+
 
         public override void Dispose()
         {
@@ -122,14 +116,13 @@ namespace PictureMoverGui.SubViewModels
 
             _masterStore.SorterConfigurationStore.SorterConfigurationChanged -= SorterConfigurationStore_SorterConfigurationChanged;
             _masterStore.RunningStore.RunningStoreChanged -= RunningStore_RunningStoreChanged;
+            _masterStore.UsbDeviceStore.DeviceInfoChanged -= UsbDeviceStore_DeviceInfoChanged;
         }
 
         protected void SorterConfigurationStore_SorterConfigurationChanged(SorterConfigurationModel sorterConfigurationModel)
         {
-            OnPropertyChanged(nameof(DoCopy));
             OnPropertyChanged(nameof(DoStructured));
             OnPropertyChanged(nameof(DoRename));
-            OnPropertyChanged(nameof(AllowStartSorting));
         }
 
         protected void RunningStore_RunningStoreChanged(RunningStore runningStore)
@@ -141,6 +134,11 @@ namespace PictureMoverGui.SubViewModels
             OnPropertyChanged(nameof(StatusProgressDegrees));
         }
 
+        protected void UsbDeviceStore_DeviceInfoChanged(UsbDeviceStore usbDeviceStore)
+        {
+            OnPropertyChanged(nameof(AllowStartSorting));
+        }
+
         protected void OnStartSorting(object parameter)
         {
             if (_masterStore.RunningStore.RunState == RunStates.Idle || _masterStore.RunningStore.RunState == RunStates.DirectoryGathering)
@@ -149,9 +147,10 @@ namespace PictureMoverGui.SubViewModels
                 _masterStore.RunningStore.WorkerHandler.InteruptExtensionCounterWorker();
                 System.Diagnostics.Debug.WriteLine("OnStartSorting");
                 _masterStore.RunningStore.ResetInfoFileCount();
+                System.Diagnostics.Debug.WriteLine(_masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path);
                 _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
-                    new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath },
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.DoCopy,
+                    new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, _masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path },
+                    true,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.DoStructured,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.DoRename,
                     _masterStore.SorterConfigurationStore.SorterConfiguration.NameCollisionAction,
@@ -159,15 +158,15 @@ namespace PictureMoverGui.SubViewModels
                     _masterStore.SorterConfigurationStore.SorterConfiguration.HashType,
                     _masterStore.FileExtensionStore.GetListOfValidExtension(),
                     new List<EventDataModel>(_masterStore.EventDataStore.EventDataValues),
-                    MediaTypeEnum.NormalDirectory,
-                    _masterStore.SorterConfigurationStore.SorterConfiguration.SourcePath,
+                    MediaTypeEnum.MediaDevice,
                     null,
-                    DateTime.MinValue,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice,
+                    _masterStore.UsbDeviceStore.SelectedMediaDevice.LastRun,
                     _masterStore.RunningStore.SetStatusPercentage,
                     _masterStore.RunningStore.AddStatusLog,
                     _masterStore.RunningStore.IncrementInfoFileCount,
                     OnPictureMoverWorkerDone
-                ));                    
+                ));
             }
         }
 
@@ -182,11 +181,10 @@ namespace PictureMoverGui.SubViewModels
                     System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
+                    _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(DateTime.Now);
                     break;
                 case WorkStatus.Invalid:
-                    _masterStore.RunningStore.AddStatusLog("Source dir no longer exists");
-                    _masterStore.SorterConfigurationStore.SetSourcePath("");
-                    MessageBox.Show("The source dir no longer exists. Please start select source again", "Source dir no longer exists");
+                    MessageBox.Show("The media device not loaded. Please reload and try again", "Media device not loaded");
                     break;
                 case WorkStatus.Cancelled:
                     break;
