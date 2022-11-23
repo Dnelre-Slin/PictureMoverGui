@@ -145,9 +145,7 @@ namespace PictureMoverGui.SubViewModels
             {
                 StartActivated = true;
                 _masterStore.RunningStore.WorkerHandler.InteruptExtensionCounterWorker();
-                System.Diagnostics.Debug.WriteLine("OnStartSorting");
                 _masterStore.RunningStore.ResetInfoFileCount();
-                System.Diagnostics.Debug.WriteLine(_masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path);
                 _masterStore.RunningStore.WorkerHandler.StartPictureMoverWorker(new PictureMoverArguments(
                     new List<string> { _masterStore.SorterConfigurationStore.SorterConfiguration.DestinationPath, _masterStore.UsbDeviceStore.SelectedRemovableDevice.Name + _masterStore.UsbDeviceStore.SelectedRemovableDevice.Path },
                     true,
@@ -172,13 +170,9 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnPictureMoverWorkerDone(WorkStatus workStatus, int nrOfErrors)
         {
-            System.Diagnostics.Debug.WriteLine("Worker done!");
-            System.Diagnostics.Debug.WriteLine(workStatus);
-            System.Diagnostics.Debug.WriteLine($"Number of errors: {nrOfErrors}");
             switch (workStatus)
             {
                 case WorkStatus.Unfinished:
-                    System.Diagnostics.Debug.WriteLine("Work status unfinished!");
                     break;
                 case WorkStatus.Success:
                     _masterStore.UsbDeviceStore.SetSelectedMediaDeviceDateTime(DateTime.Now);
@@ -199,7 +193,6 @@ namespace PictureMoverGui.SubViewModels
 
         protected void OnCancelSorting(object parameter)
         {
-            System.Diagnostics.Debug.WriteLine("OnCancelSorting");
             CancelActivated = true;
             _masterStore.RunningStore.WorkerHandler.CancelPictureMoverWorker();
         }
