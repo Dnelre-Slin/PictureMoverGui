@@ -21,9 +21,6 @@ namespace PictureMoverGui.SubViewModels
 
         public IEnumerable<string> MediaDeviceChoices => _masterStore.UsbDeviceStore.MediaDeviceList.Select(md => md.Name);
 
-        //private bool _isLocked = true;
-        //public bool IsLocked => _isLocked;
-
         public string MediaDeviceConnected => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? "✔️" : "❌";
         public Brush MediaDeviceConnectedColor => _masterStore.UsbDeviceStore.SelectedMediaDevice.MediaDevice != null ? Brushes.Green : Brushes.Red;
      
@@ -187,9 +184,6 @@ namespace PictureMoverGui.SubViewModels
             {
                 OnExtensionCounterWorkerCancel(null);
                 _masterStore.RunningStore.SetMediaLockedState(true);
-                //_isLocked = true;
-                //OnPropertyChanged(nameof(MediaDeviceUnlocked));
-                //OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
             }
 
             StartUnlockWorker();
@@ -249,10 +243,7 @@ namespace PictureMoverGui.SubViewModels
             if (workStatus == WorkStatus.Success)
             {
                 _masterStore.RunningStore.SetMediaLockedState(false);
-                //_isLocked = false;
                 StartExtensionCountnerWorker();
-                //OnPropertyChanged(nameof(MediaDeviceUnlocked));
-                //OnPropertyChanged(nameof(MediaDeviceUnlockedColor));
             }
         }
 
